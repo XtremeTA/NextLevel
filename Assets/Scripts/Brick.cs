@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour
 {
-    void OnMouseDown()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        // This is called when the user clicks on the collider
-        Destroy(gameObject);
+        if (collision.gameObject.GetComponent<Ball>() != null)
+            Destroy(gameObject);
     }
 }
