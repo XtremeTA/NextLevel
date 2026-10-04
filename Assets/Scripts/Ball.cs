@@ -26,13 +26,6 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = new Vector2(1f, 0.65f).normalized * moveSpeed;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Keep a steady speed because the default 2D material is not bouncy.
-        Vector2 normal = collision.GetContact(0).normal;
-        rb.linearVelocity = Vector2.Reflect(rb.linearVelocity, normal).normalized * moveSpeed;
-    }
-
     private void FixedUpdate()
     {
         // Keep the ball inside the visible play area.
