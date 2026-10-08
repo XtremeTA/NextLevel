@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 97906134321461481}
   - component: {fileID: 1050751921698573113}
   - component: {fileID: 6938862767369174716}
+  - component: {fileID: -588713267602988064}
   m_Layer: 0
   m_Name: GroundBrick
   m_TagString: Untagged
@@ -88,7 +89,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -133,7 +134,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2, y: 1}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 2, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -167,3 +168,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-588713267602988064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5453705858036774387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f60a3e4cdbc79468728a0110809bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GroundBreak
+  alternativeSprites:
+  - {fileID: 4731647985364870111, guid: 47111c85d521d134c839c16f00295790, type: 3}
+  - {fileID: -57235305044709625, guid: 47111c85d521d134c839c16f00295790, type: 3}
+  - {fileID: -4229799198981401545, guid: 47111c85d521d134c839c16f00295790, type: 3}
+  - {fileID: 6071225350908177214, guid: 47111c85d521d134c839c16f00295790, type: 3}

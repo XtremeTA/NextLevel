@@ -44,8 +44,9 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {;
-        float nextX = Mathf.Clamp(rb.position.x + moveInput * moveSpeed * Time.fixedDeltaTime,
-                                  leftLimit, rightLimit);
-        rb.MovePosition(new Vector2(nextX, rb.position.y));
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        float clampedX = Mathf.Clamp(transform.position.x, leftLimit, rightLimit);
+        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
     }
 }
