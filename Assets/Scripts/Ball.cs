@@ -54,4 +54,17 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         Launch();
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.CompareTag("Parry"))
+    {
+        // Example parry bounce
+        Vector2 newVelocity = new Vector2(
+            Random.Range(-1f, 1f),   // random horizontal angle
+            1f                      // always bounce upward
+        ).normalized * moveSpeed;
+
+        rb.linearVelocity = newVelocity;
+    }
+}
 }

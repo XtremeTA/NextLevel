@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -12,6 +13,10 @@ public class Player : MonoBehaviour
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private GameObject parryHitbox;
+    [SerializeField] private float parryDuration = 0.15f;
+    private bool isParrying = false;
     
 
     private void Awake()
@@ -39,6 +44,10 @@ public class Player : MonoBehaviour
             spriteRenderer.flipX = true;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Space) && !isParrying)
+        {
+            StartCoroutine(ParryWindow());
+        }
         
     }
 
@@ -49,4 +58,15 @@ public class Player : MonoBehaviour
         float clampedX = Mathf.Clamp(transform.position.x, leftLimit, rightLimit);
         transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
     }
+
+    private IEnumerator ParryWindow()
+        {
+            isParrying = true;
+            parryHitbox.SetActive(true);
+
+            yield return new WaitForSeconds(parryDuration);
+
+            parryHitbox.SetActive(false);
+            isParrying = false;
+        }
 }
