@@ -32,17 +32,6 @@ public class Ball : MonoBehaviour
         Vector2 position = rb.position;
         Vector2 velocity = rb.linearVelocity;
 
-        if (Mathf.Abs(position.x) > 8.5f)
-        {
-            position.x = Mathf.Sign(position.x) * 8.5f;
-            velocity.x = -velocity.x;
-        }
-
-        if (position.y > 4.5f)
-        {
-            position.y = 4.5f;
-            velocity.y = -velocity.y;
-        }
 
         rb.position = position;
         rb.linearVelocity = velocity.normalized * moveSpeed;

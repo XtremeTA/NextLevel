@@ -55,8 +55,8 @@ public class Player : MonoBehaviour
     {;
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-        float clampedX = Mathf.Clamp(transform.position.x, leftLimit, rightLimit);
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+        
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
 
     private IEnumerator ParryWindow()
