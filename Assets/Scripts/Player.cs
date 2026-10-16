@@ -62,10 +62,12 @@ public class Player : MonoBehaviour
     private IEnumerator ParryWindow()
         {
             isParrying = true;
+            animator.SetTrigger("Parry");
             parryHitbox.SetActive(true);
 
             yield return new WaitForSeconds(parryDuration);
 
+            animator.ResetTrigger("Parry");
             parryHitbox.SetActive(false);
             isParrying = false;
         }

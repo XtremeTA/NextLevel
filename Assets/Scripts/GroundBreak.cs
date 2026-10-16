@@ -6,6 +6,9 @@ public class GroundBreak : MonoBehaviour
 
     private int brickHealth = 4;
 
+    public AudioSource audioSource;
+    public AudioClip breakSFX;
+
     [SerializeField] private Sprite[] alternativeSprites;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +26,7 @@ public class GroundBreak : MonoBehaviour
             } else {
                 brickHealth -= 1;
                 spriteRenderer.sprite = alternativeSprites[4 - brickHealth];
+                audioSource.PlayOneShot(breakSFX);
             }
         }
     }
