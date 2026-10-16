@@ -3,8 +3,7 @@ using System.Collections;
 public class Brick : MonoBehaviour
 {
     private Animator animator;
-    public AudioSource audioSource;
-    public AudioClip breakSFX;
+    private bool isBreaking;
 
     void Awake()
     {
@@ -12,9 +11,10 @@ public class Brick : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Ball>() != null)
+        if (!isBreaking && collision.gameObject.GetComponent<Ball>() != null)
         {
-            audioSource.PlayOneShot(breakSFX);
+            isBreaking = true;
+            GameAudio.Instance?.Play(SoundCue.BrickBreak);
             animator.SetTrigger("Break");
             StartCoroutine(DestroyAfterAnimation());
         }

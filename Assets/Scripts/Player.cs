@@ -11,6 +11,13 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private float moveInput;
 
+    [Header("Jump")]
+    [SerializeField, Min(0.1f)] private float jumpHeight = 2.5f;
+    private Collider2D bodyCollider;
+    private ContactFilter2D groundFilter;
+    private readonly ContactPoint2D[] groundContacts = new ContactPoint2D[8];
+    private bool jumpRequested;
+
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
@@ -22,6 +29,9 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        bodyCollider = GetComponent<Collider2D>();
+        groundFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        groundFilter.useTriggers = false;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -29,6 +39,9 @@ public class Player : MonoBehaviour
     private void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.W))
+            jumpRequested = true;
+
         if (moveInput == 0)
         {
             animator.SetBool("isRunning", false);
@@ -52,11 +65,41 @@ public class Player : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {;
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+    {
+        // Let the Rigidbody resolve contacts without also teleporting its Transform.
+        Vector2 velocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        if (jumpRequested && IsGrounded())
+        {
+            float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+            velocity.y = Mathf.Sqrt(2f * gravity * jumpHeight);
+        }
 
-        
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        // Consume each key press once, including presses made in midair.
+        jumpRequested = false;
+        rb.linearVelocity = velocity;
+    }
+
+    private bool IsGrounded()
+    {
+        if (bodyCollider == null || rb.linearVelocity.y > 0.1f)
+            return false;
+
+        int count = bodyCollider.GetContacts(groundFilter, groundContacts);
+        for (int i = 0; i < count; i++)
+        {
+            ContactPoint2D contact = groundContacts[i];
+            Collider2D ground = contact.collider == bodyCollider ? contact.otherCollider : contact.collider;
+            // Side walls, triggers, and destroyed floor blocks cannot grant a jump.
+            if (ground != null && ground.enabled && ground.gameObject.activeInHierarchy && contact.normal.y >= 0.65f)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void OnDisable()
+    {
+        jumpRequested = false;
     }
 
     private IEnumerator ParryWindow()

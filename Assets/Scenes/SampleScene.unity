@@ -191,8 +191,9 @@ GameObject:
   m_Component:
   - component: {fileID: 76915649}
   - component: {fileID: 76915648}
+  - component: {fileID: 76915650}
   m_Layer: 3
-  m_Name: IMG_1758_0
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,7 +225,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -245,7 +246,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -100
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6461860946244043673, guid: 5ab098cbd3e30024b9a27013453bd6b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -267,12 +268,26 @@ Transform:
   m_GameObject: {fileID: 76915647}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -0.04, z: 0}
-  m_LocalScale: {x: 2.0666, y: 2.0666, z: 2.0666}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalScale: {x: 2.3793445, y: 2.3793445, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &76915650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76915647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a3cf55e7674c90babd21427b304cff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraBackground
+  targetCamera: {fileID: 519420031}
+  distanceFromCamera: 20
 --- !u!1001 &131255358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -609,7 +624,7 @@ Transform:
   m_GameObject: {fileID: 265178164}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.08, y: 0.98, z: 0}
+  m_LocalPosition: {x: 15.01, y: 0.98, z: 0}
   m_LocalScale: {x: 1, y: 11.931548, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -859,6 +874,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
   moveSpeed: 6
+  playAreaCamera: {fileID: 519420031}
+  screenPadding: 0.02
 --- !u!1001 &364931977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2558,6 +2575,7 @@ MonoBehaviour:
   moveSpeed: 7
   leftLimit: -8
   rightLimit: 8
+  jumpHeight: 2.5
   parryHitbox: {fileID: 1534935335}
   parryDuration: 0.15
 --- !u!95 &1400000006
@@ -2592,7 +2610,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e5b84b95ff4f453fb75a9efc94d486ad, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2626,8 +2644,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 0.75}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.65, y: 0.65}
+  m_EdgeRadius: 0.05
 --- !u!1001 &1409227588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2851,7 +2869,7 @@ Transform:
   m_GameObject: {fileID: 1413138538}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.17, y: 0.98, z: 0}
+  m_LocalPosition: {x: -14.99, y: 0.98, z: 0}
   m_LocalScale: {x: 1, y: 11.931548, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3927,6 +3945,82 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6783635210190533648, guid: 67e3b89a933d2d84e8399028e38fcdc2, type: 3}
   m_PrefabInstance: {fileID: 2141160836}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2141160840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141160841}
+  - component: {fileID: 2141160842}
+  m_Layer: 0
+  m_Name: Game Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2141160841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141160840}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2141160842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141160840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 824331d479824358b8832504469cc244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameAudio
+  effectsVolume: 0.85
+  ballHit:
+    clips:
+    - {fileID: 8300000, guid: da49ad2144caead488dd6888ea6cc62b, type: 3}
+    volume: 0.5
+    pitchVariation: 0.03
+    volumeVariation: 0.05
+    minimumInterval: 0.05
+  brickBreak:
+    clips:
+    - {fileID: 8300000, guid: 9ae3bae204e1b7a448f87fb51ece9e3b, type: 3}
+    - {fileID: 8300000, guid: cfd53b1f9a7cbee4ebdad0af9eec1418, type: 3}
+    - {fileID: 8300000, guid: 05cb3ffdae579234bb3df2a7eb0357cc, type: 3}
+    volume: 0.7
+    pitchVariation: 0.04
+    volumeVariation: 0.06
+    minimumInterval: 0.035
+  tileCrack:
+    clips:
+    - {fileID: 8300000, guid: 0a150000df7f7c84c8ab43162bdc622a, type: 3}
+    volume: 0.6
+    pitchVariation: 0.03
+    volumeVariation: 0.05
+    minimumInterval: 0.05
+  parry:
+    clips:
+    - {fileID: 8300000, guid: ab6d245ed3e6ebb4896f17d6825bdab1, type: 3}
+    - {fileID: 8300000, guid: 3be2f49161691f843ae41787091fc0bd, type: 3}
+    volume: 0.8
+    pitchVariation: 0.025
+    volumeVariation: 0.04
+    minimumInterval: 0.08
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3939,3 +4033,4 @@ SceneRoots:
   - {fileID: 630013375}
   - {fileID: 265178166}
   - {fileID: 1413138542}
+  - {fileID: 2141160841}

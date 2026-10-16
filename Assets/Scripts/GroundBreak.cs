@@ -6,9 +6,6 @@ public class GroundBreak : MonoBehaviour
 
     private int brickHealth = 4;
 
-    public AudioSource audioSource;
-    public AudioClip breakSFX;
-
     [SerializeField] private Sprite[] alternativeSprites;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,14 +16,15 @@ public class GroundBreak : MonoBehaviour
     // Update is called once per frame
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Ball>() != null){
-            if (brickHealth - 1 == 0)
+        if (brickHealth > 0 && collision.gameObject.GetComponent<Ball>() != null){
+            brickHealth -= 1;
+            if (brickHealth == 0)
             {
+                GameAudio.Instance?.Play(SoundCue.BrickBreak);
                 Destroy(gameObject);
             } else {
-                brickHealth -= 1;
                 spriteRenderer.sprite = alternativeSprites[4 - brickHealth];
-                audioSource.PlayOneShot(breakSFX);
+                GameAudio.Instance?.Play(SoundCue.TileCrack);
             }
         }
     }
