@@ -1,59 +1,149 @@
 using UnityEngine;
-[RequireComponent(typeof(Rigidbody2D))]
+
+[RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private CircleCollider2D ballCollider;
+    private SpriteRenderer spriteRenderer;
 
-    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField, Min(0.1f)] private float moveSpeed = 6f;
+    [SerializeField] private Camera playAreaCamera;
+    [SerializeField, Min(0f)] private float screenPadding = 0.02f;
 
-    void Awake()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        ballCollider = GetComponent<CircleCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         Launch();
+        KeepInsideScreen();
     }
 
-    void Launch()
+    private void Launch()
     {
-        // Random initial direction
         rb.linearVelocity = new Vector2(1f, 0.65f).normalized * moveSpeed;
     }
 
     private void FixedUpdate()
     {
-        // Keep the ball inside the visible play area.
+        if (rb.linearVelocity.sqrMagnitude < 0.0001f)
+            Launch();
+        else
+            rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
+
+        KeepInsideScreen();
+    }
+
+    private void LateUpdate()
+    {
+        // Keep the rendered frame in view, but leave all bounces to FixedUpdate.
+        KeepInsideScreen(false);
+    }
+
+    private void KeepInsideScreen(bool reflectVelocity = true)
+    {
+        if (playAreaCamera == null)
+            playAreaCamera = Camera.main;
+        if (playAreaCamera == null || !playAreaCamera.orthographic)
+            return;
+
+        GetBallFootprint(out Vector2 footprintMin, out Vector2 footprintMax);
         Vector2 position = rb.position;
         Vector2 velocity = rb.linearVelocity;
+        Vector2 cameraCenter = playAreaCamera.transform.position;
+        float halfHeight = playAreaCamera.orthographicSize;
+        float halfWidth = halfHeight * playAreaCamera.aspect;
 
+        float minX = cameraCenter.x - halfWidth + screenPadding - footprintMin.x;
+        float maxX = cameraCenter.x + halfWidth - screenPadding - footprintMax.x;
+        float minY = cameraCenter.y - halfHeight + screenPadding - footprintMin.y;
+        float maxY = cameraCenter.y + halfHeight - screenPadding - footprintMax.y;
 
-        rb.position = position;
-        rb.linearVelocity = velocity.normalized * moveSpeed;
+        bool bouncedX = ConstrainAxis(ref position.x, ref velocity.x, minX, maxX, reflectVelocity);
+        bool bouncedY = ConstrainAxis(ref position.y, ref velocity.y, minY, maxY, reflectVelocity);
+        if (position != rb.position)
+            rb.position = position;
+
+        if (bouncedX || bouncedY)
+        {
+            rb.linearVelocity = velocity;
+            GameAudio.Instance?.Play(SoundCue.BallHit);
+        }
+    }
+
+    private void GetBallFootprint(out Vector2 min, out Vector2 max)
+    {
+        // Measure shape offsets without world bounds, which can lag a Rigidbody
+        // correction and otherwise make the apparent screen edge shift each frame.
+        Vector3 scale = transform.lossyScale;
+        float radius = ballCollider.radius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y));
+        Vector2 colliderOffset = transform.TransformVector(ballCollider.offset);
+        min = colliderOffset - Vector2.one * radius;
+        max = colliderOffset + Vector2.one * radius;
+
+        if (spriteRenderer == null || spriteRenderer.sprite == null)
+            return;
+
+        Bounds spriteBounds = spriteRenderer.localBounds;
+        Vector2 spriteOffset = transform.TransformVector(spriteBounds.center);
+        Vector2 horizontalExtent = transform.TransformVector(new Vector3(spriteBounds.extents.x, 0f, 0f));
+        Vector2 verticalExtent = transform.TransformVector(new Vector3(0f, spriteBounds.extents.y, 0f));
+        Vector2 spriteExtent = new Vector2(
+            Mathf.Abs(horizontalExtent.x) + Mathf.Abs(verticalExtent.x),
+            Mathf.Abs(horizontalExtent.y) + Mathf.Abs(verticalExtent.y));
+        min = Vector2.Min(min, spriteOffset - spriteExtent);
+        max = Vector2.Max(max, spriteOffset + spriteExtent);
+    }
+
+    private static bool ConstrainAxis(ref float position, ref float velocity, float min, float max, bool reflectVelocity)
+    {
+        // Keep the ball centered if a very narrow view cannot fit its full size.
+        if (min > max)
+        {
+            position = (min + max) * 0.5f;
+            return false;
+        }
+
+        bool bounced = reflectVelocity &&
+            ((position <= min && velocity < 0f) || (position >= max && velocity > 0f));
+        position = Mathf.Clamp(position, min, max);
+        if (bounced)
+            velocity = -velocity;
+        return bounced;
     }
 
     public void ResetBall()
     {
-        transform.position = new Vector2(0f, -1f);
-        rb.linearVelocity = Vector2.zero;
+        rb.position = new Vector2(0f, -1f);
         Launch();
+        KeepInsideScreen();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-{
-    if (collision.CompareTag("Parry"))
-    {
-        // Example parry bounce
-        Vector2 newVelocity = new Vector2(
-            Random.Range(-1f, 1f),   // random horizontal angle
-            1f                      // always bounce upward
-        ).normalized * moveSpeed;
 
-        rb.linearVelocity = newVelocity;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Bricks and floor blocks own their more specific impact sounds.
+        if (collision.gameObject.GetComponent<Brick>() == null &&
+            collision.gameObject.GetComponent<GroundBreak>() == null &&
+            collision.gameObject.GetComponent<Player>() == null)
+        {
+            GameAudio.Instance?.Play(SoundCue.BallHit);
+        }
     }
-}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Parry"))
+        {
+            rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), 1f).normalized * moveSpeed;
+            GameAudio.Instance?.Play(SoundCue.Parry);
+        }
+    }
 }
