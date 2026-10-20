@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SocialPlatforms.Impl;
 public class Brick : MonoBehaviour
 {
     private Animator animator;
@@ -15,6 +16,7 @@ public class Brick : MonoBehaviour
         {
             isBreaking = true;
             GameAudio.Instance?.Play(SoundCue.BrickBreak);
+            ScoreCounter.Instance.AddScore(1);
             animator.SetTrigger("Break");
             StartCoroutine(DestroyAfterAnimation());
         }
