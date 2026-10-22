@@ -1,0 +1,226 @@
+fileFormatVersion: 2
+guid: 56c06ccd63e93be40a480eb16d77a90c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2834816866031520189
+    second: StartButton_0
+  - first:
+      213: 144607954711566811
+    second: StartButton_1
+  - first:
+      213: 1409554443580534697
+    second: StartButton_2
+  - first:
+      213: 5038773851224405555
+    second: StartButton_3
+  - first:
+      213: -4836371460623874491
+    second: StartButton_4
+  - first:
+      213: -2914623409926926749
+    second: StartButton_5
+  - first:
+      213: -524130277212805063
+    second: StartButton_6
+  - first:
+      213: 2780478199939319074
+    second: StartButton_7
+  - first:
+      213: -1982321662022720007
+    second: StartButton_8
+  - first:
+      213: 2256845274123663025
+    second: StartButton_9
+  - first:
+      213: 6032073241876174549
+    second: StartButton_10
+  - first:
+      213: -4698682119532586238
+    second: StartButton_11
+  - first:
+      213: -6695456933667257942
+    second: StartButton_12
+  - first:
+      213: 950217652380661147
+    second: StartButton_13
+  - first:
+      213: -5734039561364119448
+    second: StartButton_14
+  - first:
+      213: 5959472406983657797
+    second: StartButton_15
+  - first:
+      213: -8275006549478700147
+    second: StartButton_16
+  - first:
+      213: -3804311905342689770
+    second: StartButton_17
+  - first:
+      213: 2160448840463994143
+    second: StartButton_18
+  - first:
+      213: 2277067934573075806
+    second: StartButton_19
+  - first:
+      213: 746732828506695998
+    second: StartButton_20
+  - first:
+      213: 1223892835176667474
+    second: StartButton_21
+  - first:
+      213: -424991668143951877
+    second: StartButton_22
+  - first:
+      213: 822813537426700195
+    second: StartButton_23
+  - first:
+      213: 7839194571024261147
+    second: StartButton_24
+  - first:
+      213: 8987690530712587130
+    second: StartButton_25
+  - first:
+      213: -7942845329268896576
+    second: StartButton_26
+  - first:
+      213: -4654964802989879911
+    second: StartButton_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: StartButton
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 136
+        width: 1533
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 346b7e07415b8a8d0800000000000000
+      internalID: -2834816866031520189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: f194631bf97b3da47931bc2c3960b07f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      StartButton: -2834816866031520189
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
