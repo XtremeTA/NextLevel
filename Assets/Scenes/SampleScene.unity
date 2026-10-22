@@ -763,7 +763,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403ce8049bfc03a43974c6aeb4ccf58c, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Ball
-  moveSpeed: 6
+  moveSpeed: 7
+  maximumMoveSpeed: 13
   playAreaCamera: {fileID: 519420031}
   screenPadding: 0.02
   playerShotAngle: 25
@@ -2523,7 +2524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cb7aa2d3f94e3d87ca63edb8304b5c, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  moveSpeed: 7
+  moveSpeed: 8
+  maximumMoveSpeed: 15
   leftLimit: -8
   rightLimit: 8
   jumpHeight: 2.5
@@ -3167,6 +3169,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   startingLives: 3
+  speedRampDuration: 180
   heartImages:
   - {fileID: 1900200113}
   - {fileID: 1900200123}

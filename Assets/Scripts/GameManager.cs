@@ -16,13 +16,20 @@ public sealed class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text finalScoreText;
 
+    [Header("Speed Progression")]
+    [Tooltip("Active gameplay seconds to reach the ball and player maximum speeds.")]
+    [SerializeField, Min(1f)] private float speedRampDuration = 180f;
+    private float speedRampElapsed;
+
     public int Lives { get; private set; }
     public bool IsGameOver { get; private set; }
+    public float SpeedRampProgress => Mathf.Clamp01(speedRampElapsed / Mathf.Max(1f, speedRampDuration));
 
     private void Awake()
     {
         Instance = this;
         Time.timeScale = 1f;
+        speedRampElapsed = 0f;
         Lives = startingLives;
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
@@ -31,6 +38,9 @@ public sealed class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (!IsGameOver && Time.timeScale > 0f)
+            speedRampElapsed = Mathf.Min(speedRampElapsed + Time.deltaTime, Mathf.Max(1f, speedRampDuration));
+
         if (IsGameOver && (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Return)))
             RestartGame();
     }

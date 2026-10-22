@@ -9,6 +9,13 @@ Move with A/D or the arrow keys; press W to jump and Space to parry.
 Jumping requires a supporting ground contact. Adjust **Jump Height** on the
 Player to change the jump's height (default: 2.5 world units).
 
+Normal ball speed starts at 7 units/second and player movement at 8. Both rise
+smoothly over three minutes of active gameplay, reaching 13 and 15 respectively,
+then stay capped. Pausing or game over stops the ramp; restarting resets it.
+Adjust **Speed Ramp Duration** on GameManager and **Move Speed** / **Maximum Move
+Speed** on the Ball and Player to tune the pace. Perfect parries temporarily
+boost the ball's current speed as usual.
+
 Falling through a gap in the floor costs a life and plays the hurt flash while the player is
 lifted back up through the gap and set down on the last floor tile they stood
 on, or the nearest surviving tile if it broke (the start position if none are

@@ -25,7 +25,9 @@ public class Ball : MonoBehaviour
     private float lastBounceStep = float.NegativeInfinity;
     private Vector2 lastBouncePosition;
 
-    [SerializeField, Min(0.1f)] private float moveSpeed = 6f;
+    [Tooltip("Normal ball speed at the start of a run.")]
+    [SerializeField, Min(0.1f)] private float moveSpeed = 7f;
+    [SerializeField, Min(0.1f)] private float maximumMoveSpeed = 13f;
     [SerializeField] private Camera playAreaCamera;
     [SerializeField, Min(0f)] private float screenPadding = 0.02f;
     [Header("Player Shots")]
@@ -42,7 +44,9 @@ public class Ball : MonoBehaviour
     [SerializeField, Range(1f, 25f)] private float escapeAngleNudge = 12f;
 
     private float BoostStrength => Mathf.Clamp01(boostRemaining / Mathf.Min(0.25f, Mathf.Max(0.01f, perfectParryBoostDuration)));
-    private float CurrentSpeed => moveSpeed * Mathf.Lerp(1f, perfectParrySpeedMultiplier, BoostStrength);
+    private float BaseSpeed => Mathf.Lerp(moveSpeed, Mathf.Max(moveSpeed, maximumMoveSpeed),
+        GameManager.Instance != null ? GameManager.Instance.SpeedRampProgress : 0f);
+    private float CurrentSpeed => BaseSpeed * Mathf.Lerp(1f, perfectParrySpeedMultiplier, BoostStrength);
 
     private void Awake()
     {

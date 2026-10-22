@@ -4,7 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 7f;
+    [Tooltip("Horizontal movement speed at the start of a run.")]
+    [SerializeField, Min(0.1f)] private float moveSpeed = 8f;
+    [SerializeField, Min(0.1f)] private float maximumMoveSpeed = 15f;
     [SerializeField] private float leftLimit = -8f;
     [SerializeField] private float rightLimit = 8f;
 
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour
 
     public float FacingDirection => spriteRenderer != null && spriteRenderer.flipX ? -1f : 1f;
     public float MovementAmount => Mathf.Clamp01(Mathf.Abs(moveInput));
+    private float CurrentMoveSpeed => Mathf.Lerp(moveSpeed, Mathf.Max(moveSpeed, maximumMoveSpeed),
+        GameManager.Instance != null ? GameManager.Instance.SpeedRampProgress : 0f);
     public bool IsPerfectParry => isParrying && Time.time - parryStartedAt <= perfectParryWindow;
     public bool IsHitStunned => isHitStunned || isRecovering;
 
@@ -176,7 +180,7 @@ public class Player : MonoBehaviour
         }
 
         // Let the Rigidbody resolve contacts without also teleporting its Transform.
-        Vector2 velocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        Vector2 velocity = new Vector2(moveInput * CurrentMoveSpeed, rb.linearVelocity.y);
         if (jumpRequested && ground != null)
         {
             float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
