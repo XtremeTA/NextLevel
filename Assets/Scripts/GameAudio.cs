@@ -6,7 +6,12 @@ public enum SoundCue
     BallHit,
     BrickBreak,
     TileCrack,
-    Parry
+    Parry,
+    Hurt,
+    Death,
+    GhostAppear,
+    GhostBurst,
+    GhostSplit
 }
 
 [DefaultExecutionOrder(-100)]
@@ -51,8 +56,15 @@ public sealed class GameAudio : MonoBehaviour
     [SerializeField] private SoundEffect brickBreak = new SoundEffect();
     [SerializeField] private SoundEffect tileCrack = new SoundEffect();
     [SerializeField] private SoundEffect parry = new SoundEffect();
+    [SerializeField] private SoundEffect hurt = new SoundEffect();
+    [SerializeField] private SoundEffect death = new SoundEffect();
 
-    // Keep audio randomness independent of the ball's random bounce direction.
+    [Header("Ghost Effects")]
+    [SerializeField] private SoundEffect ghostAppear = new SoundEffect();
+    [SerializeField] private SoundEffect ghostBurst = new SoundEffect();
+    [SerializeField] private SoundEffect ghostSplit = new SoundEffect();
+
+    // Keep audio variation independent of gameplay's random sequence.
     private readonly System.Random random = new System.Random();
     private readonly AudioSource[] effectSources = new AudioSource[16];
     private readonly double[] busyUntil = new double[16];
@@ -128,6 +140,11 @@ public sealed class GameAudio : MonoBehaviour
             case SoundCue.BrickBreak: return brickBreak;
             case SoundCue.TileCrack: return tileCrack;
             case SoundCue.Parry: return parry;
+            case SoundCue.Hurt: return hurt;
+            case SoundCue.Death: return death;
+            case SoundCue.GhostAppear: return ghostAppear;
+            case SoundCue.GhostBurst: return ghostBurst;
+            case SoundCue.GhostSplit: return ghostSplit;
             default: return null;
         }
     }
