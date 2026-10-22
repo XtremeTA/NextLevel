@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,10 +72,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -101,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,10 +131,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 160
+        width: 64
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -151,12 +151,12 @@ TextureImporter:
       name: Yokai-Brick-1-Sheet_1
       rect:
         serializedVersion: 2
-        x: 129
+        x: 64
         y: 0
-        width: 96
+        width: 64
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: Yokai-Brick-1-Sheet_2
       rect:
         serializedVersion: 2
-        x: 217
+        x: 128
         y: 0
-        width: 21
+        width: 64
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,12 +195,12 @@ TextureImporter:
       name: Yokai-Brick-1-Sheet_3
       rect:
         serializedVersion: 2
-        x: 234
-        y: 25
-        width: 18
-        height: 7
+        x: 192
+        y: 0
+        width: 64
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,12 +217,12 @@ TextureImporter:
       name: Yokai-Brick-1-Sheet_4
       rect:
         serializedVersion: 2
-        x: 240
-        y: 18
-        width: 17
-        height: 14
+        x: 256
+        y: 0
+        width: 64
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -235,99 +235,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Yokai-Brick-1-Sheet_5
-      rect:
-        serializedVersion: 2
-        x: 232
-        y: 8
-        width: 11
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f0d2ca7cd21b24b0800000000000000
-      internalID: -5464252984722272011
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Yokai-Brick-1-Sheet_6
-      rect:
-        serializedVersion: 2
-        x: 234
-        y: 0
-        width: 13
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 100ea86917106ba60800000000000000
-      internalID: 7689335001150316545
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Yokai-Brick-1-Sheet_7
-      rect:
-        serializedVersion: 2
-        x: 243
-        y: 9
-        width: 14
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f980e1849e8f45eb0800000000000000
-      internalID: -4731883627638552417
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Yokai-Brick-1-Sheet_8
-      rect:
-        serializedVersion: 2
-        x: 244
-        y: 0
-        width: 13
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7fb237d8aa7676f30800000000000000
-      internalID: 4568734329205894135
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9ff2c6d4c8f5e71429f97df73178e321
     internalID: 0
     vertices: []
     indices: 
@@ -342,10 +254,6 @@ TextureImporter:
       Yokai-Brick-1-Sheet_2: 163020472602894099
       Yokai-Brick-1-Sheet_3: 6978286577381329920
       Yokai-Brick-1-Sheet_4: 6967736701858275283
-      Yokai-Brick-1-Sheet_5: -5464252984722272011
-      Yokai-Brick-1-Sheet_6: 7689335001150316545
-      Yokai-Brick-1-Sheet_7: -4731883627638552417
-      Yokai-Brick-1-Sheet_8: 4568734329205894135
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

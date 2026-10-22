@@ -5,42 +5,64 @@ public class ScoreCounter : MonoBehaviour
 {
     public static ScoreCounter Instance;
 
+    [Tooltip("Board digits from left (hundreds) to right (ones).")]
+    [SerializeField] private Image[] digitImages = new Image[3];
+    [Tooltip("Number sprites 0 through 9, in order.")]
+    [SerializeField] private Sprite[] digitSprites = new Sprite[10];
+    [Tooltip("Seconds between each +1 step while the board counts up.")]
+    [SerializeField, Min(0.01f)] private float tickInterval = 0.06f;
+    [Tooltip("Longest one count-up may take; large jumps tick faster to fit.")]
+    [SerializeField, Min(0.01f)] private float maxTickDuration = 0.75f;
+
     private int score = 0;
+    private int displayedScore;
+    private float nextTickTime;
+    public int Score => score;
 
-    [SerializeField] private Sprite[] digitSprites; // 0-9
-    [SerializeField] private Image hundredsImage;
-    [SerializeField] private Image tensImage;
-    [SerializeField] private Image onesImage;
-
+    private int MaxDisplayable => (int)Mathf.Pow(10, digitImages.Length) - 1;
 
     void Awake()
     {
         Instance = this;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        UpdateScore(score);
+        ShowScore(displayedScore);
     }
 
     public void AddScore(int amount)
     {
         score += amount;
-        UpdateScore(score);
     }
 
-
-    public void UpdateScore(int score)
+    private void Update()
     {
-        score = Mathf.Clamp(score, 0, 999);
+        int target = Mathf.Clamp(score, 0, MaxDisplayable);
+        if (displayedScore > target)
+        {
+            displayedScore = target;
+            ShowScore(displayedScore);
+            return;
+        }
 
-        int hundreds = score / 100;
-        int tens = (score / 10) % 10;
-        int ones = score % 10;
+        // Unscaled so the board still finishes counting after game over pauses time.
+        float now = Time.unscaledTime;
+        if (displayedScore == target || now < nextTickTime)
+            return;
 
-        hundredsImage.sprite = digitSprites[hundreds];
-        tensImage.sprite = digitSprites[tens];
-        onesImage.sprite = digitSprites[ones];
+        nextTickTime = now + Mathf.Min(tickInterval, maxTickDuration / (target - displayedScore));
+        displayedScore++;
+        ShowScore(displayedScore);
     }
 
+    private void ShowScore(int value)
+    {
+        for (int i = digitImages.Length - 1; i >= 0; i--)
+        {
+            if (digitImages[i] != null)
+                digitImages[i].sprite = digitSprites[value % 10];
+            value /= 10;
+        }
+    }
 }

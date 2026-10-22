@@ -16,7 +16,7 @@ public class BrickClickManager : MonoBehaviour
                 Brick brick = hit.collider.GetComponent<Brick>();
                 if (brick != null)
                 {
-                    Destroy(brick.gameObject);
+                    brick.Break();
                 }
             }
         }
