@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public float FacingDirection => spriteRenderer != null && spriteRenderer.flipX ? -1f : 1f;
     public float MovementAmount => Mathf.Clamp01(Mathf.Abs(moveInput));
     public bool IsPerfectParry => isParrying && Time.time - parryStartedAt <= perfectParryWindow;
-    public bool IsHitStunned => isHitStunned;
+    public bool IsHitStunned => isHitStunned || isRecovering;
 
     [Header("Parry")]
     [SerializeField] private GameObject parryHitbox;
@@ -35,26 +35,25 @@ public class Player : MonoBehaviour
     private Coroutine parryRoutine;
 
     [Header("Enemy Hits")]
-    [Tooltip("Minimum stun time. Controls also remain locked until the hurt animation finishes.")]
+    [Tooltip("How long knockback pushes the player. The hurt flash and stun last as long as the Hurt sound.")]
     [SerializeField, Min(0f)] private float hitStunDuration = 0.25f;
+    [Tooltip("Extra invulnerable time after the hurt stun ends.")]
     [SerializeField, Min(0f)] private float hitInvulnerability = 1f;
     [SerializeField] private Vector2 enemyKnockback = new Vector2(4f, 3f);
     private bool isHitStunned;
     private float invulnerableUntil;
     private Coroutine enemyHitRoutine;
+    private Coroutine fallRoutine;
     private static readonly int HurtState = Animator.StringToHash("Base Layer.PlayerHurt");
 
     private bool HurtAnimationActive => animator != null &&
         (animator.GetCurrentAnimatorStateInfo(0).fullPathHash == HurtState ||
          (animator.IsInTransition(0) && animator.GetNextAnimatorStateInfo(0).fullPathHash == HurtState));
-    private bool HurtAnimationComplete
-    {
-        get
-        {
-            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            return state.fullPathHash == HurtState && state.normalizedTime >= 1f;
-        }
-    }
+
+    // The red/white flash runs for as long as the hurt sound is audible.
+    private float HurtDuration => Mathf.Max(hitStunDuration,
+        GameAudio.Instance != null ? GameAudio.Instance.GetAudibleLength(SoundCue.Hurt) : 0f);
+    private static bool GameOver => GameManager.Instance != null && GameManager.Instance.IsGameOver;
     private bool ControlsLocked => isRecovering || isHitStunned || HurtAnimationActive ||
         (GameManager.Instance != null && GameManager.Instance.IsGameOver);
 
@@ -163,7 +162,9 @@ public class Player : MonoBehaviour
         else if (bodyCollider.bounds.max.y < lastGroundTop)
         {
             // The whole body has dropped below the floor surface, so it fell through a gap.
-            StartCoroutine(RecoverFromFall());
+            // A new fall replaces any hurt still in progress, so its timers can't end this one early.
+            StopHurtRoutines();
+            fallRoutine = StartCoroutine(RecoverFromFall());
             return;
         }
 
@@ -216,37 +217,65 @@ public class Player : MonoBehaviour
             (GameManager.Instance != null && GameManager.Instance.IsGameOver))
             return false;
 
-        invulnerableUntil = Time.time + hitInvulnerability;
+        float stunDuration = HurtDuration;
+        invulnerableUntil = Time.time + stunDuration + hitInvulnerability;
         GameManager.Instance?.LoseLife();
-        enemyHitRoutine = StartCoroutine(ReactToEnemyHit(enemyPosition));
+        enemyHitRoutine = StartCoroutine(ReactToEnemyHit(enemyPosition, stunDuration));
         return true;
     }
 
-    private IEnumerator ReactToEnemyHit(Vector2 enemyPosition)
+    private IEnumerator ReactToEnemyHit(Vector2 enemyPosition, float stunDuration)
     {
         isHitStunned = true;
         moveInput = 0f;
         jumpRequested = false;
         CancelParry();
         PlayHurtImmediately();
-        GameAudio.Instance?.Play(GameManager.Instance != null && GameManager.Instance.IsGameOver ? SoundCue.Death : SoundCue.Hurt);
+        GameAudio.Instance?.Play(GameOver ? SoundCue.Death : SoundCue.Hurt);
 
         float away = rb.position.x >= enemyPosition.x ? 1f : -1f;
         rb.linearVelocity = new Vector2(away * enemyKnockback.x, enemyKnockback.y);
-        float minimumStunEnd = Time.time + hitStunDuration;
-        do
+        float knockbackEnd = Time.time + hitStunDuration;
+        float stunEnd = Time.time + stunDuration;
+        bool knockbackDone = false;
+        while (Time.time < stunEnd)
         {
             yield return null;
+            // Stop the sideways push so a long stun doesn't slide the player off the floor.
+            if (!knockbackDone && Time.time >= knockbackEnd)
+            {
+                knockbackDone = true;
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            }
         }
-        while (Time.time < minimumStunEnd || !HurtAnimationComplete);
 
+        EndHurt();
+        enemyHitRoutine = null;
+    }
+
+    private void EndHurt()
+    {
         isHitStunned = false;
-        if (!isRecovering && (GameManager.Instance == null || !GameManager.Instance.IsGameOver))
+        if (!isRecovering && !GameOver)
         {
             animator.SetBool("isHurt", false);
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         }
-        enemyHitRoutine = null;
+    }
+
+    private void StopHurtRoutines()
+    {
+        if (enemyHitRoutine != null)
+        {
+            StopCoroutine(enemyHitRoutine);
+            enemyHitRoutine = null;
+        }
+        if (fallRoutine != null)
+        {
+            StopCoroutine(fallRoutine);
+            fallRoutine = null;
+        }
+        isHitStunned = false;
     }
 
     private IEnumerator RecoverFromFall()
@@ -255,8 +284,11 @@ public class Player : MonoBehaviour
         CancelParry();
         moveInput = 0f;
         jumpRequested = false;
+        GameManager.Instance?.LoseLife();
+        float hurtEnd = Time.time + HurtDuration;
+        invulnerableUntil = hurtEnd + hitInvulnerability;
         PlayHurtImmediately();
-        GameAudio.Instance?.Play(SoundCue.Hurt);
+        GameAudio.Instance?.Play(GameOver ? SoundCue.Death : SoundCue.Hurt);
 
         // Measure before disabling the collider, whose bounds collapse once it is off.
         float feetOffset = rb.position.y - bodyCollider.bounds.min.y;
@@ -300,7 +332,15 @@ public class Player : MonoBehaviour
             lastGroundCenter = tile.bounds.center;
             lastGroundTop = tile.bounds.max.y;
         }
+
+        // Back on solid ground, but keep flashing and stunned until the hurt sound finishes.
+        isHitStunned = true;
         EndRecovery();
+        while (Time.time < hurtEnd)
+            yield return null;
+
+        EndHurt();
+        fallRoutine = null;
     }
 
     private Collider2D FindSafeTile()
@@ -342,15 +382,12 @@ public class Player : MonoBehaviour
         jumpRequested = false;
         moveInput = 0f;
         CancelParry();
-        if (enemyHitRoutine != null)
-        {
-            StopCoroutine(enemyHitRoutine);
-            enemyHitRoutine = null;
-            isHitStunned = false;
-            animator.SetBool("isHurt", false);
-        }
+        bool wasHurt = isHitStunned || isRecovering;
+        StopHurtRoutines();
         if (isRecovering)
             EndRecovery();
+        if (wasHurt)
+            animator.SetBool("isHurt", false);
     }
 
     private IEnumerator ParryWindow()

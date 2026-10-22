@@ -9,7 +9,7 @@ Move with A/D or the arrow keys; press W to jump and Space to parry.
 Jumping requires a supporting ground contact. Adjust **Jump Height** on the
 Player to change the jump's height (default: 2.5 world units).
 
-Falling through a gap in the floor plays the hurt flash while the player is
+Falling through a gap in the floor costs a life and plays the hurt flash while the player is
 lifted back up through the gap and set down on the last floor tile they stood
 on, or the nearest surviving tile if it broke (the start position if none are
 left). Adjust **Catch Pause**, **Lift Speed**, and **Hover Height** under the
@@ -121,14 +121,17 @@ hurt animation, and briefly knocks the player away.
 The enemy that dealt the damage disappears immediately, including a falling
 enemy, which will then never split. Contacts during invulnerability do not cost
 another life. Hurt acts as a stun: movement, jumping, and parrying stay locked
-until the full hurt animation finishes, and further damage is blocked for the
-whole stun and while the hurt state exits. The animation cannot be interrupted
-by run/parry input. **Enemy Hits** on the Player controls the minimum stun duration
-(0.25 seconds), invulnerability (1 second from the hit), and knockback. The default
-hurt animation takes about 0.33 seconds, so the stun always lasts at least that
-long even if the minimum stun or invulnerability setting is reduced.
+and the player flashes red/white for as long as the Hurt SFX is audible (about
+1.9 seconds; trailing silence in the file is ignored, so replacing the clip
+updates the stun automatically). This applies to both enemy hits and falls.
+The animation cannot be interrupted by run/parry input. **Enemy Hits** on the
+Player controls how long knockback pushes (0.25 seconds), extra invulnerability
+after the stun ends (1 second), and knockback strength.
 Hurt applies its first sprite immediately on the hit and keeps priority over
 queued movement/parry transitions through the final displayed frame.
+Lives show as hearts under the scoreboard: a full heart per remaining life and
+an empty heart per lost one. Set the heart images and full/empty sprites on
+**GameManager**.
 The third hit lets the full stun finish, then shows the final score and pauses
 gameplay. Click **Restart** or
 press R/Enter to start again with three lives and a fresh board. **Starting Lives**

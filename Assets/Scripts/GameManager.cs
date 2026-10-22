@@ -2,13 +2,17 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public sealed class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     [SerializeField, Min(1)] private int startingLives = 3;
-    [SerializeField] private TMP_Text livesText;
+    [Tooltip("One heart per life, left to right.")]
+    [SerializeField] private Image[] heartImages = new Image[3];
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text finalScoreText;
 
@@ -22,7 +26,7 @@ public sealed class GameManager : MonoBehaviour
         Lives = startingLives;
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
-        UpdateLivesText();
+        UpdateHearts();
     }
 
     private void Update()
@@ -37,7 +41,7 @@ public sealed class GameManager : MonoBehaviour
             return false;
 
         Lives = Mathf.Max(0, Lives - 1);
-        UpdateLivesText();
+        UpdateHearts();
         if (Lives == 0)
         {
             IsGameOver = true;
@@ -46,10 +50,13 @@ public sealed class GameManager : MonoBehaviour
         return true;
     }
 
-    private void UpdateLivesText()
+    private void UpdateHearts()
     {
-        if (livesText != null)
-            livesText.text = "Lives: " + Lives;
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            if (heartImages[i] != null)
+                heartImages[i].sprite = i < Lives ? fullHeart : emptyHeart;
+        }
     }
 
     private IEnumerator ShowGameOver()
