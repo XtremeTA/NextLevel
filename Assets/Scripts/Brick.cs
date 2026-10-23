@@ -3,11 +3,15 @@ using System.Collections;
 
 public class Brick : MonoBehaviour
 {
+    [SerializeField, Min(0)] private int pointValue = 1;
     [SerializeField] private FallingEnemy enemyPrefab;
+    [SerializeField] private LifeHeartPickup lifeHeartPrefab;
     [SerializeField] private Sprite[] breakFrames;
     private Animator animator;
     private bool isBreaking;
     public bool IsBreaking => isBreaking;
+    public int PointValue => Mathf.Max(0, pointValue);
+    public bool DropsLifeHeart => lifeHeartPrefab != null;
 
     void Awake()
     {
@@ -26,7 +30,7 @@ public class Brick : MonoBehaviour
 
         isBreaking = true;
         GameAudio.Instance?.Play(SoundCue.BrickBreak);
-        ScoreCounter.Instance?.AddScore(1);
+        ScoreCounter.Instance?.AddScore(PointValue);
         if (animator != null)
             animator.SetTrigger("Break");
         StartCoroutine(DestroyAfterAnimation());
@@ -45,6 +49,8 @@ public class Brick : MonoBehaviour
         yield return new WaitForSeconds(duration);
         if (enemyPrefab != null)
             Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        if (lifeHeartPrefab != null)
+            Instantiate(lifeHeartPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

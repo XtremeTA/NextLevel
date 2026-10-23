@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a188c5dcb57470448dd8d1dcf9d89b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brick
+  pointValue: 5
   enemyPrefab: {fileID: 9067049032003935174, guid: 8c1872427215f4541b4723febfd8267f, type: 3}
   breakFrames:
   - {fileID: 6453526970411501607, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}

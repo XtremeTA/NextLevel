@@ -111,8 +111,8 @@ smaller enemies running in opposite directions 40% through the animation
 behind them. **Split Animation Progress** on **FallingEnemy** controls the release
 point. Jump over them with W. Small
 enemies that reach a side wall turn upward and break the first intact brick they reach,
-awarding its usual point and disappearing. Special bricks keep their normal
-enemy release behavior when broken this way. Enemies fall through broken floor
+awarding its configured point value and disappearing. Special bricks keep their normal
+enemy or heart release behavior when broken this way. Enemies fall through broken floor
 tiles and despawn after leaving the screen or reaching their maximum lifetime.
 
 **Special Bricks Per Row** on **Brick Rows** sets the starting count; set it to 0
@@ -122,6 +122,31 @@ prefabs hold the break frames, fall speed, explosion timing, run speed, and
 lifetime settings. Enemy sprites use complete, evenly spaced animation frames
 with point filtering and 32 pixels per world unit.
 Default speeds are 9 units/second for falling, 8 for running, and 10 for rising.
+
+Each brick type has its own prefab: **Brick** is the regular brick (1 point),
+**YokaiBrick** is the soul brick (5 points), and **LifeBrick** is the green heart
+brick (3 points). Change **Point Value** on each prefab's **Brick** component to
+tune its score. A brick awards its points only once, including when an enemy
+breaks it.
+
+A life brick can appear in a new row only while the player has fewer than
+three lives and no uncollected heart is present, whether falling or resting on
+the floor. An existing intact or breaking life brick also reserves that reward,
+so only one healing opportunity is available at a time. A full-health game
+starts without life bricks. Its random position uses a regular-brick slot,
+preserving the soul-brick counts. After a heart is collected or lost through a
+gap, the next new row can offer another if the player still needs a life.
+Breaking the brick plays the supplied green animation, then releases one
+**LifeHeartPickup** from its center.
+
+The heart gently sways and floats down at 1.5 units/second. It rests on intact
+floor, falls through gaps, and starts falling again if its supporting tile is
+destroyed. Walk into it to restore one missing life, capped at three lives.
+A heart waits when the player is already full and cannot
+revive a game-over run. Pausing or game over stops its movement; restarting
+clears pickups. **Fall Speed**, **Sway Distance**, and **Sway Frequency** are
+editable on the pickup prefab. Its sprite is taken from the new life-brick
+sheet.
 
 The player starts with three lives. Enemy contact removes one life, plays the
 hurt animation, and briefly knocks the player away.

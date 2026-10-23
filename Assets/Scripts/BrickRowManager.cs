@@ -8,6 +8,7 @@ public sealed class BrickRowManager : MonoBehaviour
     [SerializeField, Min(0)] private int specialBricksPerRow = 1;
     [SerializeField, Min(1f)] private float specialBrickIncreaseInterval = 90f;
     [SerializeField, Min(0)] private int maximumSpecialBricksPerRow = 3;
+    [SerializeField] private Brick lifeBrickPrefab;
     [SerializeField, Min(1)] private int rowCount = 4;
     [SerializeField, Min(1)] private int bricksPerRow = 9;
     [SerializeField, Min(0.01f)] private float columnSpacing = 2f;
@@ -130,19 +131,41 @@ public sealed class BrickRowManager : MonoBehaviour
     {
         SpawnedBrick[] row = new SpawnedBrick[bricksPerRow];
         int specialsRemaining = CurrentSpecialBricksPerRow;
+        int livesRemaining = specialsRemaining < bricksPerRow && CanSpawnLifeBrick() ? 1 : 0;
         for (int column = 0; column < bricksPerRow; column++)
         {
             Vector3 position = leftPosition + Vector3.right * columnSpacing * column;
             bool special = specialsRemaining > 0 && Random.Range(0, bricksPerRow - column) < specialsRemaining;
             if (special)
                 specialsRemaining--;
-            Brick brick = Instantiate(special ? specialBrickPrefab : brickPrefab, position, Quaternion.identity, transform);
+            bool life = !special && livesRemaining > 0 &&
+                Random.Range(0, bricksPerRow - column - specialsRemaining) < livesRemaining;
+            if (life)
+                livesRemaining--;
+            Brick selectedPrefab = special ? specialBrickPrefab : life ? lifeBrickPrefab : brickPrefab;
+            Brick brick = Instantiate(selectedPrefab, position, Quaternion.identity, transform);
             Rigidbody2D body = brick.GetComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Kinematic;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
             row[column] = new SpawnedBrick { brick = brick, body = body };
         }
         return row;
+    }
+
+    private bool CanSpawnLifeBrick()
+    {
+        GameManager game = GameManager.Instance;
+        if (lifeBrickPrefab == null || game == null || game.IsGameOver || game.Lives >= game.MaximumLives ||
+            FindAnyObjectByType<LifeHeartPickup>() != null)
+            return false;
+
+        // An intact or breaking life brick already promises the next heart.
+        foreach (Brick brick in FindObjectsByType<Brick>(FindObjectsSortMode.None))
+        {
+            if (brick.DropsLifeHeart)
+                return false;
+        }
+        return true;
     }
 
     private static bool IsCleared(SpawnedBrick[] row)

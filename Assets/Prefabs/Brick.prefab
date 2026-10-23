@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a188c5dcb57470448dd8d1dcf9d89b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brick
+  pointValue: 1
 --- !u!95 &-4449582615622316021
 Animator:
   serializedVersion: 7

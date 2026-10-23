@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public sealed class GameManager : MonoBehaviour
 {
+    private const int LifeCap = 3;
     public static GameManager Instance { get; private set; }
 
-    [SerializeField, Min(1)] private int startingLives = 3;
+    [SerializeField, Range(1, LifeCap)] private int startingLives = 3;
     [Tooltip("One heart per life, left to right.")]
     [SerializeField] private Image[] heartImages = new Image[3];
     [SerializeField] private Sprite fullHeart;
@@ -22,6 +23,7 @@ public sealed class GameManager : MonoBehaviour
     private float speedRampElapsed;
 
     public int Lives { get; private set; }
+    public int MaximumLives => LifeCap;
     public bool IsGameOver { get; private set; }
     public float SpeedRampProgress => Mathf.Clamp01(speedRampElapsed / Mathf.Max(1f, speedRampDuration));
 
@@ -30,7 +32,7 @@ public sealed class GameManager : MonoBehaviour
         Instance = this;
         Time.timeScale = 1f;
         speedRampElapsed = 0f;
-        Lives = startingLives;
+        Lives = Mathf.Clamp(startingLives, 1, MaximumLives);
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
         UpdateHearts();
@@ -57,6 +59,16 @@ public sealed class GameManager : MonoBehaviour
             IsGameOver = true;
             StartCoroutine(ShowGameOver());
         }
+        return true;
+    }
+
+    public bool GainLife()
+    {
+        if (IsGameOver || Lives >= MaximumLives)
+            return false;
+
+        Lives++;
+        UpdateHearts();
         return true;
     }
 
