@@ -436,6 +436,7 @@ public class Player : MonoBehaviour
         lastDashTime = Time.time;
 
         float direction = FacingDirection;
+        animator.SetTrigger("Dash");
 
         rb.linearVelocity = new Vector2(
             direction * dashSpeed,
@@ -457,6 +458,7 @@ public class Player : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         isDashing = false;
+        animator.ResetTrigger("Dash");
         dashRoutine = null;
     }
 
