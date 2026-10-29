@@ -10,6 +10,15 @@ public class Player : MonoBehaviour
     [SerializeField] private float leftLimit = -8f;
     [SerializeField] private float rightLimit = 8f;
 
+    [Header("Dash")]
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float dashCooldown = 0.5f;
+
+    private bool isDashing;
+    private float lastDashTime;
+    private Coroutine dashRoutine;
+
     private Rigidbody2D rb;
     private float moveInput;
 
@@ -29,6 +38,8 @@ public class Player : MonoBehaviour
         GameManager.Instance != null ? GameManager.Instance.SpeedRampProgress : 0f);
     public bool IsPerfectParry => isParrying && Time.time - parryStartedAt <= perfectParryWindow;
     public bool IsHitStunned => isHitStunned || isRecovering;
+
+    public bool IsDashing => isDashing;
 
     [Header("Parry")]
     [SerializeField] private GameObject parryHitbox;
@@ -58,7 +69,7 @@ public class Player : MonoBehaviour
     private float HurtDuration => Mathf.Max(hitStunDuration,
         GameAudio.Instance != null ? GameAudio.Instance.GetAudibleLength(SoundCue.Hurt) : 0f);
     private static bool GameOver => GameManager.Instance != null && GameManager.Instance.IsGameOver;
-    private bool ControlsLocked => isRecovering || isHitStunned || HurtAnimationActive ||
+    private bool ControlsLocked => isRecovering || isHitStunned || HurtAnimationActive || isDashing ||
         (GameManager.Instance != null && GameManager.Instance.IsGameOver);
 
     [Header("Fall Recovery")]
@@ -88,10 +99,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        HandleInput(Input.GetAxisRaw("Horizontal"), Input.GetKeyDown(KeyCode.W), Input.GetKeyDown(KeyCode.Space));
+        HandleInput(Input.GetAxisRaw("Horizontal"), Input.GetKeyDown(KeyCode.W), Input.GetKeyDown(KeyCode.Space), Input.GetKeyDown(KeyCode.LeftShift));
     }
 
-    private void HandleInput(float horizontal, bool jumpPressed, bool parryPressed)
+    private void HandleInput(float horizontal, bool jumpPressed, bool parryPressed, bool dashPressed)
     {
         if (ControlsLocked)
         {
@@ -123,6 +134,10 @@ public class Player : MonoBehaviour
         {
             parryRoutine = StartCoroutine(ParryWindow());
         }
+        if (dashPressed && !isDashing && Time.time >= lastDashTime + dashCooldown)
+        {
+            dashRoutine = StartCoroutine(Dash());
+        }
     }
 
     private void LateUpdate()
@@ -153,6 +168,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDashing)
+            return;
         if (isRecovering || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
             return;
 
@@ -234,6 +251,7 @@ public class Player : MonoBehaviour
         moveInput = 0f;
         jumpRequested = false;
         CancelParry();
+        CancelDash();
         PlayHurtImmediately();
         GameAudio.Instance?.Play(GameOver ? SoundCue.Death : SoundCue.Hurt);
 
@@ -410,6 +428,47 @@ public class Player : MonoBehaviour
         parryHitbox.SetActive(false);
         isParrying = false;
         parryRoutine = null;
+    }
+
+    private IEnumerator Dash()
+    {
+        isDashing = true;
+        lastDashTime = Time.time;
+
+        float direction = FacingDirection;
+
+        rb.linearVelocity = new Vector2(
+            direction * dashSpeed,
+            0f
+        );
+
+        float endTime = Time.time + dashDuration;
+
+        while (Time.time < endTime)
+        {
+            rb.linearVelocity = new Vector2(
+                direction * dashSpeed,
+                0f
+            );
+
+            yield return null;
+        }
+
+        rb.linearVelocity = Vector2.zero;
+
+        isDashing = false;
+        dashRoutine = null;
+    }
+
+    private void CancelDash()
+    {
+        if (dashRoutine != null)
+        {
+            StopCoroutine(dashRoutine);
+            dashRoutine = null;
+        }
+
+        isDashing = false;
     }
 
     private void CancelParry()
