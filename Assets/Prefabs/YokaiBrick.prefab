@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8015384649542576487, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -200,7 +200,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a07706d424a8aa619346a94848e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteFrameAnimation
-  frames: []
+  frames:
+  - {fileID: 21300000, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300002, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300004, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300006, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300008, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300010, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300012, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
+  - {fileID: 21300014, guid: 593bc8b2af4147a884708bda904b291e, type: 3}
   frameRate: 10
   loop: 1
-  playOnEnable: 0
+  playOnEnable: 1

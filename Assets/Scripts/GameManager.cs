@@ -21,6 +21,7 @@ public sealed class GameManager : MonoBehaviour
     [Tooltip("Active gameplay seconds to reach the ball and player maximum speeds.")]
     [SerializeField, Min(1f)] private float speedRampDuration = 180f;
     private float speedRampElapsed;
+    private bool scoreRecorded;
 
     public int Lives { get; private set; }
     public int MaximumLives => LifeCap;
@@ -88,6 +89,7 @@ public sealed class GameManager : MonoBehaviour
         Player player = FindAnyObjectByType<Player>();
         while (player != null && player.IsHitStunned)
             yield return null;
+        RecordFinalScore();
         if (finalScoreText != null)
             finalScoreText.text = "Score: " + (ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0);
         if (gameOverPanel != null)
@@ -97,8 +99,18 @@ public sealed class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        if (IsGameOver)
+            RecordFinalScore();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void RecordFinalScore()
+    {
+        if (scoreRecorded)
+            return;
+        scoreRecorded = true;
+        LocalHighScores.Record(ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0);
     }
 
     private void OnDestroy()

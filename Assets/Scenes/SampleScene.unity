@@ -1143,6 +1143,7 @@ GameObject:
   - component: {fileID: 469476448}
   - component: {fileID: 469476447}
   - component: {fileID: 469476446}
+  - component: {fileID: 1900600001}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4015,6 +4016,26 @@ MonoBehaviour:
   hazeDrift: {x: 0.018, y: 0.006}
   moteCount: 24
   moteOpacity: 0.22
+--- !u!114 &1900600001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469476445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d09f56301b314565b6460c8ff90f6cb9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayHud
+  playAreaCamera: {fileID: 519420031}
+  scoreboard: {fileID: 1900100001}
+  hearts:
+  - {fileID: 1900200111}
+  - {fileID: 1900200121}
+  - {fileID: 1900200131}
+  font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  gameOverPanel: {fileID: 821595045}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

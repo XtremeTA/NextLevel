@@ -6,8 +6,18 @@ Click the painted Start button or press Enter/Space to enter the game. Builds
 start at the title screen; opening SampleScene directly still supports gameplay
 testing.
 Move with A/D or the arrow keys; press W to jump and Space to parry.
+Press Left Shift to dash in the direction the player faces.
 Jumping requires a supporting ground contact. Adjust **Jump Height** on the
 Player to change the jump's height (default: 2.5 world units).
+
+The gameplay HUD places the existing hearts and pixel scoreboard in a left
+column, followed by the ten best local scores. Controls appear in a matching
+right column. The columns use dark olive and warm cream drawn from the existing
+artwork. The original 16:9 camera view and arena geometry sit between them;
+the complete layout scales to fit the window without cropping the arena.
+The HUD is assembled by **GameplayHud** on SampleScene's Canvas when play starts.
+Finished runs save their scores locally with PlayerPrefs, including a restart
+pressed during the final hurt animation. Empty ranking slots show a dash.
 
 Normal ball speed starts at 7 units/second and player movement at 8. Both rise
 smoothly over three minutes of active gameplay, reaching 13 and 15 respectively,
@@ -99,10 +109,15 @@ Y = 7.5 at the top to Y = 4.5 at the bottom.
 
 ## Special bricks and enemies
 
-Rows start with one soul brick (the red Yokai brick). New rows get two after
+Rows start with one soul brick (the animated caged green spirit). New rows get two after
 90 seconds of gameplay and three after three minutes, capped at three out of
 nine bricks. Existing rows keep their bricks; the increase appears as new rows
 arrive. Pausing and game over stop the progression clock; restarting resets it.
+The **YokaiBrick** prefab loops the eight nonempty frames from
+`Assets/PixelArt/enemy_brick1.png` at 10 fps until broken. Its **Sprite Frame
+Animation** component controls the idle frame rate; the existing break animation
+replaces the loop immediately on a hit. Frames use point filtering and the same
+64-by-32-pixel size and 32 pixels per world unit as the original brick.
 Breaking a soul brick plays its own
 animation and releases one falling enemy. When that enemy reaches a surviving
 floor tile, it plays the supplied explosion/split animation and releases two
