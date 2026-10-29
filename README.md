@@ -12,9 +12,9 @@ Player to change the jump's height (default: 2.5 world units).
 
 The gameplay HUD places the existing hearts and pixel scoreboard in a left
 column, followed by the ten best local scores. Controls appear in a matching
-right column. The columns use dark olive and warm cream drawn from the existing
-artwork. The original 16:9 camera view and arena geometry sit between them;
-the complete layout scales to fit the window without cropping the arena.
+right column. Warm cream text and olive dividers overlay the existing large
+wall artwork on the left and right. Each column fits the visible portion of
+its wall; the HUD never resizes the camera, adds borders, or changes the arena.
 The HUD is assembled by **GameplayHud** on SampleScene's Canvas when play starts.
 Finished runs save their scores locally with PlayerPrefs, including a restart
 pressed during the final hurt animation. Empty ranking slots show a dash.

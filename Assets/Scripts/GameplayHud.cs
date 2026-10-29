@@ -2,56 +2,42 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// The side columns surround the original 16:9 view; they never take world space from the arena.
+// Overlay the existing wall artwork without changing the camera or the arena.
 [DefaultExecutionOrder(-50)]
 [RequireComponent(typeof(Canvas))]
 public sealed class GameplayHud : MonoBehaviour
 {
     [SerializeField] private Camera playAreaCamera;
+    [SerializeField] private SpriteRenderer leftWall;
+    [SerializeField] private SpriteRenderer rightWall;
     [SerializeField] private RectTransform scoreboard;
     [SerializeField] private RectTransform[] hearts;
     [SerializeField] private TMP_FontAsset font;
-    [SerializeField] private RectTransform gameOverPanel;
-
-    private const float ArenaWidth = 1920f;
     private const float FrameHeight = 1080f;
     private const float SidebarWidth = 240f;
-    private const float FrameWidth = ArenaWidth + SidebarWidth * 2f;
-    private static readonly Color Ink = new Color32(24, 28, 23, 255);
     private static readonly Color Paper = new Color32(242, 230, 192, 255);
     private static readonly Color Muted = new Color32(169, 167, 134, 255);
     private static readonly Color Edge = new Color32(83, 86, 61, 255);
 
     private RectTransform frame;
-    private readonly RectTransform[] margins = new RectTransform[4];
+    private RectTransform leftColumn;
+    private RectTransform rightColumn;
     private readonly TMP_Text[] scoreRows = new TMP_Text[LocalHighScores.Capacity];
-    private int screenWidth;
-    private int screenHeight;
-    private Rect originalCameraRect;
 
     private void Awake()
     {
-        originalCameraRect = playAreaCamera.rect;
         CanvasScaler scaler = GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
         scaler.scaleFactor = 1f;
 
-        for (int i = 0; i < margins.Length; i++)
-        {
-            margins[i] = MakeRect("Window margin", transform);
-            margins[i].SetAsFirstSibling();
-            Image shade = margins[i].gameObject.AddComponent<Image>();
-            shade.color = Ink;
-            shade.raycastTarget = false;
-        }
-
         frame = MakeRect("Arcade HUD", transform);
-        frame.anchorMin = frame.anchorMax = frame.pivot = new Vector2(0.5f, 0.5f);
-        frame.sizeDelta = new Vector2(FrameWidth, FrameHeight);
+        frame.anchorMin = Vector2.zero;
+        frame.anchorMax = Vector2.one;
+        frame.sizeDelta = Vector2.zero;
         frame.SetAsFirstSibling();
 
-        RectTransform left = Panel("Score column", frame, 0f);
-        RectTransform right = Panel("Controls column", frame, FrameWidth - SidebarWidth);
+        RectTransform left = leftColumn = Panel("Score column", frame);
+        RectTransform right = rightColumn = Panel("Controls column", frame);
         Label(left, "LIVES", 24, 40, 192, 30, 22, Muted);
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -82,15 +68,6 @@ public sealed class GameplayHud : MonoBehaviour
         Control(right, "LEFT SHIFT", "DASH", 816);
         Label(right, "R / ENTER\nRestart after game over", 28, 972, 184, 62, 18, Muted);
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetParent(frame, false);
-            gameOverPanel.anchorMin = gameOverPanel.anchorMax = gameOverPanel.pivot = new Vector2(0.5f, 0.5f);
-            gameOverPanel.anchoredPosition = Vector2.zero;
-            gameOverPanel.sizeDelta = new Vector2(ArenaWidth, FrameHeight);
-            gameOverPanel.localScale = Vector3.one;
-        }
-
         RefreshScores();
         FitToWindow();
     }
@@ -104,32 +81,38 @@ public sealed class GameplayHud : MonoBehaviour
     private void OnDisable()
     {
         LocalHighScores.Changed -= RefreshScores;
-        if (playAreaCamera != null)
-            playAreaCamera.rect = originalCameraRect;
     }
 
     private void Update()
     {
-        if (Screen.width != screenWidth || Screen.height != screenHeight)
-            FitToWindow();
+        FitToWindow();
     }
 
     private void FitToWindow()
     {
-        screenWidth = Screen.width;
-        screenHeight = Screen.height;
-        float scale = Mathf.Min(screenWidth / FrameWidth, screenHeight / FrameHeight);
-        frame.localScale = Vector3.one * scale;
-        float width = ArenaWidth * scale / screenWidth;
-        float height = FrameHeight * scale / screenHeight;
-        playAreaCamera.rect = new Rect((1f - width) * 0.5f, (1f - height) * 0.5f, width, height);
+        if (playAreaCamera == null || !playAreaCamera.orthographic)
+            return;
+        FitOverWall(leftColumn, leftWall);
+        FitOverWall(rightColumn, rightWall);
+    }
 
-        float side = (screenWidth - FrameWidth * scale) * 0.5f;
-        float top = (screenHeight - FrameHeight * scale) * 0.5f;
-        Place(margins[0], transform, 0, 0, screenWidth, top);
-        Place(margins[1], transform, 0, screenHeight - top, screenWidth, top);
-        Place(margins[2], transform, 0, top, side, FrameHeight * scale);
-        Place(margins[3], transform, screenWidth - side, top, side, FrameHeight * scale);
+    private void FitOverWall(RectTransform column, SpriteRenderer wall)
+    {
+        if (wall == null)
+            return;
+
+        // Use the camera's world bounds, so render-only parry bumps do not move the HUD.
+        Rect pixels = playAreaCamera.pixelRect;
+        float worldWidth = 2f * playAreaCamera.orthographicSize * playAreaCamera.aspect;
+        float worldLeft = playAreaCamera.transform.position.x - worldWidth * 0.5f;
+        float left = Mathf.Clamp(pixels.x + (wall.bounds.min.x - worldLeft) / worldWidth * pixels.width, pixels.xMin, pixels.xMax);
+        float right = Mathf.Clamp(pixels.x + (wall.bounds.max.x - worldLeft) / worldWidth * pixels.width, pixels.xMin, pixels.xMax);
+        float availableWidth = Mathf.Max(0f, right - left - 24f);
+        column.gameObject.SetActive(availableWidth > 0f);
+        float scale = Mathf.Min(availableWidth / SidebarWidth, Mathf.Max(0f, pixels.height - 24f) / FrameHeight);
+        column.localScale = Vector3.one * scale;
+        column.anchoredPosition = new Vector2((left + right - SidebarWidth * scale) * 0.5f,
+            -(Screen.height - pixels.center.y - FrameHeight * scale * 0.5f));
     }
 
     private void RefreshScores()
@@ -140,18 +123,10 @@ public sealed class GameplayHud : MonoBehaviour
                 scoreRows[i].text = scores[i] > 0 ? scores[i].ToString("D3") : "—";
     }
 
-    private RectTransform Panel(string title, Transform parent, float x)
+    private RectTransform Panel(string title, Transform parent)
     {
         RectTransform panel = MakeRect(title, parent);
-        Place(panel, parent, x, 0, SidebarWidth, FrameHeight);
-        Image image = panel.gameObject.AddComponent<Image>();
-        image.color = Ink;
-        image.raycastTarget = false;
-        RectTransform edge = MakeRect("Inner edge", panel);
-        Place(edge, panel, x == 0 ? SidebarWidth - 2 : 0, 0, 2, FrameHeight);
-        Image line = edge.gameObject.AddComponent<Image>();
-        line.color = Edge;
-        line.raycastTarget = false;
+        Place(panel, parent, 0, 0, SidebarWidth, FrameHeight);
         return panel;
     }
 

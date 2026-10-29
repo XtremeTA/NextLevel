@@ -4030,12 +4030,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameplayHud
   playAreaCamera: {fileID: 519420031}
   scoreboard: {fileID: 1900100001}
+  leftWall: {fileID: 1478890110}
+  rightWall: {fileID: 265178165}
   hearts:
   - {fileID: 1900200111}
   - {fileID: 1900200121}
   - {fileID: 1900200131}
   font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  gameOverPanel: {fileID: 821595045}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
