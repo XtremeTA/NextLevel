@@ -6,7 +6,7 @@ Click the painted Start button or press Enter/Space to enter the game. Builds
 start at the title screen; opening SampleScene directly still supports gameplay
 testing.
 Move with A/D or the arrow keys; press W to jump and Space to parry.
-Press Left Shift to dash in the direction the player faces.
+Press either Shift key to dash in the direction the player faces.
 Jumping requires a supporting ground contact. Adjust **Jump Height** on the
 Player to change the jump's height (default: 2.5 world units).
 
@@ -14,10 +14,17 @@ The gameplay HUD places the existing hearts and pixel scoreboard in a left
 column, followed by the ten best local scores. Controls appear in a matching
 right column. Warm cream text and olive dividers overlay the existing large
 wall artwork on the left and right. Each column fits the visible portion of
-its wall; the HUD never resizes the camera, adds borders, or changes the arena.
+its wall with larger text and artwork, and controls use the full height of the
+right wall. The layout adapts to the window without stretching the art or
+resizing the camera or arena.
 The HUD is assembled by **GameplayHud** on SampleScene's Canvas when play starts.
-Finished runs save their scores locally with PlayerPrefs, including a restart
-pressed during the final hurt animation. Empty ranking slots show a dash.
+Runs that place in the local top ten ask for three initials before saving with
+PlayerPrefs. A/D selects a letter or Save; W/S cycles A–Z. Space advances or
+confirms Save. Arrow keys and Enter work as alternatives. Initials appear beside
+each score; older records retain their scores and show `---` for their initials.
+Zero scores and runs that do not qualify go straight to the final screen.
+Ties keep the older record first; tying tenth place does not qualify.
+Empty ranking slots show a dash.
 
 Normal ball speed starts at 7 units/second and player movement at 8. Both rise
 smoothly over three minutes of active gameplay, reaching 13 and 15 respectively,
@@ -28,8 +35,9 @@ boost the ball's current speed as usual.
 
 Falling through a gap in the floor costs a life and plays the hurt flash while the player is
 lifted back up through the gap and set down on the last floor tile they stood
-on, or the nearest surviving tile if it broke (the start position if none are
-left). Adjust **Catch Pause**, **Lift Speed**, and **Hover Height** under the
+on, or the nearest surviving tile if it broke. If no floor remains, or the last
+safe tile breaks during recovery, the run ends regardless of remaining lives.
+Adjust **Catch Pause**, **Lift Speed**, and **Hover Height** under the
 Player's **Fall Recovery** settings.
 
 The ball bounces off all four edges of the main camera's view, with clearance for
@@ -179,10 +187,12 @@ queued movement/parry transitions through the final displayed frame.
 Lives show as hearts under the scoreboard: a full heart per remaining life and
 an empty heart per lost one. Set the heart images and full/empty sprites on
 **GameManager**.
-The third hit lets the full stun finish, then shows the final score and pauses
-gameplay. Click **Restart** or
-press R/Enter to start again with three lives and a fresh board. **Starting Lives**
-on **GameManager** changes the initial life count.
+The third hit lets the full stun finish, then pauses gameplay for initials entry
+if the run qualifies. Saving opens the final screen with the supplied Game Over
+background, logo, and Retry artwork. Click **Retry** or press Space/Enter for a
+fresh board and three lives. Holding confirm while a screen opens cannot skip
+it; R no longer restarts. **Starting Lives** on **GameManager** changes the initial
+life count. Final scores freeze when the last life is lost.
 
 The score shows on the pixel-art **Scoreboard** in the top-left corner as three
 digits (up to 999). When points are added, the board quickly counts up one at a

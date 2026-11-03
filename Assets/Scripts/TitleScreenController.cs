@@ -34,7 +34,7 @@ public sealed class TitleScreenController : MonoBehaviour
 
         if (menuGroup != null)
             menuGroup.alpha = Mathf.MoveTowards(menuGroup.alpha, 1f, Time.unscaledDeltaTime / Mathf.Max(0.01f, fadeInDuration));
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Space))
+        if (ArcadeInput.ConfirmPressed)
             StartGame();
     }
 

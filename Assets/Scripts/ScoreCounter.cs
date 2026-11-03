@@ -33,6 +33,8 @@ public class ScoreCounter : MonoBehaviour
 
     public void AddScore(int amount)
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            return;
         score += amount;
     }
 

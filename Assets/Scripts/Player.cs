@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        HandleInput(Input.GetAxisRaw("Horizontal"), Input.GetKeyDown(KeyCode.W), Input.GetKeyDown(KeyCode.Space), Input.GetKeyDown(KeyCode.LeftShift));
+        HandleInput(ArcadeInput.Movement, ArcadeInput.JumpPressed, ArcadeInput.ParryPressed, ArcadeInput.DashPressed);
     }
 
     private void HandleInput(float horizontal, bool jumpPressed, bool parryPressed, bool dashPressed)
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
             lastGroundCenter = ground.bounds.center;
             lastGroundTop = ground.bounds.max.y;
         }
-        else if (bodyCollider.bounds.max.y < lastGroundTop)
+        else if (bodyCollider.bounds.max.y < lastGroundTop || IsBelowPlayArea())
         {
             // The whole body has dropped below the floor surface, so it fell through a gap.
             // A new fall replaces any hurt still in progress, so its timers can't end this one early.
@@ -230,6 +230,13 @@ public class Player : MonoBehaviour
     private static bool IsUsableGround(Collider2D ground)
     {
         return ground != null && ground.enabled && ground.gameObject.activeInHierarchy;
+    }
+
+    private bool IsBelowPlayArea()
+    {
+        Camera view = Camera.main;
+        return view != null && view.orthographic &&
+            bodyCollider.bounds.max.y < view.transform.position.y - view.orthographicSize;
     }
 
     public bool TakeEnemyHit(Vector2 enemyPosition)
@@ -304,9 +311,13 @@ public class Player : MonoBehaviour
     {
         isRecovering = true;
         CancelParry();
+        CancelDash();
         moveInput = 0f;
         jumpRequested = false;
-        GameManager.Instance?.LoseLife();
+        if (FindSafeTile() == null)
+            GameManager.Instance?.EndGame();
+        else
+            GameManager.Instance?.LoseLife();
         float hurtEnd = Time.time + HurtDuration;
         invulnerableUntil = hurtEnd + hitInvulnerability;
         PlayHurtImmediately();
@@ -330,9 +341,18 @@ public class Player : MonoBehaviour
             if (tile == null || !IsUsableGround(tile))
             {
                 tile = FindSafeTile();
-                target = tile != null
-                    ? new Vector2(tile.bounds.center.x, tile.bounds.max.y + feetOffset)
-                    : startPosition;
+                if (tile == null)
+                {
+                    // A missing destination used to reset the lift stage forever.
+                    // Finish the hurt below so GameManager can open the end screen.
+                    if (!GameOver)
+                    {
+                        GameManager.Instance?.EndGame();
+                        GameAudio.Instance?.Play(SoundCue.Death);
+                    }
+                    break;
+                }
+                target = new Vector2(tile.bounds.center.x, tile.bounds.max.y + feetOffset);
                 stage = Mathf.Min(stage, 1);
             }
 

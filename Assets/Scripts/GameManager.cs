@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,8 +13,7 @@ public sealed class GameManager : MonoBehaviour
     [SerializeField] private Image[] heartImages = new Image[3];
     [SerializeField] private Sprite fullHeart;
     [SerializeField] private Sprite emptyHeart;
-    [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private TMP_Text finalScoreText;
+    [SerializeField] private GameOverScreen gameOverScreen;
 
     [Header("Speed Progression")]
     [Tooltip("Active gameplay seconds to reach the ball and player maximum speeds.")]
@@ -26,6 +24,7 @@ public sealed class GameManager : MonoBehaviour
     public int Lives { get; private set; }
     public int MaximumLives => LifeCap;
     public bool IsGameOver { get; private set; }
+    public int FinalScore { get; private set; }
     public float SpeedRampProgress => Mathf.Clamp01(speedRampElapsed / Mathf.Max(1f, speedRampDuration));
 
     private void Awake()
@@ -34,8 +33,6 @@ public sealed class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         speedRampElapsed = 0f;
         Lives = Mathf.Clamp(startingLives, 1, MaximumLives);
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
         UpdateHearts();
     }
 
@@ -43,9 +40,6 @@ public sealed class GameManager : MonoBehaviour
     {
         if (!IsGameOver && Time.timeScale > 0f)
             speedRampElapsed = Mathf.Min(speedRampElapsed + Time.deltaTime, Mathf.Max(1f, speedRampDuration));
-
-        if (IsGameOver && (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Return)))
-            RestartGame();
     }
 
     public bool LoseLife()
@@ -54,13 +48,23 @@ public sealed class GameManager : MonoBehaviour
             return false;
 
         Lives = Mathf.Max(0, Lives - 1);
-        UpdateHearts();
         if (Lives == 0)
-        {
-            IsGameOver = true;
-            StartCoroutine(ShowGameOver());
-        }
+            EndGame();
+        else
+            UpdateHearts();
         return true;
+    }
+
+    public void EndGame()
+    {
+        if (IsGameOver)
+            return;
+
+        Lives = 0;
+        UpdateHearts();
+        IsGameOver = true;
+        FinalScore = ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0;
+        StartCoroutine(ShowGameOver());
     }
 
     public bool GainLife()
@@ -89,28 +93,26 @@ public sealed class GameManager : MonoBehaviour
         Player player = FindAnyObjectByType<Player>();
         while (player != null && player.IsHitStunned)
             yield return null;
-        RecordFinalScore();
-        if (finalScoreText != null)
-            finalScoreText.text = "Score: " + (ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0);
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
+        if (gameOverScreen != null)
+            gameOverScreen.Show(FinalScore);
     }
 
     public void RestartGame()
     {
-        if (IsGameOver)
-            RecordFinalScore();
+        // Finish initials entry before allowing a new run, including during the final hurt.
+        if (IsGameOver && (gameOverScreen == null || !gameOverScreen.CanRetry))
+            return;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void RecordFinalScore()
+    public bool SubmitHighScore(string initials)
     {
-        if (scoreRecorded)
-            return;
-        scoreRecorded = true;
-        LocalHighScores.Record(ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0);
+        if (!IsGameOver || scoreRecorded || gameOverScreen == null || !gameOverScreen.IsEnteringInitials)
+            return false;
+        scoreRecorded = LocalHighScores.Record(FinalScore, initials);
+        return scoreRecorded;
     }
 
     private void OnDestroy()

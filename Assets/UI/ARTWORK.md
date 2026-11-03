@@ -1,5 +1,29 @@
 # Title-screen artwork
 
+## Game-over screen
+
+The game-over background is `Assets/PixelArt/IMG_1775.jpeg`. Transparent
+cutouts of the supplied logo (`IMG_1776.jpeg`) and brighter Retry button
+(`IMG_1778.jpeg`) are saved as `Assets/UI/GameOverLogo.png` and
+`Assets/UI/RetryButton.png`. Originals remain intact. Unity sprite import
+rectangles trim empty margins without modifying the PNG files.
+
+Both cutouts used the built-in imagegen tool with this prompt, substituting
+`GAME OVER` or `RETRY` for the quoted text:
+
+> Use case: background-extraction. Asset type: transparent Unity game menu artwork.
+> Input image is the EDIT TARGET. Remove ONLY the exterior white paper/background
+> and replace it with true transparency. Preserve the supplied painted artwork,
+> all brush strokes, splashes, black edges, red color, geometry, and original
+> lettering exactly. Text (verbatim): "GAME OVER" / "RETRY". Do not redesign,
+> redraw, reinterpret, add, or relayout any content. Keep white/cream highlights
+> that belong inside the lettering and artwork. Keep the full artwork unclipped
+> with a small transparent margin; no white matte, no checkerboard baked into
+> pixels, no new text, no watermark. The result must be a clean transparent PNG
+> cutout of this exact supplied artwork.
+
+## Title screen
+
 Original supplied assets are preserved:
 
 - Background: `Assets/PixelArt/IMG_1767.JPG`
