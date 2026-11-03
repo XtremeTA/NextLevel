@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(SpriteFrameAnimation))]
 public sealed class BombEnemy : MonoBehaviour
 {
+    [SerializeField] private GameObject explosionHitbox;
     [SerializeField] private Sprite[] fallingFrames;
     [SerializeField] private Sprite[] groundedFrames;
     [SerializeField] private Sprite[] explosionFrames;
@@ -110,13 +111,15 @@ public sealed class BombEnemy : MonoBehaviour
 
         if (state == BombState.Launched)
         {
-            GroundBreak brick = other.GetComponent<GroundBreak>();
+            Brick brick = other.GetComponent<Brick>();
 
             if (brick != null)
             {
-                brick.TakeDamage(1);
-
-                state = BombState.Falling;
+                brick.Break();
+                state = BombState.Resolved;
+                explosionHitbox.SetActive(true);
+                GameAudio.Instance?.Play(SoundCue.GhostBurst);
+                StartCoroutine(PlayBurst(2f));
             }
         }
     }

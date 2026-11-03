@@ -23,6 +23,14 @@ public class Brick : MonoBehaviour
             Break();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Explosion"))
+        {
+            Break();
+        }
+    }
+
     public void Break()
     {
         if (isBreaking)
