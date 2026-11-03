@@ -3473,6 +3473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BrickRowManager
   brickPrefab: {fileID: 7752519521242301840, guid: 67e3b89a933d2d84e8399028e38fcdc2, type: 3}
   specialBrickPrefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
+  bombBrickPrefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
   specialBricksPerRow: 1
   specialBrickIncreaseInterval: 90
   maximumSpecialBricksPerRow: 3

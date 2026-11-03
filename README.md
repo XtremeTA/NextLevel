@@ -117,9 +117,10 @@ Y = 7.5 at the top to Y = 4.5 at the bottom.
 
 ## Special bricks and enemies
 
-Rows start with one soul brick (the animated caged green spirit). New rows get two after
-90 seconds of gameplay and three after three minutes, capped at three out of
-nine bricks. Existing rows keep their bricks; the increase appears as new rows
+Rows start with one special brick. Red bomb bricks and animated soul bricks
+alternate within that count. New rows get two special bricks after
+90 seconds of gameplay and three after three minutes, capped at three per
+row. Existing rows keep their bricks; the increase appears as new rows
 arrive. Pausing and game over stop the progression clock; restarting resets it.
 The **YokaiBrick** prefab loops the eight nonempty frames from
 `Assets/PixelArt/enemy_brick1.png` at 10 fps until broken. Its **Sprite Frame
@@ -146,8 +147,26 @@ lifetime settings. Enemy sprites use complete, evenly spaced animation frames
 with point filtering and 32 pixels per world unit.
 Default speeds are 9 units/second for falling, 8 for running, and 10 for rising.
 
+The red **BombBrick** releases a **BombEnemy**, using the supplied
+`Bomb_EnemyFalling.png` and `Bomb_enemy_grounded.png` animation sheets. It falls
+at 2 units/second, slightly faster than a heart's 1.5, then starts a three-second
+fuse on landing. Dash through it with Shift to defeat it harmlessly. Both the
+falling and grounded forms can be defeated; normal contact and parrying do not
+disarm it. A dash sweep prevents fast movement from skipping its hitbox.
+
+If the fuse finishes, the bomb deals 2 damage to its supporting floor tile and
+1 to each touching tile directly left and right. Missing tiles do not extend
+the blast across a gap. A player standing on any affected tile takes one hit,
+with the normal hurt stun and invulnerability; jumping clear avoids the hit.
+If its support breaks before detonation, it falls again and restarts the fuse
+on its next landing. The supplied burst art plays for both outcomes; a dash
+defeat never deals blast damage or releases smaller enemies. **Fall Speed** and
+**Fuse Duration** are adjustable on the bomb prefab. Floor tiles retain four
+health, and ball hits continue to deal one damage each.
+
 Each brick type has its own prefab: **Brick** is the regular brick (1 point),
-**YokaiBrick** is the soul brick (5 points), and **LifeBrick** is the green heart
+**YokaiBrick** is the animated soul brick (5 points), **BombBrick** is the red
+bomb brick (5 points), and **LifeBrick** is the green heart
 brick (3 points). Change **Point Value** on each prefab's **Brick** component to
 tune its score. A brick awards its points only once, including when an enemy
 breaks it.
@@ -157,7 +176,7 @@ three lives and no uncollected heart is present, whether falling or resting on
 the floor. An existing intact or breaking life brick also reserves that reward,
 so only one healing opportunity is available at a time. A full-health game
 starts without life bricks. Its random position uses a regular-brick slot,
-preserving the soul-brick counts. After a heart is collected or lost through a
+preserving the special-brick counts. After a heart is collected or lost through a
 gap, the next new row can offer another if the player still needs a life.
 Breaking the brick plays the supplied green animation, then releases one
 **LifeHeartPickup** from its center.

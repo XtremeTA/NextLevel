@@ -4,7 +4,7 @@ using System.Collections;
 public class Brick : MonoBehaviour
 {
     [SerializeField, Min(0)] private int pointValue = 1;
-    [SerializeField] private FallingEnemy enemyPrefab;
+    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private LifeHeartPickup lifeHeartPrefab;
     [SerializeField] private Sprite[] breakFrames;
     private Animator animator;

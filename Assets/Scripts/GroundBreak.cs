@@ -5,27 +5,37 @@ public class GroundBreak : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private int brickHealth = 4;
+    public int Health => brickHealth;
 
     [SerializeField] private Sprite[] alternativeSprites;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (brickHealth > 0 && collision.gameObject.GetComponent<Ball>() != null){
-            brickHealth -= 1;
-            if (brickHealth == 0)
-            {
-                GameAudio.Instance?.Play(SoundCue.BrickBreak);
-                Destroy(gameObject);
-            } else {
-                spriteRenderer.sprite = alternativeSprites[4 - brickHealth];
-                GameAudio.Instance?.Play(SoundCue.TileCrack);
-            }
+        if (collision.gameObject.GetComponent<Ball>() != null)
+            TakeDamage(1);
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (amount <= 0 || brickHealth <= 0 || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
+            return;
+
+        brickHealth = Mathf.Max(0, brickHealth - amount);
+        if (brickHealth == 0)
+        {
+            // Remove support immediately, including during the player's recovery lift.
+            GetComponent<Collider2D>().enabled = false;
+            GameAudio.Instance?.Play(SoundCue.BrickBreak);
+            Destroy(gameObject);
+            return;
         }
+
+        if (alternativeSprites != null && alternativeSprites.Length > 0)
+            spriteRenderer.sprite = alternativeSprites[Mathf.Min(4 - brickHealth, alternativeSprites.Length - 1)];
+        GameAudio.Instance?.Play(SoundCue.TileCrack);
     }
 }

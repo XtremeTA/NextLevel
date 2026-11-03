@@ -5,6 +5,7 @@ public sealed class BrickRowManager : MonoBehaviour
 {
     [SerializeField] private Brick brickPrefab;
     [SerializeField] private Brick specialBrickPrefab;
+    [SerializeField] private Brick bombBrickPrefab;
     [SerializeField, Min(0)] private int specialBricksPerRow = 1;
     [SerializeField, Min(1f)] private float specialBrickIncreaseInterval = 90f;
     [SerializeField, Min(0)] private int maximumSpecialBricksPerRow = 3;
@@ -30,12 +31,13 @@ public sealed class BrickRowManager : MonoBehaviour
     private float shiftElapsed;
     private bool isShifting;
     private float progressionElapsed;
+    private int specialSpawnCount;
 
     public int CurrentSpecialBricksPerRow
     {
         get
         {
-            if (specialBrickPrefab == null || specialBricksPerRow <= 0)
+            if ((specialBrickPrefab == null && bombBrickPrefab == null) || specialBricksPerRow <= 0)
                 return 0;
 
             int starting = Mathf.Clamp(specialBricksPerRow, 0, bricksPerRow);
@@ -142,7 +144,7 @@ public sealed class BrickRowManager : MonoBehaviour
                 Random.Range(0, bricksPerRow - column - specialsRemaining) < livesRemaining;
             if (life)
                 livesRemaining--;
-            Brick selectedPrefab = special ? specialBrickPrefab : life ? lifeBrickPrefab : brickPrefab;
+            Brick selectedPrefab = special ? NextSpecialBrick() : life ? lifeBrickPrefab : brickPrefab;
             Brick brick = Instantiate(selectedPrefab, position, Quaternion.identity, transform);
             Rigidbody2D body = brick.GetComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Kinematic;
@@ -150,6 +152,14 @@ public sealed class BrickRowManager : MonoBehaviour
             row[column] = new SpawnedBrick { brick = brick, body = body };
         }
         return row;
+    }
+
+    private Brick NextSpecialBrick()
+    {
+        if (bombBrickPrefab == null) return specialBrickPrefab;
+        if (specialBrickPrefab == null) return bombBrickPrefab;
+        // Introduce both enemies without increasing the existing special-brick budget.
+        return specialSpawnCount++ % 2 == 0 ? bombBrickPrefab : specialBrickPrefab;
     }
 
     private bool CanSpawnLifeBrick()

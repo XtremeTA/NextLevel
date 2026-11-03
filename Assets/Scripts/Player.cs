@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private Collider2D bodyCollider;
     private ContactFilter2D groundFilter;
     private readonly ContactPoint2D[] groundContacts = new ContactPoint2D[8];
+    private readonly RaycastHit2D[] dashHits = new RaycastHit2D[16];
     private bool jumpRequested;
 
     private Animator animator;
@@ -169,7 +170,10 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (isDashing)
+        {
+            HitDashTargets();
             return;
+        }
         if (isRecovering || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
             return;
 
@@ -230,6 +234,38 @@ public class Player : MonoBehaviour
     private static bool IsUsableGround(Collider2D ground)
     {
         return ground != null && ground.enabled && ground.gameObject.activeInHierarchy;
+    }
+
+    public bool IsStandingOn(Collider2D floor)
+    {
+        if (isRecovering || !IsUsableGround(floor) || bodyCollider == null || rb.linearVelocity.y > 0.1f)
+            return false;
+        int count = bodyCollider.GetContacts(groundFilter, groundContacts);
+        for (int i = 0; i < count; i++)
+        {
+            ContactPoint2D contact = groundContacts[i];
+            Collider2D ground = contact.collider == bodyCollider ? contact.otherCollider : contact.collider;
+            if (ground == floor && contact.normal.y >= 0.65f)
+                return true;
+        }
+        return false;
+    }
+
+    private void HitDashTargets()
+    {
+        if (GameOver || bodyCollider == null)
+            return;
+        ContactFilter2D filter = groundFilter;
+        filter.useTriggers = true;
+        // Sweep the next physics step so a fast dash cannot skip a small bomb trigger.
+        float distance = Mathf.Abs(rb.linearVelocity.x) * Time.fixedDeltaTime + 0.02f;
+        int count = bodyCollider.Cast(Vector2.right * FacingDirection, filter, dashHits, distance);
+        for (int i = 0; i < count; i++)
+        {
+            BombEnemy bomb = dashHits[i].collider.GetComponentInParent<BombEnemy>();
+            if (bomb != null)
+                bomb.TryDashDefeat(this);
+        }
     }
 
     private bool IsBelowPlayArea()
