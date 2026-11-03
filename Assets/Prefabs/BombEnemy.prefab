@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a9a07706d424a8aa619346a94848e4c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteFrameAnimation
   frames: []
   frameRate: 10
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1fac2192a9f4ecda6e773df42a96883, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombEnemy
   fallingFrames:
   - {fileID: 359678050415492281, guid: 1f204cee5cc456244a9af65a627d61e7, type: 3}
@@ -217,15 +217,14 @@ MonoBehaviour:
   - {fileID: 3450673480526771838, guid: e8b6229e8700cef49ae1404199de07af, type: 3}
   - {fileID: 2910768260937901621, guid: e8b6229e8700cef49ae1404199de07af, type: 3}
   explosionFrames:
-  - {fileID: 3175636949900046427, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 7394149193099719143, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: -8007402279463022041, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 5126088494070026703, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 53345432325449731, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 4703507659153629, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: -2564976166827159310, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 4838413997402762325, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
-  - {fileID: 9105126309843373452, guid: 8aac9d617bba0884babc248aa7ac8799, type: 3}
+  - {fileID: 7175889612550671998, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: -3533969578733273488, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: -5534689891081187666, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: -4911274914475190806, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: 8220262589987763597, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: 4558364876878467928, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: -7009007967247963371, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
+  - {fileID: 84721982727507509, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
   fallSpeed: 2
   fuseDuration: 3
   maximumLifetime: 30

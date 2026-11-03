@@ -9,10 +9,11 @@ public sealed class BombEnemy : MonoBehaviour
     [SerializeField] private Sprite[] groundedFrames;
     [SerializeField] private Sprite[] explosionFrames;
     [SerializeField, Min(0.1f)] private float fallSpeed = 2f;
+    [SerializeField] private float launchSpeed = 8f;
     [SerializeField, Min(0.1f)] private float fuseDuration = 3f;
     [SerializeField, Min(1f)] private float maximumLifetime = 30f;
 
-    private enum BombState { Falling, Armed, Resolved }
+    private enum BombState { Falling, Launched, Armed, Resolved }
     private BombState state;
     private readonly RaycastHit2D[] floorHits = new RaycastHit2D[16];
     private Rigidbody2D body;
@@ -50,6 +51,13 @@ public sealed class BombEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (state == BombState.Launched)
+        {
+            body.MovePosition(
+            body.position + Vector2.up * launchSpeed * Time.fixedDeltaTime);
+
+        return;
+        }
         if (state == BombState.Resolved || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
         {
             body.linearVelocity = Vector2.zero;
@@ -96,7 +104,22 @@ public sealed class BombEnemy : MonoBehaviour
             body.MovePosition(body.position + Vector2.down * step);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) => CheckDash(other);
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        CheckDash(other);
+
+        if (state == BombState.Launched)
+        {
+            GroundBreak brick = other.GetComponent<GroundBreak>();
+
+            if (brick != null)
+            {
+                brick.TakeDamage(1);
+
+                state = BombState.Falling;
+            }
+        }
+    }
     private void OnTriggerStay2D(Collider2D other) => CheckDash(other);
 
     private void CheckDash(Collider2D other)
@@ -107,15 +130,20 @@ public sealed class BombEnemy : MonoBehaviour
 
     public bool TryDashDefeat(Player player)
     {
-        if (state == BombState.Resolved || !isActiveAndEnabled || player == null || !player.isActiveAndEnabled ||
-            !player.IsDashing || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
+        if (state == BombState.Resolved ||
+            player == null ||
+            !player.IsDashing)
             return false;
 
-        state = BombState.Resolved;
-        hitbox.enabled = false;
-        body.linearVelocity = Vector2.zero;
+        state = BombState.Launched;
+
+        supportingFloor = null;
+        supportingTile = null;
+
+        body.linearVelocity = Vector2.up * launchSpeed;
+
         GameAudio.Instance?.Play(SoundCue.Parry);
-        StartCoroutine(PlayBurst(1f));
+
         return true;
     }
 
