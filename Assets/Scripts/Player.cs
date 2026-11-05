@@ -277,7 +277,7 @@ public class Player : MonoBehaviour
 
     public bool TakeEnemyHit(Vector2 enemyPosition)
     {
-        if (!isActiveAndEnabled || isRecovering || isHitStunned || HurtAnimationActive || Time.time < invulnerableUntil ||
+        if (!isActiveAndEnabled || isRecovering || isHitStunned || HurtAnimationActive || Time.time < invulnerableUntil || isDashing ||
             (GameManager.Instance != null && GameManager.Instance.IsGameOver))
             return false;
 

@@ -135,7 +135,7 @@ public sealed class BombEnemy : MonoBehaviour
     {
         if (state == BombState.Resolved ||
             player == null ||
-            !player.IsDashing)
+            !player.IsPerfectParry)
             return false;
 
         state = BombState.Launched;
