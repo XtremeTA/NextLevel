@@ -1,0 +1,1003 @@
+fileFormatVersion: 2
+guid: 709cd4ef76ff48348a59877c7b320b88
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1569903021011061036
+    second: Ten_Courts_Scroll_Transparent_Asset_0
+  - first:
+      213: 4903640526440791682
+    second: Ten_Courts_Scroll_Transparent_Asset_1
+  - first:
+      213: -7732591124546276618
+    second: Ten_Courts_Scroll_Transparent_Asset_2
+  - first:
+      213: 3526486252066462519
+    second: Ten_Courts_Scroll_Transparent_Asset_3
+  - first:
+      213: 5693717958727539770
+    second: Ten_Courts_Scroll_Transparent_Asset_4
+  - first:
+      213: 4896700492813521286
+    second: Ten_Courts_Scroll_Transparent_Asset_5
+  - first:
+      213: 1859133047315729697
+    second: Ten_Courts_Scroll_Transparent_Asset_6
+  - first:
+      213: -1007131396979469907
+    second: Ten_Courts_Scroll_Transparent_Asset_7
+  - first:
+      213: 7288306159595630643
+    second: Ten_Courts_Scroll_Transparent_Asset_8
+  - first:
+      213: -3135520472441719515
+    second: Ten_Courts_Scroll_Transparent_Asset_9
+  - first:
+      213: -6435487734698633075
+    second: Ten_Courts_Scroll_Transparent_Asset_10
+  - first:
+      213: -5878922536343480548
+    second: Ten_Courts_Scroll_Transparent_Asset_11
+  - first:
+      213: 4533039875551135329
+    second: Ten_Courts_Scroll_Transparent_Asset_12
+  - first:
+      213: 1886266043981899365
+    second: Ten_Courts_Scroll_Transparent_Asset_13
+  - first:
+      213: -8250760739428666282
+    second: Ten_Courts_Scroll_Transparent_Asset_14
+  - first:
+      213: -1678324898753910840
+    second: Ten_Courts_Scroll_Transparent_Asset_15
+  - first:
+      213: -4758095499136147665
+    second: Ten_Courts_Scroll_Transparent_Asset_16
+  - first:
+      213: -3897117046777228469
+    second: Ten_Courts_Scroll_Transparent_Asset_17
+  - first:
+      213: -6453274552056699199
+    second: Ten_Courts_Scroll_Transparent_Asset_18
+  - first:
+      213: 3148455425610988876
+    second: Ten_Courts_Scroll_Transparent_Asset_19
+  - first:
+      213: 1461000564629223675
+    second: Ten_Courts_Scroll_Transparent_Asset_20
+  - first:
+      213: 5441629320625772260
+    second: Ten_Courts_Scroll_Transparent_Asset_21
+  - first:
+      213: 600064693219070199
+    second: Ten_Courts_Scroll_Transparent_Asset_22
+  - first:
+      213: 1731365064363037193
+    second: Ten_Courts_Scroll_Transparent_Asset_23
+  - first:
+      213: 7676638039077194021
+    second: Ten_Courts_Scroll_Transparent_Asset_24
+  - first:
+      213: 1269313125312491914
+    second: Ten_Courts_Scroll_Transparent_Asset_25
+  - first:
+      213: -4162397252050932143
+    second: Ten_Courts_Scroll_Transparent_Asset_26
+  - first:
+      213: 1920332055921911321
+    second: Ten_Courts_Scroll_Transparent_Asset_27
+  - first:
+      213: 3222528302870171475
+    second: Ten_Courts_Scroll_Transparent_Asset_28
+  - first:
+      213: 2299353541554894003
+    second: Ten_Courts_Scroll_Transparent_Asset_29
+  - first:
+      213: -7602586720964480921
+    second: Ten_Courts_Scroll_Transparent_Asset_30
+  - first:
+      213: -4035935006745410944
+    second: Ten_Courts_Scroll_Transparent_Asset_31
+  - first:
+      213: 8026114373619919225
+    second: Ten_Courts_Scroll_Transparent_Asset_32
+  - first:
+      213: -2132452037504417442
+    second: Ten_Courts_Scroll_Transparent_Asset_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_0
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 1466
+        width: 11
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c294d2bda7a69c510800000000000000
+      internalID: 1569903021011061036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_1
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 1455
+        width: 12
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28e76b4041b3d0440800000000000000
+      internalID: 4903640526440791682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_2
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 1442
+        width: 39
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f2b41c575150b490800000000000000
+      internalID: -7732591124546276618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_3
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 1448
+        width: 28
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73b58b7ef8890f030800000000000000
+      internalID: 3526486252066462519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_4
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 1451
+        width: 376
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3c973d1156240f40800000000000000
+      internalID: 5693717958727539770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_5
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1448
+        width: 27
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68151a5872394f340800000000000000
+      internalID: 4896700492813521286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_6
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 1442
+        width: 39
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12d817b08a7fcc910800000000000000
+      internalID: 1859133047315729697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_7
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 1455
+        width: 11
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da155e89453f502f0800000000000000
+      internalID: -1007131396979469907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_8
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 1466
+        width: 13
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3303df846d3452560800000000000000
+      internalID: 7288306159595630643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_9
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 1410
+        width: 22
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52575263eb46c74d0800000000000000
+      internalID: -3135520472441719515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_10
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 1434
+        width: 419
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8897e0800e80b6a0800000000000000
+      internalID: -6435487734698633075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_11
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 134
+        width: 367
+        height: 1302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c17553fd91fd96ea0800000000000000
+      internalID: -5878922536343480548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_12
+      rect:
+        serializedVersion: 2
+        x: 722
+        y: 1410
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16608eeefb798ee30800000000000000
+      internalID: 4533039875551135329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_13
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 1354
+        width: 56
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5662c6f19fc5d2a10800000000000000
+      internalID: 1886266043981899365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_14
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 147
+        width: 49
+        height: 1282
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6547d9762d86f7d80800000000000000
+      internalID: -8250760739428666282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_15
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 1389
+        width: 20
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c76410956465b8e0800000000000000
+      internalID: -1678324898753910840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_16
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 1354
+        width: 56
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2fda9e5a59d7fdb0800000000000000
+      internalID: -4758095499136147665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_17
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 1331
+        width: 28
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4359ba91b8aae9c0800000000000000
+      internalID: -3897117046777228469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_18
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 1217
+        width: 23
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c6a79e5cfc5176a0800000000000000
+      internalID: -6453274552056699199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_19
+      rect:
+        serializedVersion: 2
+        x: 722
+        y: 1331
+        width: 27
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4db1b2478f81bb20800000000000000
+      internalID: 3148455425610988876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_20
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 1296
+        width: 35
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf8be57d544864410800000000000000
+      internalID: 1461000564629223675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_21
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 1296
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e6df3f390d848b40800000000000000
+      internalID: 5441629320625772260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_22
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 1121
+        width: 63
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f09391c8abd35800800000000000000
+      internalID: 600064693219070199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_23
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 147
+        width: 49
+        height: 1070
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90251e55a5b070810800000000000000
+      internalID: 1731365064363037193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_24
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 1121
+        width: 62
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 529827cbf95e88a60800000000000000
+      internalID: 7676638039077194021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_25
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 80
+        width: 11
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a81fdf6ff818d9110800000000000000
+      internalID: 1269313125312491914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_26
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 68
+        width: 11
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15e2179a0c13c36c0800000000000000
+      internalID: -4162397252050932143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_27
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 55
+        width: 40
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 916650c94d366aa10800000000000000
+      internalID: 1920332055921911321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_28
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 60
+        width: 28
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35f0833fa68b8bc20800000000000000
+      internalID: 3222528302870171475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_29
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 71
+        width: 376
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b47a611dd1f8ef10800000000000000
+      internalID: 2299353541554894003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_30
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 60
+        width: 27
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7607fc258af2e7690800000000000000
+      internalID: -7602586720964480921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_31
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 55
+        width: 39
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0824062ae7a7df7c0800000000000000
+      internalID: -4035935006745410944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_32
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 68
+        width: 12
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 979a546af7c726f60800000000000000
+      internalID: 8026114373619919225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ten_Courts_Scroll_Transparent_Asset_33
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 79
+        width: 12
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51cdfb8b220862e0800000000000000
+      internalID: -2132452037504417442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ten_Courts_Scroll_Transparent_Asset_0: 1569903021011061036
+      Ten_Courts_Scroll_Transparent_Asset_1: 4903640526440791682
+      Ten_Courts_Scroll_Transparent_Asset_10: -6435487734698633075
+      Ten_Courts_Scroll_Transparent_Asset_11: -5878922536343480548
+      Ten_Courts_Scroll_Transparent_Asset_12: 4533039875551135329
+      Ten_Courts_Scroll_Transparent_Asset_13: 1886266043981899365
+      Ten_Courts_Scroll_Transparent_Asset_14: -8250760739428666282
+      Ten_Courts_Scroll_Transparent_Asset_15: -1678324898753910840
+      Ten_Courts_Scroll_Transparent_Asset_16: -4758095499136147665
+      Ten_Courts_Scroll_Transparent_Asset_17: -3897117046777228469
+      Ten_Courts_Scroll_Transparent_Asset_18: -6453274552056699199
+      Ten_Courts_Scroll_Transparent_Asset_19: 3148455425610988876
+      Ten_Courts_Scroll_Transparent_Asset_2: -7732591124546276618
+      Ten_Courts_Scroll_Transparent_Asset_20: 1461000564629223675
+      Ten_Courts_Scroll_Transparent_Asset_21: 5441629320625772260
+      Ten_Courts_Scroll_Transparent_Asset_22: 600064693219070199
+      Ten_Courts_Scroll_Transparent_Asset_23: 1731365064363037193
+      Ten_Courts_Scroll_Transparent_Asset_24: 7676638039077194021
+      Ten_Courts_Scroll_Transparent_Asset_25: 1269313125312491914
+      Ten_Courts_Scroll_Transparent_Asset_26: -4162397252050932143
+      Ten_Courts_Scroll_Transparent_Asset_27: 1920332055921911321
+      Ten_Courts_Scroll_Transparent_Asset_28: 3222528302870171475
+      Ten_Courts_Scroll_Transparent_Asset_29: 2299353541554894003
+      Ten_Courts_Scroll_Transparent_Asset_3: 3526486252066462519
+      Ten_Courts_Scroll_Transparent_Asset_30: -7602586720964480921
+      Ten_Courts_Scroll_Transparent_Asset_31: -4035935006745410944
+      Ten_Courts_Scroll_Transparent_Asset_32: 8026114373619919225
+      Ten_Courts_Scroll_Transparent_Asset_33: -2132452037504417442
+      Ten_Courts_Scroll_Transparent_Asset_4: 5693717958727539770
+      Ten_Courts_Scroll_Transparent_Asset_5: 4896700492813521286
+      Ten_Courts_Scroll_Transparent_Asset_6: 1859133047315729697
+      Ten_Courts_Scroll_Transparent_Asset_7: -1007131396979469907
+      Ten_Courts_Scroll_Transparent_Asset_8: 7288306159595630643
+      Ten_Courts_Scroll_Transparent_Asset_9: -3135520472441719515
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
