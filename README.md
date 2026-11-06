@@ -143,7 +143,7 @@ GroundBreak component with renderer/collider disabled so they can be rebuilt.
 Eligible Stage 1 rows have a 50% chance of one animated soul brick, with no
 time-based increase. Tune **Stage One Enemy Row Chance** on **Brick Rows**.
 From Stage 2 onward, eligible rows start with one special brick.
-Stage 2 uses only red bomb bricks until 150 points, then red bomb bricks and
+Stage 2 uses only animated bomb bricks until 150 points, then animated bomb bricks and
 animated soul bricks alternate within that count. New
 rows in Stage 2 or later get two special bricks after
 90 seconds of gameplay and three after three minutes, capped at three per
@@ -174,7 +174,7 @@ lifetime settings. Enemy sprites use complete, evenly spaced animation frames
 with point filtering and 32 pixels per world unit.
 Default speeds are 9 units/second for falling, 8 for running, and 10 for rising.
 
-The red **BombBrick**, introduced in Stage 2, uses the five nonempty frames from
+The **BombBrick** loops the five frames of `Bomb_enemy_brick.png` at 10 fps while intact. Introduced in Stage 2, it uses the five nonempty frames from
 `Assets/PixelArt/bomb_enemy_brick_break.png` when it breaks and releases a
 **BombEnemy**, using the supplied
 `Bomb_EnemyFalling.png` and `Bomb_enemy_grounded.png` animation sheets. It falls
@@ -214,11 +214,10 @@ and dragon length. Separate wisp, warning, and rising dragon audio cues play
 through GameAudio. Their WAV files live in `Assets/Audio/Dragons` and can be
 regenerated with `Tools/Audio/GenerateDragonAudio.cs`.
 Assign **Wisp Sprite** and **Dragon Sprite** to replace the
-generated placeholder art later. The red yokai idle art is also currently used
-by BombBrick while its final idle art is pending.
+generated placeholder art later.
 
 Each brick type has its own prefab: **Brick** is the regular brick (1 point),
-**YokaiBrick** is the animated soul brick (5 points), **BombBrick** is the red
+**YokaiBrick** is the animated soul brick (5 points), **BombBrick** is the animated
 bomb brick (5 points), and **LifeBrick** is the green heart
 brick (3 points). **RedYokaiBrick** releases the Stage 3 dragon (5 points).
 Change **Point Value** on each prefab's **Brick** component to
