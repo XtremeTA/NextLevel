@@ -6,11 +6,23 @@ public sealed class BrickRowManager : MonoBehaviour
     [SerializeField] private Brick brickPrefab;
     [SerializeField] private Brick specialBrickPrefab;
     [SerializeField] private Brick bombBrickPrefab;
+    [SerializeField] private Brick dragonBrickPrefab;
+    [Header("Stage 2")]
+    [SerializeField] private Sprite stageTwoBrickIdle;
+    [SerializeField] private Sprite[] stageTwoBrickBreakFrames;
+    [Header("Stage 3")]
+    [SerializeField] private Sprite stageThreeBrickIdle;
+    [SerializeField] private Sprite[] stageThreeBrickBreakFrames;
+    [Header("Row Spawning")]
+    [Tooltip("Chance for an eligible Stage 1 row to contain one ghost brick. Stage 1 never ramps above one.")]
+    [SerializeField, Range(0f, 1f)] private float stageOneEnemyRowChance = 0.5f;
     [SerializeField, Min(0)] private int specialBricksPerRow = 1;
     [SerializeField, Min(1f)] private float specialBrickIncreaseInterval = 90f;
     [SerializeField, Min(0)] private int maximumSpecialBricksPerRow = 3;
     [SerializeField] private Brick lifeBrickPrefab;
     [SerializeField, Min(1)] private int rowCount = 4;
+    [Tooltip("Starting rows counted from the bottom that contain no enemy bricks.")]
+    [SerializeField, Min(0)] private int initialEnemyFreeRows = 2;
     [SerializeField, Min(1)] private int bricksPerRow = 9;
     [SerializeField, Min(0.01f)] private float columnSpacing = 2f;
     [SerializeField, Min(0.01f)] private float rowSpacing = 1f;
@@ -37,10 +49,12 @@ public sealed class BrickRowManager : MonoBehaviour
     {
         get
         {
-            if ((specialBrickPrefab == null && bombBrickPrefab == null) || specialBricksPerRow <= 0)
+            if ((specialBrickPrefab == null && bombBrickPrefab == null && dragonBrickPrefab == null) || specialBricksPerRow <= 0)
                 return 0;
 
             int starting = Mathf.Clamp(specialBricksPerRow, 0, bricksPerRow);
+            if (GameManager.Instance == null || GameManager.Instance.CurrentStage < 2)
+                return Mathf.Min(1, starting);
             int maximum = Mathf.Clamp(maximumSpecialBricksPerRow, starting, bricksPerRow);
             int increase = Mathf.FloorToInt(progressionElapsed / Mathf.Max(1f, specialBrickIncreaseInterval));
             return Mathf.Min(maximum, starting + increase);
@@ -73,7 +87,7 @@ public sealed class BrickRowManager : MonoBehaviour
         for (int row = 0; row < rowCount; row++)
         {
             Vector3 leftPosition = topLeft + Vector3.down * rowSpacing * (rowCount - 1 - row);
-            rows.Add(SpawnRow(leftPosition));
+            rows.Add(SpawnRow(leftPosition, row >= initialEnemyFreeRows));
         }
     }
 
@@ -89,7 +103,7 @@ public sealed class BrickRowManager : MonoBehaviour
         {
             rows.RemoveAt(0);
             // The new row enters from above the screen as every row slides down.
-            rows.Add(SpawnRow(topLeft + Vector3.up * rowSpacing));
+            rows.Add(SpawnRow(topLeft + Vector3.up * rowSpacing, true));
             shiftElapsed = 0f;
             isShifting = true;
         }
@@ -129,10 +143,13 @@ public sealed class BrickRowManager : MonoBehaviour
         return position;
     }
 
-    private SpawnedBrick[] SpawnRow(Vector3 leftPosition)
+    private SpawnedBrick[] SpawnRow(Vector3 leftPosition, bool allowEnemyBricks)
     {
         SpawnedBrick[] row = new SpawnedBrick[bricksPerRow];
-        int specialsRemaining = CurrentSpecialBricksPerRow;
+        int specialsRemaining = allowEnemyBricks ? CurrentSpecialBricksPerRow : 0;
+        if (specialsRemaining > 0 && (GameManager.Instance == null || GameManager.Instance.CurrentStage < 2) &&
+            Random.value >= stageOneEnemyRowChance)
+            specialsRemaining = 0;
         int livesRemaining = specialsRemaining < bricksPerRow && CanSpawnLifeBrick() ? 1 : 0;
         for (int column = 0; column < bricksPerRow; column++)
         {
@@ -149,6 +166,9 @@ public sealed class BrickRowManager : MonoBehaviour
             Rigidbody2D body = brick.GetComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Kinematic;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
+            bool isRegular = selectedPrefab == brickPrefab;
+            if (isRegular)
+                ApplyStageAppearance(brick);
             row[column] = new SpawnedBrick { brick = brick, body = body };
         }
         return row;
@@ -156,10 +176,29 @@ public sealed class BrickRowManager : MonoBehaviour
 
     private Brick NextSpecialBrick()
     {
-        if (bombBrickPrefab == null) return specialBrickPrefab;
-        if (specialBrickPrefab == null) return bombBrickPrefab;
-        // Introduce both enemies without increasing the existing special-brick budget.
+        GameManager game = GameManager.Instance;
+        if (game != null && game.CurrentStage >= 3 && dragonBrickPrefab != null)
+            return dragonBrickPrefab;
+        if (game == null || game.CurrentStage < 2)
+            return specialBrickPrefab != null ? specialBrickPrefab : bombBrickPrefab;
+        if (!game.BothEnemiesUnlocked)
+            return bombBrickPrefab != null ? bombBrickPrefab : specialBrickPrefab;
+        if (bombBrickPrefab == null)
+            return specialBrickPrefab;
+        if (specialBrickPrefab == null)
+            return bombBrickPrefab;
+        // From 150 points onward, alternate the two enemies within the existing special-brick budget.
         return specialSpawnCount++ % 2 == 0 ? bombBrickPrefab : specialBrickPrefab;
+    }
+
+    private void ApplyStageAppearance(Brick brick)
+    {
+        if (brick == null || GameManager.Instance == null)
+            return;
+        if (GameManager.Instance.CurrentStage >= 3 && stageThreeBrickIdle != null)
+            brick.SetAppearance(stageThreeBrickIdle, stageThreeBrickBreakFrames);
+        else if (GameManager.Instance.CurrentStage >= 2)
+            brick.SetAppearance(stageTwoBrickIdle, stageTwoBrickBreakFrames);
     }
 
     private bool CanSpawnLifeBrick()

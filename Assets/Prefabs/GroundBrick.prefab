@@ -185,3 +185,14 @@ MonoBehaviour:
   - {fileID: -531880213, guid: 8e872fea985cc8e48a1bbeee2047f633, type: 3}
   - {fileID: -2088656190, guid: 8e872fea985cc8e48a1bbeee2047f633, type: 3}
   - {fileID: 1785764164, guid: 8e872fea985cc8e48a1bbeee2047f633, type: 3}
+  stageTwoSprites:
+  - {fileID: -225449848867724111, guid: b933ea08df18d48488cb5bc47447ed8f, type: 3}
+  - {fileID: -531880213, guid: b933ea08df18d48488cb5bc47447ed8f, type: 3}
+  - {fileID: -2088656190, guid: b933ea08df18d48488cb5bc47447ed8f, type: 3}
+  - {fileID: 1785764164, guid: b933ea08df18d48488cb5bc47447ed8f, type: 3}
+  stageThreeSprites:
+  - {fileID: -225449848867724111, guid: ee24e78f01ca6144b87f740b9b7fc000, type: 3}
+  - {fileID: -531880213, guid: ee24e78f01ca6144b87f740b9b7fc000, type: 3}
+  - {fileID: -2088656190, guid: ee24e78f01ca6144b87f740b9b7fc000, type: 3}
+  - {fileID: 1785764164, guid: ee24e78f01ca6144b87f740b9b7fc000, type: 3}
+  refreshDuration: 0.65

@@ -100,14 +100,15 @@ gameplay sound effects.
 
 ## Brick rows
 
-SampleScene's **Brick Rows** object automatically spawns four rows of nine bricks
-when play starts. Once every brick in the bottom row has finished breaking, the
+SampleScene's **Brick Rows** object automatically spawns four rows of seven bricks
+when play starts. The bottom two starting rows contain no enemy bricks; the top
+two can contain Stage 1 ghost bricks. Once every brick in the bottom row has finished breaking, the
 remaining rows slide down one row while a fresh row slides in from above the
 screen. The top row's sprite is flush with the main camera's top edge. Clearing an
 upper row does not advance the board until it reaches the bottom; partially
 cleared rows keep their gaps as they descend.
 
-Adjust **Row Count**, **Bricks Per Row**, **Column Spacing**, **Row Spacing**, and
+Adjust **Row Count**, **Initial Enemy Free Rows**, **Bricks Per Row**, **Column Spacing**, **Row Spacing**, and
 **Row Shift Duration** on its **Brick Row Manager** component before playing.
 The default slide takes 0.35 seconds and uses interpolated kinematic physics bodies
 for smooth movement. **Play Area Camera** controls the top edge; **Top Left
@@ -115,10 +116,36 @@ Position** controls the leftmost X and depth, with Y used as a fallback if no
 orthographic camera is available. With the default camera, brick centers run from
 Y = 7.5 at the top to Y = 4.5 at the bottom.
 
+## Stages
+
+Stage 1 runs from 0 to 99 points and spawns ghost bricks. At 100 points, Stage 2
+begins: newly spawned regular bricks use the Stage 2 artwork and break sequence,
+the background fades darker, and new enemy bricks are bombs only. From 150 to 249
+points, new rows can contain both ghost and bomb bricks. Ghost bricks still on
+the board still release ghosts normally during the bomb-only interval. At 250 points,
+Stage 3 begins: new regular bricks use the green Stage 3 artwork and break
+sequence, and new enemy slots contain only red yokai dragon bricks. Bricks already on the board
+keep their appearance when a stage changes. **Stage Two Score**, **Both Enemies
+Score**, and **Stage Three Score** are adjustable on GameManager. Stage 2 and 3 brick
+sprites are assigned on **Brick Rows**, while the background tint and transition
+duration are set on the **Background** object's CameraBackground component.
+
 ## Special bricks and enemies
 
-Rows start with one special brick. Red bomb bricks and animated soul bricks
-alternate within that count. New rows get two special bricks after
+At each stage change, fresh floor tiles rise from below the camera over the old
+floor in 0.65 seconds. On arrival every tile returns to four health, including
+previously destroyed tiles. Stages 1, 2, and 3 use `Tile-Sheet`, `Tile-Sheet2`, and
+`Tile-Sheet3` respectively, including their matching cracked frames. Surviving
+tiles keep their colliders during the lift; tile damage pauses until it finishes.
+Tune **Refresh Duration** on **GroundBrick**. Empty floor slots retain their
+GroundBreak component with renderer/collider disabled so they can be rebuilt.
+
+Eligible Stage 1 rows have a 50% chance of one animated soul brick, with no
+time-based increase. Tune **Stage One Enemy Row Chance** on **Brick Rows**.
+From Stage 2 onward, eligible rows start with one special brick.
+Stage 2 uses only red bomb bricks until 150 points, then red bomb bricks and
+animated soul bricks alternate within that count. New
+rows in Stage 2 or later get two special bricks after
 90 seconds of gameplay and three after three minutes, capped at three per
 row. Existing rows keep their bricks; the increase appears as new rows
 arrive. Pausing and game over stop the progression clock; restarting resets it.
@@ -127,8 +154,8 @@ The **YokaiBrick** prefab loops the eight nonempty frames from
 Animation** component controls the idle frame rate; the existing break animation
 replaces the loop immediately on a hit. Frames use point filtering and the same
 64-by-32-pixel size and 32 pixels per world unit as the original brick.
-Breaking a soul brick plays its own
-animation and releases one falling enemy. When that enemy reaches a surviving
+Breaking a soul brick plays the eight nonempty frames from
+`Assets/PixelArt/enemy_brick_break.png` and releases one falling enemy. When that enemy reaches a surviving
 floor tile, it plays the supplied explosion/split animation and releases two
 smaller enemies running in opposite directions 40% through the animation
 (0.3 seconds with the default frames and frame rate). The explosion finishes
@@ -147,12 +174,20 @@ lifetime settings. Enemy sprites use complete, evenly spaced animation frames
 with point filtering and 32 pixels per world unit.
 Default speeds are 9 units/second for falling, 8 for running, and 10 for rising.
 
-The red **BombBrick** releases a **BombEnemy**, using the supplied
+The red **BombBrick**, introduced in Stage 2, uses the five nonempty frames from
+`Assets/PixelArt/bomb_enemy_brick_break.png` when it breaks and releases a
+**BombEnemy**, using the supplied
 `Bomb_EnemyFalling.png` and `Bomb_enemy_grounded.png` animation sheets. It falls
-at 2 units/second, slightly faster than a heart's 1.5, then starts a three-second
-fuse on landing. Dash through it with Shift to defeat it harmlessly. Both the
-falling and grounded forms can be defeated; normal contact and parrying do not
-disarm it. A dash sweep prevents fast movement from skipping its hitbox.
+at 4 units/second, then starts a three-second fuse on landing. A perfect parry
+launches it upward. When the launched bomb reaches a brick, it breaks that brick
+and its burst can break overlapping bricks. Dashing protects the player from
+enemy damage but does not launch the bomb.
+
+Once a bomb lands, its sprite flashes faster as the fuse runs down. A single
+translucent light green circle grows around it and reaches the outer corners of
+the surviving floor tiles its blast will damage. The warning vanishes if the
+bomb falls, is parried, explodes, or the run ends. **Fuse Warning** on the
+BombEnemy prefab controls its color, transparency, and flash rates.
 
 If the fuse finishes, the bomb deals 2 damage to its supporting floor tile and
 1 to each touching tile directly left and right. Missing tiles do not extend
@@ -164,10 +199,29 @@ defeat never deals blast damage or releases smaller enemies. **Fall Speed** and
 **Fuse Duration** are adjustable on the bomb prefab. Floor tiles retain four
 health, and ball hits continue to deal one damage each.
 
+The Stage 3 **RedYokaiBrick** uses `Yokai-Brick-1-Sheet.png` for its temporary
+idle and break art. Breaking it releases a harmless green wisp in that column.
+The wisp falls through the floor. After it has completely left the bottom of the
+camera view, a narrow green beam flashes in its lane for 1.1 seconds. A placeholder
+dragon then flies upward at 18 units/second, breaking each brick it passes in
+that vertical column. The dragon can hurt the player once per pass, respects
+normal dash/invulnerability rules, and never damages floor tiles. The warning
+and damage lane are both 1.4 units wide, narrower than the 2-unit column spacing.
+Bricks cleared by the dragon award their normal points and release their normal
+contents. The enemy cleans itself up above the screen or when the run ends.
+**DragonLaneEnemy** exposes fall speed, warning duration, rise speed, lane width,
+and dragon length. Separate wisp, warning, and rising dragon audio cues play
+through GameAudio. Their WAV files live in `Assets/Audio/Dragons` and can be
+regenerated with `Tools/Audio/GenerateDragonAudio.cs`.
+Assign **Wisp Sprite** and **Dragon Sprite** to replace the
+generated placeholder art later. The red yokai idle art is also currently used
+by BombBrick while its final idle art is pending.
+
 Each brick type has its own prefab: **Brick** is the regular brick (1 point),
 **YokaiBrick** is the animated soul brick (5 points), **BombBrick** is the red
 bomb brick (5 points), and **LifeBrick** is the green heart
-brick (3 points). Change **Point Value** on each prefab's **Brick** component to
+brick (3 points). **RedYokaiBrick** releases the Stage 3 dragon (5 points).
+Change **Point Value** on each prefab's **Brick** component to
 tune its score. A brick awards its points only once, including when an enemy
 breaks it.
 
@@ -237,6 +291,7 @@ interval between plays. Variation is centered on the original pitch and volume.
 | Large ghost appears | Ghost_Appear_1, 2 | +/-2.5% |
 | Large ghost reaches the floor | Ghost_Burst_1, 2 | +/-2.5% |
 | Two smaller ghosts emerge | Ghost_Split_1, 2 | +/-2.5% |
+| Bomb fuse expires or a launched bomb hits a brick | Bomb_Explosion | +/-2% |
 
 Clip groups avoid immediately repeating the same clip. Each effect plays on its
 own pooled 2D AudioSource under Game Audio, so overlapping sounds keep their own
@@ -250,6 +305,15 @@ event and short echo tails. **Ghost Effects** on **Game Audio** controls their
 volumes; they play once per event and use no additional looping sources. Their
 WAVs and generation notes are in `Assets/Audio/Ghosts`; the reproducible sound
 generator is `Tools/Audio/GenerateGhostAudio.cs`.
+
+An armed bomb loops `Bomb_Tick.wav`, increasing its pitch and cadence as its
+three-second fuse approaches detonation. The loop stops if the bomb loses its
+support, is parried, or the run ends. `Bomb_Explosion.wav` plays through the
+pooled Game Audio system so its tail continues after the bomb object disappears.
+The WAVs are in `Assets/Audio/Bombs`; their reproducible generator is
+`Tools/Audio/GenerateBombAudio.cs`. Tick volume and pitch range are adjustable
+on the BombEnemy prefab, and explosion volume is under **Bomb Effects** on Game
+Audio.
 
 Main_Theme and Loopable_Ambience are controlled by the persistent
 **Background Audio** prefab rather than the effects pool.

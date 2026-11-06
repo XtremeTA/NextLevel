@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,6 +19,13 @@ public sealed class GameManager : MonoBehaviour
     [Header("Speed Progression")]
     [Tooltip("Active gameplay seconds to reach the ball and player maximum speeds.")]
     [SerializeField, Min(1f)] private float speedRampDuration = 180f;
+    [Header("Stages")]
+    [Tooltip("Score required to enter Stage 2.")]
+    [SerializeField, Min(1)] private int stageTwoScore = 100;
+    [Tooltip("Score in Stage 2 when both ghost and bomb bricks begin appearing in new rows.")]
+    [SerializeField, Min(1)] private int bothEnemiesScore = 150;
+    [Tooltip("Score required to enter Stage 3 and introduce dragon bricks.")]
+    [SerializeField, Min(1)] private int stageThreeScore = 250;
     private float speedRampElapsed;
     private bool scoreRecorded;
 
@@ -25,7 +33,14 @@ public sealed class GameManager : MonoBehaviour
     public int MaximumLives => LifeCap;
     public bool IsGameOver { get; private set; }
     public int FinalScore { get; private set; }
+    public int CurrentStage { get; private set; } = 1;
+    private int StageTwoThreshold => Mathf.Max(1, stageTwoScore);
+    private int BothEnemiesThreshold => Mathf.Max(StageTwoThreshold + 1, bothEnemiesScore);
+    private int StageThreeThreshold => Mathf.Max(BothEnemiesThreshold + 1, stageThreeScore);
+    public bool BothEnemiesUnlocked => ScoreCounter.Instance != null &&
+        ScoreCounter.Instance.Score >= BothEnemiesThreshold;
     public float SpeedRampProgress => Mathf.Clamp01(speedRampElapsed / Mathf.Max(1f, speedRampDuration));
+    public event Action<int> StageChanged;
 
     private void Awake()
     {
@@ -40,6 +55,14 @@ public sealed class GameManager : MonoBehaviour
     {
         if (!IsGameOver && Time.timeScale > 0f)
             speedRampElapsed = Mathf.Min(speedRampElapsed + Time.deltaTime, Mathf.Max(1f, speedRampDuration));
+
+        int score = ScoreCounter.Instance != null ? ScoreCounter.Instance.Score : 0;
+        int nextStage = score >= StageThreeThreshold ? 3 : score >= StageTwoThreshold ? 2 : 1;
+        if (nextStage != CurrentStage)
+        {
+            CurrentStage = nextStage;
+            StageChanged?.Invoke(CurrentStage);
+        }
     }
 
     public bool LoseLife()

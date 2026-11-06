@@ -184,10 +184,14 @@ MonoBehaviour:
   pointValue: 5
   enemyPrefab: {fileID: 5793522446205422743, guid: 8c1872427215f4541b4723febfd8267f, type: 3}
   breakFrames:
-  - {fileID: 6453526970411501607, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 163020472602894099, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 6978286577381329920, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 6967736701858275283, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
+  - {fileID: 1544602942950321619, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: -8064783979755323093, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: -113000723647285742, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: 2781784052536655131, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: -4435859171424997008, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: 1447713489254632010, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: 2125097431029908706, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
+  - {fileID: 2643415681968070936, guid: 4ef910ce14180af4ab5da2190203be27, type: 3}
 --- !u!114 &5315911518182059979
 MonoBehaviour:
   m_ObjectHideFlags: 0

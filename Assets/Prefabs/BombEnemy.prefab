@@ -305,7 +305,14 @@ MonoBehaviour:
   - {fileID: 4558364876878467928, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
   - {fileID: -7009007967247963371, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
   - {fileID: 84721982727507509, guid: 6c1e5f380367ae14d8080b71e9e83683, type: 3}
-  fallSpeed: 2
+  tickingClip: {fileID: 8300000, guid: 4a33be22a63e4a4e88079d5b5d2c8bee, type: 3}
+  tickingVolume: 0.38
+  tickingStartPitch: 0.9
+  tickingEndPitch: 1.7
+  fallSpeed: 4
   launchSpeed: 8
   fuseDuration: 3
   maximumLifetime: 30
+  warningColor: {r: 0.52, g: 1, b: 0.48, a: 0.34}
+  startingFlashRate: 1.5
+  finalFlashRate: 7

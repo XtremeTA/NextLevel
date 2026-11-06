@@ -12,7 +12,11 @@ public enum SoundCue
     Death,
     GhostAppear,
     GhostBurst,
-    GhostSplit
+    GhostSplit,
+    BombExplosion,
+    DragonWisp,
+    DragonWarning,
+    DragonRise
 }
 
 [DefaultExecutionOrder(-100)]
@@ -64,6 +68,13 @@ public sealed class GameAudio : MonoBehaviour
     [SerializeField] private SoundEffect ghostAppear = new SoundEffect();
     [SerializeField] private SoundEffect ghostBurst = new SoundEffect();
     [SerializeField] private SoundEffect ghostSplit = new SoundEffect();
+
+    [Header("Bomb Effects")]
+    [SerializeField] private SoundEffect bombExplosion = new SoundEffect();
+    [Header("Dragon Effects")]
+    [SerializeField] private SoundEffect dragonWisp = new SoundEffect();
+    [SerializeField] private SoundEffect dragonWarning = new SoundEffect();
+    [SerializeField] private SoundEffect dragonRise = new SoundEffect();
 
     // Keep audio variation independent of gameplay's random sequence.
     private readonly System.Random random = new System.Random();
@@ -192,6 +203,10 @@ public sealed class GameAudio : MonoBehaviour
             case SoundCue.GhostAppear: return ghostAppear;
             case SoundCue.GhostBurst: return ghostBurst;
             case SoundCue.GhostSplit: return ghostSplit;
+            case SoundCue.BombExplosion: return bombExplosion;
+            case SoundCue.DragonWisp: return dragonWisp;
+            case SoundCue.DragonWarning: return dragonWarning;
+            case SoundCue.DragonRise: return dragonRise;
             default: return null;
         }
     }

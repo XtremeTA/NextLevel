@@ -185,10 +185,11 @@ MonoBehaviour:
   enemyPrefab: {fileID: 8050719582749348682, guid: 3bdf57012d5a9b24289bbbd53156a548, type: 3}
   lifeHeartPrefab: {fileID: 0}
   breakFrames:
-  - {fileID: 6453526970411501607, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 163020472602894099, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 6978286577381329920, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 6967736701858275283, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
+  - {fileID: -6611218661385683638, guid: 11ee084860bf6d94d8b899c48a47c225, type: 3}
+  - {fileID: -4486452411924484386, guid: 11ee084860bf6d94d8b899c48a47c225, type: 3}
+  - {fileID: 6774289233104581107, guid: 11ee084860bf6d94d8b899c48a47c225, type: 3}
+  - {fileID: 6198609154356281154, guid: 11ee084860bf6d94d8b899c48a47c225, type: 3}
+  - {fileID: -398262985734009502, guid: 11ee084860bf6d94d8b899c48a47c225, type: 3}
 --- !u!114 &3659286884357591091
 MonoBehaviour:
   m_ObjectHideFlags: 0

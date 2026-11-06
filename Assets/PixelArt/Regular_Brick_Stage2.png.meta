@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 703061fda69ed874288d6fac23829386
+guid: 797a7fd76c2aeae41bf93beb7f1ccdf2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7835194968026677920
-    second: Yokai-Brick-1_0
+      213: -5702027766569967598
+    second: Regular_Brick_Stage2_0
+  - first:
+      213: -1662844448143699216
+    second: Regular_Brick_Stage2_1
+  - first:
+      213: 8862717117769541317
+    second: Regular_Brick_Stage2_2
+  - first:
+      213: 4312290461817284012
+    second: Regular_Brick_Stage2_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -102,7 +111,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Yokai-Brick-1_0
+      name: Regular_Brick_Stage2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -110,15 +119,81 @@ TextureImporter:
         width: 64
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a2882f8f443cbc60800000000000000
-      internalID: 7835194968026677920
+      spriteID: 210ee2af4f35ed0b0800000000000000
+      internalID: -5702027766569967598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Regular_Brick_Stage2_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f21aa7d8c36ce8e0800000000000000
+      internalID: -1662844448143699216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Regular_Brick_Stage2_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c66d6d0342befa70800000000000000
+      internalID: 8862717117769541317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Regular_Brick_Stage2_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c45d970459c6bd3b0800000000000000
+      internalID: 4312290461817284012
       vertices: []
       indices: 
       edges: []
@@ -137,7 +212,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Yokai-Brick-1_0: 7835194968026677920
+      Regular_Brick_Stage2_0: -5702027766569967598
+      Regular_Brick_Stage2_1: -1662844448143699216
+      Regular_Brick_Stage2_2: 8862717117769541317
+      Regular_Brick_Stage2_3: 4312290461817284012
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

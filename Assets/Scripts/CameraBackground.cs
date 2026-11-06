@@ -7,18 +7,36 @@ public sealed class CameraBackground : MonoBehaviour
 {
     [SerializeField] private Camera targetCamera;
     [SerializeField, Min(0.1f)] private float distanceFromCamera = 20f;
+    [Header("Stages")]
+    [SerializeField] private Color stageTwoTint = new Color(0.62f, 0.66f, 0.74f, 1f);
+    [SerializeField, Min(0.01f)] private float stageTintDuration = 0.8f;
 
     private SpriteRenderer backgroundRenderer;
+    private Color stageOneTint = Color.white;
 
     private void OnEnable()
     {
         backgroundRenderer = GetComponent<SpriteRenderer>();
+        stageOneTint = backgroundRenderer.color;
         FitToCamera();
     }
 
     private void LateUpdate()
     {
+        UpdateStageTint();
         FitToCamera();
+    }
+
+    private void UpdateStageTint()
+    {
+        if (!Application.isPlaying || backgroundRenderer == null)
+            return;
+
+        Color target = GameManager.Instance != null && GameManager.Instance.CurrentStage >= 2
+            ? stageTwoTint
+            : stageOneTint;
+        float amount = Mathf.Clamp01(Time.unscaledDeltaTime / Mathf.Max(0.01f, stageTintDuration));
+        backgroundRenderer.color = Color.Lerp(backgroundRenderer.color, target, amount);
     }
 
     private void FitToCamera()

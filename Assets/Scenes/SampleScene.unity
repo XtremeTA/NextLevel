@@ -226,6 +226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraBackground
   targetCamera: {fileID: 519420031}
   distanceFromCamera: 20
+  stageTwoTint: {r: 0.62, g: 0.66, b: 0.74, a: 1}
+  stageTintDuration: 0.8
 --- !u!1001 &131255358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2588,6 +2590,9 @@ MonoBehaviour:
   emptyHeart: {fileID: 574804736741828950, guid: 1cebabb6597f1bc43893b4547bd2e09c, type: 3}
   gameOverScreen: {fileID: 541620304}
   speedRampDuration: 180
+  stageTwoScore: 100
+  bothEnemiesScore: 150
+  stageThreeScore: 250
 --- !u!1 &1900100000
 GameObject:
   m_ObjectHideFlags: 0
@@ -3378,6 +3383,34 @@ MonoBehaviour:
     pitchVariation: 0.025
     volumeVariation: 0.03
     minimumInterval: 0.12
+  bombExplosion:
+    clips:
+    - {fileID: 8300000, guid: d8c92f7712aa48b7afdaff61766a84d6, type: 3}
+    volume: 0.85
+    pitchVariation: 0.02
+    volumeVariation: 0.03
+    minimumInterval: 0.1
+  dragonWisp:
+    clips:
+    - {fileID: 8300000, guid: ebb5c405c48643c98398e49abbc18e0f, type: 3}
+    volume: 0.4
+    pitchVariation: 0
+    volumeVariation: 0.02
+    minimumInterval: 0.08
+  dragonWarning:
+    clips:
+    - {fileID: 8300000, guid: fe1771ff698840f3a1635f75ce88ada4, type: 3}
+    volume: 0.4
+    pitchVariation: 0
+    volumeVariation: 0.02
+    minimumInterval: 0.08
+  dragonRise:
+    clips:
+    - {fileID: 8300000, guid: 2774acaa5bde4ef2862b5cfd0a2f68b6, type: 3}
+    volume: 0.6
+    pitchVariation: 0
+    volumeVariation: 0.02
+    minimumInterval: 0.08
 --- !u!1 &2141160850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,11 +3507,24 @@ MonoBehaviour:
   brickPrefab: {fileID: 7752519521242301840, guid: 67e3b89a933d2d84e8399028e38fcdc2, type: 3}
   specialBrickPrefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
   bombBrickPrefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
+  dragonBrickPrefab: {fileID: 5286446347618960158, guid: c51f2859e8bf42b8901724c917d0bfa4, type: 3}
+  stageTwoBrickIdle: {fileID: -5702027766569967598, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
+  stageTwoBrickBreakFrames:
+  - {fileID: -1662844448143699216, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
+  - {fileID: 8862717117769541317, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
+  - {fileID: 4312290461817284012, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
+  stageThreeBrickIdle: {fileID: -5702027766569967598, guid: c3a160ee90a34d3fa2fd8b969f671140, type: 3}
+  stageThreeBrickBreakFrames:
+  - {fileID: -1662844448143699216, guid: c3a160ee90a34d3fa2fd8b969f671140, type: 3}
+  - {fileID: 8862717117769541317, guid: c3a160ee90a34d3fa2fd8b969f671140, type: 3}
+  - {fileID: 4312290461817284012, guid: c3a160ee90a34d3fa2fd8b969f671140, type: 3}
   specialBricksPerRow: 1
+  stageOneEnemyRowChance: 0.5
   specialBrickIncreaseInterval: 90
   maximumSpecialBricksPerRow: 3
   lifeBrickPrefab: {fileID: 4165469461998665605, guid: 1033a8abb7421d445a1a6b331a99e85e, type: 3}
   rowCount: 4
+  initialEnemyFreeRows: 2
   bricksPerRow: 7
   columnSpacing: 2
   rowSpacing: 1
