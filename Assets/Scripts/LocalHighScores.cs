@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class LocalHighScores
 {
-    public const int Capacity = 10;
+    public const int Capacity = 5;
     private const string Prefix = "TenCourts.HighScores.";
     public static event Action Changed;
 

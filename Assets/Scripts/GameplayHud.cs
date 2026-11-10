@@ -45,7 +45,6 @@ public sealed class GameplayHud : MonoBehaviour
         frame.anchorMin = Vector2.zero;
         frame.anchorMax = Vector2.one;
         frame.sizeDelta = Vector2.zero;
-        frame.SetAsFirstSibling();
 
         RectTransform left = leftColumn = Panel("Score column", frame);
         RectTransform right = rightColumn = Panel("Controls column", frame);
@@ -62,7 +61,7 @@ public sealed class GameplayHud : MonoBehaviour
         // Resize the original board as a group to preserve the art and digit positions.
         Place(scoreboard, left, 0, 218, 128, 64);
         Rule(left, 378);
-        Label(left, "HIGH SCORES", 0, 405, 240, 44, 28, Paper);
+        Label(left, "SCORES", 0, 405, 240, 44, 28, Paper);
         Label(left, "LOCAL TOP 10", 0, 452, 240, 32, 18, Muted);
         for (int i = 0; i < scoreRows.Length; i++)
         {
