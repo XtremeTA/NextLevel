@@ -3660,6 +3660,19 @@ MonoBehaviour:
   specialBrickPrefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
   bombBrickPrefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
   dragonBrickPrefab: {fileID: 5286446347618960158, guid: c51f2859e8bf42b8901724c917d0bfa4, type: 3}
+  enemySpawnRules:
+  - prefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
+    unlockStage: 1
+    weight: 70
+    maxPerRow: 0
+  - prefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
+    unlockStage: 2
+    weight: 25
+    maxPerRow: 1
+  - prefab: {fileID: 5286446347618960158, guid: c51f2859e8bf42b8901724c917d0bfa4, type: 3}
+    unlockStage: 3
+    weight: 5
+    maxPerRow: 1
   stageTwoBrickIdle: {fileID: -5702027766569967598, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
   stageTwoBrickBreakFrames:
   - {fileID: -1662844448143699216, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}
