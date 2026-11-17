@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8015384649542576487, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
+  m_Sprite: {fileID: 3542062986824092109, guid: d77bbf3e2bc0b0847a7315a92d040c57, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -134,7 +134,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
+    oldSize: {x: 1, y: 0.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -179,15 +179,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a188c5dcb57470448dd8d1dcf9d89b3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brick
   pointValue: 5
   enemyPrefab: {fileID: 1000, guid: f40d9a8b81974e2daed6a9bb386b13e2, type: 3}
   lifeHeartPrefab: {fileID: 0}
   breakFrames:
-  - {fileID: 6453526970411501607, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 163020472602894099, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
-  - {fileID: 6978286577381329920, guid: 02b53a775e58646418afaa5c64e92a4e, type: 3}
+  - {fileID: -5425112062828704552, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
+  - {fileID: -4801310235472445108, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
+  - {fileID: -739679477454977154, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
+  - {fileID: 3914785797773199355, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
+  - {fileID: 1928926537933988619, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
+  - {fileID: 575461475746119829, guid: 5cb4b848773d59148be5feeec3bbbcf5, type: 3}
 --- !u!114 &3659286884357591091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,9 +201,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a9a07706d424a8aa619346a94848e4c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteFrameAnimation
-  frames: []
+  frames:
+  - {fileID: 3542062986824092109, guid: d77bbf3e2bc0b0847a7315a92d040c57, type: 3}
+  - {fileID: 1925376187, guid: d77bbf3e2bc0b0847a7315a92d040c57, type: 3}
+  - {fileID: 495405673, guid: d77bbf3e2bc0b0847a7315a92d040c57, type: 3}
+  - {fileID: -1633196208, guid: d77bbf3e2bc0b0847a7315a92d040c57, type: 3}
   frameRate: 10
   loop: 1
   playOnEnable: 0

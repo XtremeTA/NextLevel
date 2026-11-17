@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public sealed class BrickRowManager : MonoBehaviour
 {
     [SerializeField] private Brick brickPrefab;
     [SerializeField] private Brick specialBrickPrefab;
     [SerializeField] private Brick bombBrickPrefab;
     [SerializeField] private Brick dragonBrickPrefab;
+
+    [Header("Enemy Spawn Rules")]
+    [SerializeField]
+    private EnemySpawnRule[] enemySpawnRules;
     [Header("Stage 2")]
     [SerializeField] private Sprite stageTwoBrickIdle;
     [SerializeField] private Sprite[] stageTwoBrickBreakFrames;
@@ -30,6 +36,21 @@ public sealed class BrickRowManager : MonoBehaviour
     [SerializeField, Min(0.01f)] private float rowShiftDuration = 0.35f;
     [Tooltip("Leftmost brick position. Y is aligned to the camera's top edge when an orthographic camera is available.")]
     [SerializeField] private Vector3 topLeftPosition = new Vector3(-8f, 5.5f, 0f);
+
+    [System.Serializable]
+    private class EnemySpawnRule
+    {
+        public Brick prefab;
+
+        [Min(1)]
+        public int unlockStage = 1;
+
+        [Range(0f, 100f)]
+        public float weight = 1f;
+
+        [Min(0)]
+        public int maxPerRow = 0; // 0 = unlimited
+    }
 
     private struct SpawnedBrick
     {
@@ -143,52 +164,172 @@ public sealed class BrickRowManager : MonoBehaviour
         return position;
     }
 
+    private List<Brick> BuildSpecialPool(int specialCount)
+    {
+        List<Brick> result = new();
+
+        GameManager game = GameManager.Instance;
+
+        if (game == null || specialCount <= 0)
+            return result;
+
+        Dictionary<EnemySpawnRule, int> spawnedCounts =
+            new Dictionary<EnemySpawnRule, int>();
+
+        for (int i = 0; i < specialCount; i++)
+        {
+            List<EnemySpawnRule> candidates = new();
+
+            float totalWeight = 0f;
+
+            foreach (EnemySpawnRule rule in enemySpawnRules)
+            {
+                if (rule == null ||
+                    rule.prefab == null ||
+                    game.CurrentStage < rule.unlockStage)
+                {
+                    continue;
+                }
+
+                int currentCount =
+                    spawnedCounts.TryGetValue(rule, out int count)
+                        ? count
+                        : 0;
+
+                bool atLimit =
+                    rule.maxPerRow > 0 &&
+                    currentCount >= rule.maxPerRow;
+
+                if (atLimit)
+                    continue;
+
+                candidates.Add(rule);
+                totalWeight += rule.weight;
+            }
+
+            if (candidates.Count == 0)
+                break;
+
+            float roll = Random.value * totalWeight;
+
+            foreach (EnemySpawnRule candidate in candidates)
+            {
+                roll -= candidate.weight;
+
+                if (roll <= 0f)
+                {
+                    result.Add(candidate.prefab);
+
+                    if (!spawnedCounts.ContainsKey(candidate))
+                        spawnedCounts[candidate] = 0;
+
+                    spawnedCounts[candidate]++;
+
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     private SpawnedBrick[] SpawnRow(Vector3 leftPosition, bool allowEnemyBricks)
     {
         SpawnedBrick[] row = new SpawnedBrick[bricksPerRow];
-        int specialsRemaining = allowEnemyBricks ? CurrentSpecialBricksPerRow : 0;
-        if (specialsRemaining > 0 && (GameManager.Instance == null || GameManager.Instance.CurrentStage < 2) &&
-            Random.value >= stageOneEnemyRowChance)
-            specialsRemaining = 0;
-        int livesRemaining = specialsRemaining < bricksPerRow && CanSpawnLifeBrick() ? 1 : 0;
+
+        List<Brick> specialPool = new();
+
+        if (allowEnemyBricks)
+        {
+            int specialCount = CurrentSpecialBricksPerRow;
+
+            if (specialCount > 0 &&
+                (GameManager.Instance == null ||
+                GameManager.Instance.CurrentStage < 2) &&
+                Random.value >= stageOneEnemyRowChance)
+            {
+                specialCount = 0;
+            }
+
+            specialPool = BuildSpecialPool(specialCount);
+        }
+
+        int specialsRemaining = specialPool.Count;
+
+        int livesRemaining =
+            specialsRemaining < bricksPerRow &&
+            CanSpawnLifeBrick()
+                ? 1
+                : 0;
+
         for (int column = 0; column < bricksPerRow; column++)
         {
-            Vector3 position = leftPosition + Vector3.right * columnSpacing * column;
-            bool special = specialsRemaining > 0 && Random.Range(0, bricksPerRow - column) < specialsRemaining;
+            Vector3 position =
+                leftPosition +
+                Vector3.right * columnSpacing * column;
+
+            bool special =
+                specialsRemaining > 0 &&
+                Random.Range(0, bricksPerRow - column) < specialsRemaining;
+
+            Brick selectedPrefab;
+
             if (special)
+            {
+                int randomIndex =
+                    Random.Range(0, specialPool.Count);
+
+                selectedPrefab = specialPool[randomIndex];
+
+                specialPool.RemoveAt(randomIndex);
+
                 specialsRemaining--;
-            bool life = !special && livesRemaining > 0 &&
-                Random.Range(0, bricksPerRow - column - specialsRemaining) < livesRemaining;
-            if (life)
-                livesRemaining--;
-            Brick selectedPrefab = special ? NextSpecialBrick() : life ? lifeBrickPrefab : brickPrefab;
-            Brick brick = Instantiate(selectedPrefab, position, Quaternion.identity, transform);
-            Rigidbody2D body = brick.GetComponent<Rigidbody2D>();
+            }
+            else
+            {
+                bool life =
+                    !special &&
+                    livesRemaining > 0 &&
+                    Random.Range(
+                        0,
+                        bricksPerRow - column - specialsRemaining)
+                    < livesRemaining;
+
+                if (life)
+                {
+                    selectedPrefab = lifeBrickPrefab;
+                    livesRemaining--;
+                }
+                else
+                {
+                    selectedPrefab = brickPrefab;
+                }
+            }
+
+            Brick brick =
+                Instantiate(
+                    selectedPrefab,
+                    position,
+                    Quaternion.identity,
+                    transform);
+
+            Rigidbody2D body =
+                brick.GetComponent<Rigidbody2D>();
+
             body.bodyType = RigidbodyType2D.Kinematic;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
-            bool isRegular = selectedPrefab == brickPrefab;
-            if (isRegular)
-                ApplyStageAppearance(brick);
-            row[column] = new SpawnedBrick { brick = brick, body = body };
-        }
-        return row;
-    }
 
-    private Brick NextSpecialBrick()
-    {
-        GameManager game = GameManager.Instance;
-        if (game != null && game.CurrentStage >= 3 && dragonBrickPrefab != null)
-            return dragonBrickPrefab;
-        if (game == null || game.CurrentStage < 2)
-            return specialBrickPrefab != null ? specialBrickPrefab : bombBrickPrefab;
-        if (!game.BothEnemiesUnlocked)
-            return bombBrickPrefab != null ? bombBrickPrefab : specialBrickPrefab;
-        if (bombBrickPrefab == null)
-            return specialBrickPrefab;
-        if (specialBrickPrefab == null)
-            return bombBrickPrefab;
-        // From 150 points onward, alternate the two enemies within the existing special-brick budget.
-        return specialSpawnCount++ % 2 == 0 ? bombBrickPrefab : specialBrickPrefab;
+            if (selectedPrefab == brickPrefab)
+                ApplyStageAppearance(brick);
+
+            row[column] = new SpawnedBrick
+            {
+                brick = brick,
+                body = body
+            };
+        }
+
+        return row;
     }
 
     private void ApplyStageAppearance(Brick brick)
