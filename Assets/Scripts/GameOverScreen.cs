@@ -101,7 +101,8 @@ public sealed class GameOverScreen : MonoBehaviour
     public void Show(int finalPoints)
     {
         score = finalPoints;
-        rank = LocalHighScores.QualifyingRank(score);
+        rank = GameManager.Instance != null && GameManager.Instance.IsStageTest
+            ? -1 : LocalHighScores.QualifyingRank(score);
         selected = 0;
         nextLetterRepeat = Time.unscaledTime + 0.35f;
         for (int i = 0; i < initials.Length; i++) initials[i] = 'A';

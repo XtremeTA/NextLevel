@@ -7,7 +7,9 @@ public sealed class DragonLaneEnemy : MonoBehaviour
     [SerializeField] private float warningDuration = 1.1f;
 
     [Header("Lane")]
-    [SerializeField] private float laneWidth = 1.4f;
+    [SerializeField] private float laneWidth = 1.25f;
+    [SerializeField, Min(0f)] private float wispSwayDistance = 0.12f;
+    [SerializeField, Min(0f)] private float wispSwaySpeed = 4f;
 
     [Header("References")]
     [SerializeField] private GameObject dragonPrefab;
@@ -16,7 +18,7 @@ public sealed class DragonLaneEnemy : MonoBehaviour
 
     [Header("Warning")]
     [SerializeField]
-    private Color warningColor = new Color(0.65f, 1f, 0.48f, 0.5f);
+    private Color warningColor = new Color(0.68f, 0.81f, 0.65f, 0.2f);
 
     private enum Phase
     {
@@ -57,7 +59,7 @@ public sealed class DragonLaneEnemy : MonoBehaviour
         laneX = transform.position.x;
 
         visual = CreateRenderer("Wisp", 4);
-        visual.sprite = wispSprite;
+        visual.sprite = wispSprite != null ? wispSprite : DragonPrototypeArt.Wisp;
 
         FitVisual(0.45f, 0.7f);
 
@@ -93,6 +95,11 @@ public sealed class DragonLaneEnemy : MonoBehaviour
             return;
 
         age += Time.fixedDeltaTime;
+        if (age > 30f || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         if (phase == Phase.Falling)
         {
@@ -138,10 +145,15 @@ public sealed class DragonLaneEnemy : MonoBehaviour
             return;
         }
 
+        // Start the complete new sprite below the camera, not halfway into the arena.
+        SpriteRenderer dragonRenderer = dragonPrefab.GetComponent<SpriteRenderer>();
+        float topOffset = dragonRenderer != null && dragonRenderer.sprite != null
+            ? dragonRenderer.sprite.bounds.max.y * Mathf.Abs(dragonPrefab.transform.localScale.y)
+            : 1f;
         Vector3 spawnPosition =
             new Vector3(
                 laneX,
-                Bottom - 1f,
+                Bottom - topOffset - 0.1f,
                 0f);
 
         Instantiate(
@@ -160,14 +172,9 @@ public sealed class DragonLaneEnemy : MonoBehaviour
 
         if (phase == Phase.Falling)
         {
-            visual.color =
-                new Color(
-                    0.65f,
-                    1f,
-                    0.48f,
-                    0.85f +
-                    0.15f *
-                    Mathf.Sin(age * 10f));
+            visual.transform.localPosition = new Vector3(
+                Mathf.Sin(age * wispSwaySpeed) * wispSwayDistance, 0f, 0f);
+            visual.color = new Color(0.74f, 0.86f, 0.7f, 0.55f);
         }
 
         if (phase != Phase.Warning)

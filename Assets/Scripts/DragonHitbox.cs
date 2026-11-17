@@ -10,6 +10,7 @@ public class DragonHitbox : MonoBehaviour
     private Rigidbody2D rb;
 
     private bool hitPlayer;
+    private float age;
 
     private void Awake()
     {
@@ -23,6 +24,12 @@ public class DragonHitbox : MonoBehaviour
 
     private void FixedUpdate()
     {
+        age += Time.fixedDeltaTime;
+        if (age > 30f || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
+        {
+            Destroy(gameObject);
+            return;
+        }
         rb.linearVelocity =
             Vector2.up * riseSpeed;
 
@@ -48,7 +55,8 @@ public class DragonHitbox : MonoBehaviour
         Brick brick =
             other.GetComponent<Brick>();
 
-        if (brick != null)
+        // Brick centers are 2 units apart; only clear the warned vertical column.
+        if (brick != null && Mathf.Abs(brick.transform.position.x - transform.position.x) < 0.6f)
         {
             brick.Break();
             return;

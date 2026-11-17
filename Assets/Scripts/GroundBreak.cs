@@ -28,6 +28,7 @@ public class GroundBreak : MonoBehaviour
         if (game != null)
         {
             game.StageChanged += RefreshStage;
+            game.FloorResetRequested += RefreshCurrentStage;
             if (game.CurrentStage > 1) RefreshStage(game.CurrentStage);
         }
     }
@@ -40,6 +41,8 @@ public class GroundBreak : MonoBehaviour
         activeSprites = frames != null && frames.Length > 0 ? frames : alternativeSprites;
         refresh = StartCoroutine(LiftFreshTile());
     }
+
+    private void RefreshCurrentStage() => RefreshStage(game.CurrentStage);
 
     private IEnumerator LiftFreshTile()
     {
@@ -75,7 +78,11 @@ public class GroundBreak : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (game != null) game.StageChanged -= RefreshStage;
+        if (game != null)
+        {
+            game.StageChanged -= RefreshStage;
+            game.FloorResetRequested -= RefreshCurrentStage;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -8,14 +8,18 @@ public sealed class BackgroundAudio : MonoBehaviour
 
     [SerializeField] private AudioClip mainTheme;
     [SerializeField] private AudioClip ambience;
+    [SerializeField] private AudioClip gameAudio;
     [SerializeField] private string titleSceneName = "TitleScreen";
     [SerializeField, Range(0f, 1f)] private float titleThemeVolume = 0.4f;
     [SerializeField, Range(0f, 1f)] private float gameplayAmbienceVolume = 0.24f;
+    [SerializeField, Range(0f, 1f)] private float gameAudioVolume = 0.4f;
     [SerializeField, Min(0.01f)] private float fadeDuration = 0.6f;
 
     private AudioSource themeSource;
     private AudioSource ambienceSource;
+    private AudioSource gameAudioSource;
     private AudioSource activeSource;
+    private bool gameAudioPlaying;
     private bool titleDismissed;
     private float fadeElapsed;
 
@@ -31,6 +35,7 @@ public sealed class BackgroundAudio : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         themeSource = CreateSource("Main Theme", mainTheme);
         ambienceSource = CreateSource("Loopable Ambience", ambience);
+        gameAudioSource = CreateSource("Game Audio", gameAudio);
         SceneManager.sceneLoaded += OnSceneLoaded;
         RefreshPlayback(SceneManager.GetActiveScene());
     }
@@ -61,6 +66,7 @@ public sealed class BackgroundAudio : MonoBehaviour
     {
         titleDismissed = true;
         SetActiveSource(null);
+        SetGameAudioPlaying(false);
     }
 
     private void RefreshPlayback(Scene scene)
@@ -68,12 +74,33 @@ public sealed class BackgroundAudio : MonoBehaviour
         if (scene.name == titleSceneName)
         {
             SetActiveSource(titleDismissed ? null : themeSource);
+            SetGameAudioPlaying(false);
             return;
         }
 
         bool playing = GameManager.Instance != null && !GameManager.Instance.IsGameOver
             && Time.timeScale > 0f && !AudioListener.pause;
         SetActiveSource(playing ? ambienceSource : null);
+        SetGameAudioPlaying(playing);
+    }
+
+    private void SetGameAudioPlaying(bool playing)
+    {
+        playing &= gameAudioSource.clip != null;
+        if (gameAudioPlaying == playing)
+            return;
+
+        gameAudioPlaying = playing;
+        if (playing)
+        {
+            gameAudioSource.volume = 0f;
+            gameAudioSource.Play();
+        }
+        else
+        {
+            gameAudioSource.Stop();
+            gameAudioSource.volume = 0f;
+        }
     }
 
     private void SetActiveSource(AudioSource source)
@@ -101,14 +128,23 @@ public sealed class BackgroundAudio : MonoBehaviour
             return;
 
         RefreshPlayback(SceneManager.GetActiveScene());
-        if (activeSource == null)
+        if (activeSource == null && !gameAudioPlaying)
             return;
 
         float duration = Mathf.Max(0.01f, fadeDuration);
         fadeElapsed = Mathf.Min(fadeElapsed + Time.unscaledDeltaTime, duration);
         float blend = Mathf.SmoothStep(0f, 1f, fadeElapsed / duration);
-        float volume = activeSource == themeSource ? titleThemeVolume : gameplayAmbienceVolume;
-        activeSource.volume = Mathf.Lerp(0f, volume, blend);
+        if (activeSource != null)
+        {
+            float volume = activeSource == themeSource ? titleThemeVolume : gameplayAmbienceVolume;
+            activeSource.volume = Mathf.Lerp(0f, volume, blend);
+        }
+        if (gameAudioPlaying)
+        {
+            int stage = GameManager.Instance != null ? GameManager.Instance.CurrentStage : 1;
+            gameAudioSource.pitch = 1f + 0.05f * (Mathf.Clamp(stage, 1, 5) - 1);
+            gameAudioSource.volume = Mathf.Lerp(0f, gameAudioVolume, blend);
+        }
     }
 
     private void OnDestroy()

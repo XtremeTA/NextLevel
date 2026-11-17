@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4931519272927078166}
   - component: {fileID: 1501670888805303505}
   - component: {fileID: -3270738096295488500}
+  - component: {fileID: 7720010000000000001}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7661142372957901730, guid: c6ce8594084fc4e4baedfbf700dff4f3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -139,7 +140,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 3.2831988}
+  m_Size: {x: 0.625, y: 3.2831988}
   m_EdgeRadius: 0
 --- !u!50 &1501670888805303505
 Rigidbody2D:
@@ -181,3 +182,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragonHitbox
   riseSpeed: 18
+--- !u!114 &7720010000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975339559648467739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a9a07706d424a8aa619346a94848e4c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteFrameAnimation
+  frames:
+  - {fileID: 7661142372957901730, guid: c6ce8594084fc4e4baedfbf700dff4f3, type: 3}
+  - {fileID: -5451023882066715989, guid: c6ce8594084fc4e4baedfbf700dff4f3, type: 3}
+  - {fileID: 8396836975465080294, guid: c6ce8594084fc4e4baedfbf700dff4f3, type: 3}
+  - {fileID: -7707283746717879094, guid: c6ce8594084fc4e4baedfbf700dff4f3, type: 3}
+  frameRate: 10
+  loop: 1
+  playOnEnable: 1

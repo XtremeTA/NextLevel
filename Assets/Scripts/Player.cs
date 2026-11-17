@@ -277,6 +277,11 @@ public class Player : MonoBehaviour
 
     public bool TakeEnemyHit(Vector2 enemyPosition)
     {
+        return TakeEnemyHit(enemyPosition, 1f);
+    }
+
+    public bool TakeEnemyHit(Vector2 enemyPosition, float horizontalKnockbackMultiplier)
+    {
         if (!isActiveAndEnabled || isRecovering || isHitStunned || HurtAnimationActive || Time.time < invulnerableUntil || isDashing ||
             (GameManager.Instance != null && GameManager.Instance.IsGameOver))
             return false;
@@ -284,11 +289,11 @@ public class Player : MonoBehaviour
         float stunDuration = HurtDuration;
         invulnerableUntil = Time.time + stunDuration + hitInvulnerability;
         GameManager.Instance?.LoseLife();
-        enemyHitRoutine = StartCoroutine(ReactToEnemyHit(enemyPosition, stunDuration));
+        enemyHitRoutine = StartCoroutine(ReactToEnemyHit(enemyPosition, stunDuration, horizontalKnockbackMultiplier));
         return true;
     }
 
-    private IEnumerator ReactToEnemyHit(Vector2 enemyPosition, float stunDuration)
+    private IEnumerator ReactToEnemyHit(Vector2 enemyPosition, float stunDuration, float horizontalKnockbackMultiplier)
     {
         isHitStunned = true;
         moveInput = 0f;
@@ -299,7 +304,7 @@ public class Player : MonoBehaviour
         GameAudio.Instance?.Play(GameOver ? SoundCue.Death : SoundCue.Hurt);
 
         float away = rb.position.x >= enemyPosition.x ? 1f : -1f;
-        rb.linearVelocity = new Vector2(away * enemyKnockback.x, enemyKnockback.y);
+        rb.linearVelocity = new Vector2(away * enemyKnockback.x * horizontalKnockbackMultiplier, enemyKnockback.y);
         float knockbackEnd = Time.time + hitStunDuration;
         float stunEnd = Time.time + stunDuration;
         bool knockbackDone = false;

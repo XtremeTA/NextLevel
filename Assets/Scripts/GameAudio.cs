@@ -16,7 +16,10 @@ public enum SoundCue
     BombExplosion,
     DragonWisp,
     DragonWarning,
-    DragonRise
+    DragonRise,
+    LatcherAttach,
+    LatcherCharge,
+    LatcherSpike
 }
 
 [DefaultExecutionOrder(-100)]
@@ -75,6 +78,10 @@ public sealed class GameAudio : MonoBehaviour
     [SerializeField] private SoundEffect dragonWisp = new SoundEffect();
     [SerializeField] private SoundEffect dragonWarning = new SoundEffect();
     [SerializeField] private SoundEffect dragonRise = new SoundEffect();
+    [Header("Latcher Effects")]
+    [SerializeField] private SoundEffect latcherAttach = new SoundEffect();
+    [SerializeField] private SoundEffect latcherCharge = new SoundEffect();
+    [SerializeField] private SoundEffect latcherSpike = new SoundEffect();
 
     // Keep audio variation independent of gameplay's random sequence.
     private readonly System.Random random = new System.Random();
@@ -207,6 +214,9 @@ public sealed class GameAudio : MonoBehaviour
             case SoundCue.DragonWisp: return dragonWisp;
             case SoundCue.DragonWarning: return dragonWarning;
             case SoundCue.DragonRise: return dragonRise;
+            case SoundCue.LatcherAttach: return latcherAttach;
+            case SoundCue.LatcherCharge: return latcherCharge;
+            case SoundCue.LatcherSpike: return latcherSpike;
             default: return null;
         }
     }

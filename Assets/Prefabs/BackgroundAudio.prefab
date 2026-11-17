@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BackgroundAudio
   mainTheme: {fileID: 8300000, guid: e237fb37c253a8240a1b40c2c10c7e2f, type: 3}
   ambience: {fileID: 8300000, guid: afbe71f7da953fd45bdc7158d4166d4d, type: 3}
+  gameAudio: {fileID: 8300000, guid: 975e0d757d8374941bdef902c388e907, type: 3}
   titleSceneName: TitleScreen
   titleThemeVolume: 0.4
   gameplayAmbienceVolume: 0.24
+  gameAudioVolume: 0.4
   fadeDuration: 0.6

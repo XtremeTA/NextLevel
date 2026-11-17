@@ -13,6 +13,7 @@ public class Brick : MonoBehaviour
     private bool isBreaking;
     public bool IsBreaking => isBreaking;
     public int PointValue => Mathf.Max(0, pointValue);
+    public GameObject EnemyPrefab => enemyPrefab;
     public bool DropsLifeHeart => lifeHeartPrefab != null;
 
     void Awake()

@@ -46,8 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DragonLaneEnemy
   fallSpeed: 7
   warningDuration: 1.1
-  laneWidth: 2
+  laneWidth: 1.25
+  wispSwayDistance: 0.12
+  wispSwaySpeed: 4
   dragonPrefab: {fileID: 3975339559648467739, guid: fa303ed0ecb9d0c4b94d1f11b7f9f7c9, type: 3}
   wispSprite: {fileID: 0}
-  visualMaterial: {fileID: 2100000, guid: bfcc051fe8fc4e72ac0eca70264e4c19, type: 2}
-  warningColor: {r: 0.65, g: 1, b: 0.48, a: 0.5}
+  visualMaterial: {fileID: 2100000, guid: fed0b40c41dd44ec9f6802cdce43c421, type: 2}
+  warningColor: {r: 0.68, g: 0.81, b: 0.65, a: 0.2}

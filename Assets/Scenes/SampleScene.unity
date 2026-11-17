@@ -2670,6 +2670,7 @@ GameObject:
   - component: {fileID: 1732034684}
   - component: {fileID: 1732034685}
   - component: {fileID: 1732034686}
+  - component: {fileID: 1732034687}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2743,8 +2744,31 @@ MonoBehaviour:
   gameOverScreen: {fileID: 541620304}
   speedRampDuration: 180
   stageTwoScore: 100
-  bothEnemiesScore: 150
-  stageThreeScore: 250
+  stageThreeScore: 150
+  stageFourScore: 226
+  stageFiveScore: 301
+--- !u!114 &1732034687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732034683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69d55edc58874d36ada12f0d3c58b29f, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AdaptiveDifficulty
+  startingPressure: 0.42
+  scoreInfluence: 0.16
+  paceInfluence: 0.18
+  highScoreInfluence: 0.12
+  timeInfluence: 0.08
+  lostHealthRelief: 0.2
+  lowLivesRelief: 0.15
+  floorDamageRelief: 0.17
+  secondLatcherMinimumPressure: 0.85
+  secondLatcherMaximumChance: 0.06
 --- !u!1 &1900100000
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,6 +3587,27 @@ MonoBehaviour:
     pitchVariation: 0
     volumeVariation: 0.02
     minimumInterval: 0.08
+  latcherAttach:
+    clips:
+    - {fileID: 8300000, guid: e8a53274bcce4abf9c07463a096527b2, type: 3}
+    volume: 0.55
+    pitchVariation: 0.02
+    volumeVariation: 0.03
+    minimumInterval: 0.08
+  latcherCharge:
+    clips:
+    - {fileID: 8300000, guid: 05cf11f9b6f44ce7a3940382b97299d5, type: 3}
+    volume: 0.4
+    pitchVariation: 0.02
+    volumeVariation: 0.03
+    minimumInterval: 0.08
+  latcherSpike:
+    clips:
+    - {fileID: 8300000, guid: 5b0bb1ba7e6f46b8a0be9fc73ee27df9, type: 3}
+    volume: 0.55
+    pitchVariation: 0.02
+    volumeVariation: 0.03
+    minimumInterval: 0.08
 --- !u!1 &2141160850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3660,17 +3705,18 @@ MonoBehaviour:
   specialBrickPrefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
   bombBrickPrefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
   dragonBrickPrefab: {fileID: 5286446347618960158, guid: c51f2859e8bf42b8901724c917d0bfa4, type: 3}
+  latcherBrickPrefab: {fileID: 5286446347618960158, guid: 92c27e6ccb574e1ea31bcbeddded8956, type: 3}
   enemySpawnRules:
   - prefab: {fileID: 2870583961120799323, guid: 5ac24d7cebea6b94db28d6e0bcb8f989, type: 3}
-    unlockStage: 1
+    stageMask: 21
     weight: 70
     maxPerRow: 0
   - prefab: {fileID: 5286446347618960158, guid: 02716686e7d20b749b2abaddbd15309c, type: 3}
-    unlockStage: 2
+    stageMask: 24
     weight: 25
     maxPerRow: 1
   - prefab: {fileID: 5286446347618960158, guid: c51f2859e8bf42b8901724c917d0bfa4, type: 3}
-    unlockStage: 3
+    stageMask: 22
     weight: 5
     maxPerRow: 1
   stageTwoBrickIdle: {fileID: -5702027766569967598, guid: 797a7fd76c2aeae41bf93beb7f1ccdf2, type: 3}

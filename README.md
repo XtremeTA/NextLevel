@@ -89,20 +89,20 @@ Start button. It supports mouse and keyboard input, scales with the window, and
 fades into SampleScene. Original artwork is retained; transparent logo/button
 copies and their generation notes are in `Assets/UI/ARTWORK.md`.
 
-`Assets/Prefabs/BackgroundAudio.prefab` is present in both scenes and keeps one
-persistent theme source and one ambience source. The main theme and loopable
-ambience play separately: the theme plays on the title screen and stops as soon
-as Start is pressed. Ambience starts when gameplay loads, stops on pause or game
-over, and starts again when gameplay resumes or restarts. Adjust **Title Theme
-Volume**, **Gameplay Ambience Volume**, and the fade-in's **Fade Duration** on the
-prefab. The loops use 2D, pitch-1 playback and PCM streaming, independently of
-gameplay sound effects.
+`Assets/Prefabs/BackgroundAudio.prefab` is present in both scenes and keeps
+persistent theme, ambience, and game audio sources. The main theme plays on the
+title screen and stops as soon as Start is pressed. Ambience and `Game_Sound.wav`
+loop during gameplay, stop on pause or game over, and restart when play resumes.
+Game audio plays at pitch 1 in Stage 1 and increases by 5% per stage, reaching
+pitch 1.2 in Stage 5. Adjust **Title Theme Volume**, **Gameplay Ambience Volume**,
+**Game Audio Volume**, and **Fade Duration** on the prefab. These loops use 2D
+playback independently of gameplay sound effects.
 
 ## Brick rows
 
 SampleScene's **Brick Rows** object automatically spawns four rows of seven bricks
 when play starts. The bottom two starting rows contain no enemy bricks; the top
-two can contain Stage 1 ghost bricks. Once every brick in the bottom row has finished breaking, the
+two can contain Latcher and Stage 1 ghost bricks. Once every brick in the bottom row has finished breaking, the
 remaining rows slide down one row while a fresh row slides in from above the
 screen. The top row's sprite is flush with the main camera's top edge. Clearing an
 upper row does not advance the board until it reaches the bottom; partially
@@ -118,15 +118,36 @@ Y = 7.5 at the top to Y = 4.5 at the bottom.
 
 ## Stages
 
-Stage 1 runs from 0 to 99 points and spawns ghost bricks. At 100 points, Stage 2
-begins: newly spawned regular bricks use the Stage 2 artwork and break sequence,
-the background fades darker, and new enemy bricks are bombs only. From 150 to 249
-points, new rows can contain both ghost and bomb bricks. Ghost bricks still on
-the board still release ghosts normally during the bomb-only interval. At 250 points,
-Stage 3 begins: new regular bricks use the green Stage 3 artwork and break
-sequence, and new enemy slots contain only red yokai dragon bricks. Bricks already on the board
-keep their appearance when a stage changes. **Stage Two Score**, **Both Enemies
-Score**, and **Stage Three Score** are adjustable on GameManager. Stage 2 and 3 brick
+For development, open **NextLevel > Stage Tester** in Unity and click **Play
+Stage 1** through **Play Stage 5**. Each button launches a fresh
+gameplay board with the selected stage's bricks, enemy rules, and floor art.
+The stage stays locked while score accumulates from zero. Tests guarantee the
+stage's featured enemy (ghost, dragon, or bomb) in each
+eligible row by default; the bottom two initial rows stay enemy-free. Uncheck
+**Guarantee stage enemy in each eligible row** before launching to test normal
+weighted ghost, bomb, and dragon rates; Latcher remains available in Stages
+1, 3, and 5. Tests use full starting
+lives and normal starting speeds; test scores never enter the leaderboard.
+Buttons also restart directly into another stage while playing. **Play Normal
+Game** returns to the title screen and normal progression. Stopping Play mode
+clears the selection and restores the previous Play-start scene. The tester is
+Editor-only and does not change shipped builds or saved scene settings.
+
+Enemy types in newly spawned rows depend on score:
+
+| Stage | Score | Enemy bricks |
+| --- | --- | --- |
+| 1 | 0–99 | Latcher and ghost |
+| 2 | 100–149 | Dragon |
+| 3 | 150–225 | Latcher, ghost, and dragon |
+| 4 | 226–300 | Bomb |
+| 5 | 301 onward | Latcher, ghost, dragon, and bomb |
+
+Existing enemy bricks still release their contents after a stage change. New
+regular bricks switch to Stage 2 art at 100 points and Stage 3 art at 150;
+bricks already on the board keep their appearance. The background darkens from
+Stage 2. Stages 4 and 5 reuse Stage 3 brick art. Stage thresholds are adjustable
+on GameManager. Stage 2 and 3 brick
 sprites are assigned on **Brick Rows**, while the background tint and transition
 duration are set on the **Background** object's CameraBackground component.
 
@@ -135,20 +156,33 @@ duration are set on the **Background** object's CameraBackground component.
 At each stage change, fresh floor tiles rise from below the camera over the old
 floor in 0.65 seconds. On arrival every tile returns to four health, including
 previously destroyed tiles. Stages 1, 2, and 3 use `Tile-Sheet`, `Tile-Sheet2`, and
-`Tile-Sheet3` respectively, including their matching cracked frames. Surviving
-tiles keep their colliders during the lift; tile damage pauses until it finishes.
+`Tile-Sheet3` respectively, including their matching cracked frames. Stages 4 and
+5 reuse Stage 3 tiles. In Stage 5, additional floor resets occur at scores
+401, 500, 650, 800, and 1000. After that, the gaps grow by 50 points each
+time: 1250, 1550, 1900, and so on.
+Surviving tiles keep their colliders during the lift; tile damage pauses until it finishes.
 Tune **Refresh Duration** on **GroundBrick**. Empty floor slots retain their
 GroundBreak component with renderer/collider disabled so they can be rebuilt.
 
-Eligible Stage 1 rows have a 50% chance of one animated soul brick, with no
-time-based increase. Tune **Stage One Enemy Row Chance** on **Brick Rows**.
-From Stage 2 onward, eligible rows start with one special brick.
-Stage 2 uses only animated bomb bricks until 150 points, then animated bomb bricks and
-animated soul bricks alternate within that count. New
-rows in Stage 2 or later get two special bricks after
-90 seconds of gameplay and three after three minutes, capped at three per
-row. Existing rows keep their bricks; the increase appears as new rows
-arrive. Pausing and game over stop the progression clock; restarting resets it.
+Adaptive difficulty samples score, active play time, score pace, saved high score,
+current lives, lives lost during the run, and total floor health whenever a row
+spawns. Strong play raises the chance and count of enemy bricks and shifts mixed
+stages toward bombs and dragons. Damage lowers those odds. Random rolls keep rows
+varied while each stage's enemy roster remains fixed. Tune the weights on the
+**Adaptive Difficulty** component of **GameManager**.
+
+The bottom two starting rows remain enemy-free. Stage 1 has a 50% base chance
+of a ghost brick in eligible rows, adjusted by pressure. **Stage One Enemy Row
+Chance** on **Brick Rows** sets that base chance. A Latcher brick is added in
+Stages 1, 3, and 5 when no Latcher brick or live Latcher is present. A second is
+possible only at high pressure and at most a 6% chance per new row. Unopened
+Latcher bricks count toward the hard cap of two. The scene's **Enemy Spawn
+Rules** use base weights of 70 for ghosts, 25 for bombs, and 5 for dragons;
+bombs and dragons are capped at one of each per row. Eligible rows can request
+up to two weighted enemy bricks after 90 seconds and three after three minutes.
+In Stages 2 and 4 the per-enemy cap keeps this to one dragon or bomb. Existing
+rows keep their bricks. Pausing and game over stop the progression clock;
+restarting resets it.
 The **YokaiBrick** prefab loops the eight nonempty frames from
 `Assets/PixelArt/enemy_brick1.png` at 10 fps until broken. Its **Sprite Frame
 Animation** component controls the idle frame rate; the existing break animation
@@ -166,15 +200,15 @@ awarding its configured point value and disappearing. Special bricks keep their 
 enemy or heart release behavior when broken this way. Enemies fall through broken floor
 tiles and despawn after leaving the screen or reaching their maximum lifetime.
 
-**Special Bricks Per Row** on **Brick Rows** sets the starting count; set it to 0
-to use only regular bricks. **Special Brick Increase Interval** and **Maximum
-Special Bricks Per Row** control the gentle difficulty ramp. The **YokaiBrick**, **FallingEnemy**, and **FloorEnemy**
+**Special Bricks Per Row** on **Brick Rows** sets the starting weighted count;
+Latcher slots are separate. **Special Brick Increase Interval** and **Maximum
+Special Bricks Per Row** set the cap over time. The **YokaiBrick**, **FallingEnemy**, and **FloorEnemy**
 prefabs hold the break frames, fall speed, explosion timing, run speed, and
 lifetime settings. Enemy sprites use complete, evenly spaced animation frames
 with point filtering and 32 pixels per world unit.
 Default speeds are 9 units/second for falling, 8 for running, and 10 for rising.
 
-The **BombBrick** loops the five frames of `Bomb_enemy_brick.png` at 10 fps while intact. Introduced in Stage 2, it uses the five nonempty frames from
+The **BombBrick** loops the five frames of `Bomb_enemy_brick.png` at 10 fps while intact. Introduced in Stage 4, it uses the five nonempty frames from
 `Assets/PixelArt/bomb_enemy_brick_break.png` when it breaks and releases a
 **BombEnemy**, using the supplied
 `Bomb_EnemyFalling.png` and `Bomb_enemy_grounded.png` animation sheets. It falls
@@ -199,27 +233,43 @@ defeat never deals blast damage or releases smaller enemies. **Fall Speed** and
 **Fuse Duration** are adjustable on the bomb prefab. Floor tiles retain four
 health, and ball hits continue to deal one damage each.
 
-The Stage 3 **RedYokaiBrick** uses `Yokai-Brick-1-Sheet.png` for its temporary
-idle and break art. Breaking it releases a harmless green wisp in that column.
+The Stage 2 **RedYokaiBrick** uses `Dragon_brick.png` and
+`dragon_brick_Break.png` for its idle and break animations. Breaking it releases
+a harmless, gently swaying wisp in that column.
 The wisp falls through the floor. After it has completely left the bottom of the
-camera view, a narrow green beam flashes in its lane for 1.1 seconds. A placeholder
-dragon then flies upward at 18 units/second, breaking each brick it passes in
+camera view, a translucent muted-green beam flashes in its lane for 1.1 seconds.
+The animated dragon sprite then flies upward at 18 units/second, breaking each brick it passes in
 that vertical column. The dragon can hurt the player once per pass, respects
 normal dash/invulnerability rules, and never damages floor tiles. The warning
-and damage lane are both 1.4 units wide, narrower than the 2-unit column spacing.
+and damage lane are about 1.25 units wide, narrower than the 2-unit column spacing.
 Bricks cleared by the dragon award their normal points and release their normal
 contents. The enemy cleans itself up above the screen or when the run ends.
-**DragonLaneEnemy** exposes fall speed, warning duration, rise speed, lane width,
-and dragon length. Separate wisp, warning, and rising dragon audio cues play
+**DragonLaneEnemy** exposes fall speed, warning duration, lane width, and wisp
+sway. Separate wisp, warning, and rising dragon audio cues play
 through GameAudio. Their WAV files live in `Assets/Audio/Dragons` and can be
 regenerated with `Tools/Audio/GenerateDragonAudio.cs`.
-Assign **Wisp Sprite** and **Dragon Sprite** to replace the
-generated placeholder art later.
+Assign **Wisp Sprite** to replace the generated wisp later.
+
+The **LatcherBrick** can appear in Stages 1, 3, and 5. Its animated brick uses
+`Latcher_Brick.png` and `Latcher_brick_break.png`; breaking it releases the
+animated `Latcher_enemy.png` creature. It falls to a surviving floor tile,
+sinks eight sprite pixels into its top, and latches there for five seconds.
+Touching it costs one heart and gives a visible sideways knockback. It can hit
+again after the player's normal invulnerability expires if they return to it.
+If its tile breaks, it falls again and
+restarts the latch timer on its next tile. At the end it fires one small upward
+spike that breaks the first intact brick in its column, then disappears. The
+spike artwork is generated in code until a dedicated sheet is supplied.
+It plays a landing snap, a charge in the final 0.7 seconds, and a spike-launch
+sound. The WAV files are in `Assets/Audio/Latchers` and can be regenerated with
+`Tools/Audio/GenerateLatcherAudio.cs`.
+Latcher appears in Stage Tester runs without selecting a featured enemy.
 
 Each brick type has its own prefab: **Brick** is the regular brick (1 point),
 **YokaiBrick** is the animated soul brick (5 points), **BombBrick** is the animated
 bomb brick (5 points), and **LifeBrick** is the green heart
-brick (3 points). **RedYokaiBrick** releases the Stage 3 dragon (5 points).
+brick (3 points). **RedYokaiBrick** releases the dragon (5 points),
+and **LatcherBrick** releases the Latcher (5 points).
 Change **Point Value** on each prefab's **Brick** component to
 tune its score. A brick awards its points only once, including when an enemy
 breaks it.

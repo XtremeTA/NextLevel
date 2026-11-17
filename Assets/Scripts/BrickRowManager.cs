@@ -9,6 +9,7 @@ public sealed class BrickRowManager : MonoBehaviour
     [SerializeField] private Brick specialBrickPrefab;
     [SerializeField] private Brick bombBrickPrefab;
     [SerializeField] private Brick dragonBrickPrefab;
+    [SerializeField] private Brick latcherBrickPrefab;
 
     [Header("Enemy Spawn Rules")]
     [SerializeField]
@@ -20,7 +21,7 @@ public sealed class BrickRowManager : MonoBehaviour
     [SerializeField] private Sprite stageThreeBrickIdle;
     [SerializeField] private Sprite[] stageThreeBrickBreakFrames;
     [Header("Row Spawning")]
-    [Tooltip("Chance for an eligible Stage 1 row to contain one ghost brick. Stage 1 never ramps above one.")]
+    [Tooltip("Base chance for an eligible Stage 1 row to contain a ghost brick; adaptive difficulty adjusts it.")]
     [SerializeField, Range(0f, 1f)] private float stageOneEnemyRowChance = 0.5f;
     [SerializeField, Min(0)] private int specialBricksPerRow = 1;
     [SerializeField, Min(1f)] private float specialBrickIncreaseInterval = 90f;
@@ -41,9 +42,8 @@ public sealed class BrickRowManager : MonoBehaviour
     private class EnemySpawnRule
     {
         public Brick prefab;
-
-        [Min(1)]
-        public int unlockStage = 1;
+        [Tooltip("Bit mask of stages 1–5 where this enemy can appear (1, 2, 4, 8, 16).")]
+        public int stageMask = 1;
 
         [Range(0f, 100f)]
         public float weight = 1f;
@@ -164,7 +164,7 @@ public sealed class BrickRowManager : MonoBehaviour
         return position;
     }
 
-    private List<Brick> BuildSpecialPool(int specialCount)
+    private List<Brick> BuildSpecialPool(int specialCount, float pressure)
     {
         List<Brick> result = new();
 
@@ -186,7 +186,7 @@ public sealed class BrickRowManager : MonoBehaviour
             {
                 if (rule == null ||
                     rule.prefab == null ||
-                    game.CurrentStage < rule.unlockStage)
+                    (rule.stageMask & (1 << (game.CurrentStage - 1))) == 0)
                 {
                     continue;
                 }
@@ -203,8 +203,10 @@ public sealed class BrickRowManager : MonoBehaviour
                 if (atLimit)
                     continue;
 
+                float weight = GetSpawnWeight(rule, pressure);
+                if (weight <= 0f) continue;
                 candidates.Add(rule);
-                totalWeight += rule.weight;
+                totalWeight += weight;
             }
 
             if (candidates.Count == 0)
@@ -214,7 +216,7 @@ public sealed class BrickRowManager : MonoBehaviour
 
             foreach (EnemySpawnRule candidate in candidates)
             {
-                roll -= candidate.weight;
+                roll -= GetSpawnWeight(candidate, pressure);
 
                 if (roll <= 0f)
                 {
@@ -233,6 +235,25 @@ public sealed class BrickRowManager : MonoBehaviour
         return result;
     }
 
+    private float GetSpawnWeight(EnemySpawnRule rule, float pressure)
+    {
+        AdaptiveDifficulty balance = AdaptiveDifficulty.Instance;
+        float multiplier = balance != null
+            ? balance.EnemyWeightMultiplier(rule.prefab == specialBrickPrefab,
+                rule.prefab == bombBrickPrefab, rule.prefab == dragonBrickPrefab, pressure)
+            : 1f;
+        return Mathf.Max(0f, rule.weight) * multiplier;
+    }
+
+    private int CountLatchersInPlay()
+    {
+        if (latcherBrickPrefab == null || latcherBrickPrefab.EnemyPrefab == null) return 2;
+        int count = FindObjectsByType<LatcherEnemy>(FindObjectsSortMode.None).Length;
+        foreach (Brick brick in FindObjectsByType<Brick>(FindObjectsSortMode.None))
+            if (brick.EnemyPrefab == latcherBrickPrefab.EnemyPrefab) count++;
+        return count;
+    }
+
     private SpawnedBrick[] SpawnRow(Vector3 leftPosition, bool allowEnemyBricks)
     {
         SpawnedBrick[] row = new SpawnedBrick[bricksPerRow];
@@ -241,17 +262,32 @@ public sealed class BrickRowManager : MonoBehaviour
 
         if (allowEnemyBricks)
         {
+            GameManager game = GameManager.Instance;
+            AdaptiveDifficulty balance = AdaptiveDifficulty.Instance;
+            float pressure = balance != null ? balance.GetPressure() : 0.5f;
             int specialCount = CurrentSpecialBricksPerRow;
-
-            if (specialCount > 0 &&
-                (GameManager.Instance == null ||
-                GameManager.Instance.CurrentStage < 2) &&
-                Random.value >= stageOneEnemyRowChance)
-            {
+            if (game != null && balance != null)
+                specialCount = balance.RollSpecialCount(game.CurrentStage, specialCount, stageOneEnemyRowChance, pressure);
+            else if (game != null && game.CurrentStage == 1 && Random.value >= stageOneEnemyRowChance)
                 specialCount = 0;
-            }
 
-            specialPool = BuildSpecialPool(specialCount);
+            specialPool = BuildSpecialPool(specialCount, pressure);
+            if (game != null && game.GuaranteeStageTestEnemy)
+            {
+                Brick featured = game.CurrentStage == 4 ? bombBrickPrefab
+                    : game.CurrentStage == 2 || game.CurrentStage == 3 || game.CurrentStage == 5
+                        ? dragonBrickPrefab : specialBrickPrefab;
+                if (featured != null && !specialPool.Contains(featured))
+                {
+                    if (specialPool.Count == 0) specialPool.Add(featured);
+                    else specialPool[0] = featured;
+                }
+            }
+            // Reserve slots for unopened Latcher bricks as well as live enemies.
+            if (game != null && (game.CurrentStage == 1 || game.CurrentStage == 3 || game.CurrentStage == 5) &&
+                latcherBrickPrefab != null && !specialPool.Contains(latcherBrickPrefab) &&
+                (balance != null ? balance.ShouldAddLatcher(CountLatchersInPlay(), pressure) : CountLatchersInPlay() == 0))
+                specialPool.Add(latcherBrickPrefab);
         }
 
         int specialsRemaining = specialPool.Count;
