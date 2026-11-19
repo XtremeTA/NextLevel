@@ -89,7 +89,8 @@ public sealed class GameOverScreen : MonoBehaviour
         Art(final, "Game over logo", gameOverArtwork, 0, 35, 740, 380);
         finalScore = Label(final, "", 0, 420, 900, 48, 30, Paper);
         savedRecord = Label(final, "", 0, 478, 1000, 36, 20, Muted);
-        Image retry = Art(final, "Retry", retryArtwork, 0, 455, 600, 240);
+        // The lettering sits 32 canvas units right of the sprite center at this size.
+        Image retry = Art(final, "Retry", retryArtwork, -32, 455, 600, 240);
         retry.transform.SetAsFirstSibling();
         retry.raycastTarget = true;
         Button retryButton = retry.gameObject.AddComponent<Button>();
