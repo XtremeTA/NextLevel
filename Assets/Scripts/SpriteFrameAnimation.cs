@@ -13,6 +13,7 @@ public sealed class SpriteFrameAnimation : MonoBehaviour
     private bool playing;
 
     public float Duration => frames == null ? 0f : frames.Length / Mathf.Max(1f, frameRate);
+    public bool IsPlaying => playing;
 
     private void OnEnable()
     {

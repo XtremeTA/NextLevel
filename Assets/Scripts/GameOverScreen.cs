@@ -89,21 +89,14 @@ public sealed class GameOverScreen : MonoBehaviour
         Art(final, "Game over logo", gameOverArtwork, 0, 35, 740, 380);
         finalScore = Label(final, "", 0, 420, 900, 48, 30, Paper);
         savedRecord = Label(final, "", 0, 478, 1000, 36, 20, Muted);
-        Image retry = Art(final, "Retry", retryArtwork, -250, 505, 430, 160);
+        Image retry = Art(final, "Retry", retryArtwork, 0, 455, 600, 240);
         retry.transform.SetAsFirstSibling();
         retry.raycastTarget = true;
         Button retryButton = retry.gameObject.AddComponent<Button>();
         retryButton.targetGraphic = retry;
         retryButton.navigation = new Navigation { mode = Navigation.Mode.None };
         retryButton.onClick.AddListener(Retry);
-        Label(final, "BLUE", -250, 666, 400, 36, 24, new Color32(140, 202, 255, 255));
-        TMP_Text title = Label(final, "MAIN TITLE", 250, 505, 430, 160, 40, Paper);
-        title.raycastTarget = true;
-        Button titleButton = title.gameObject.AddComponent<Button>();
-        titleButton.targetGraphic = title;
-        titleButton.navigation = new Navigation { mode = Navigation.Mode.None };
-        titleButton.onClick.AddListener(ReturnToTitle);
-        Label(final, "ORANGE", 250, 666, 400, 36, 24, new Color32(255, 177, 100, 255));
+        Label(final, "BLUE TO RETRY     ORANGE FOR MAIN TITLE", 0, 704, 800, 32, 20, Paper);
         surface.SetActive(false);
     }
 

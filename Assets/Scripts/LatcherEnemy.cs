@@ -18,12 +18,16 @@ public sealed class LatcherEnemy : MonoBehaviour
     private float tileInset;
     private float latchElapsed;
     private bool chargePlayed;
+    private bool releasingSpike;
+    private Vector3 launchPosition;
+    private SpriteFrameAnimation animationPlayer;
 
     private void Start()
     {
         body = GetComponent<Rigidbody2D>();
         hitbox = GetComponent<BoxCollider2D>();
         visual = GetComponent<SpriteRenderer>();
+        animationPlayer = GetComponent<SpriteFrameAnimation>();
         view = Camera.main;
         feetOffset = visual != null ? body.position.y - visual.bounds.min.y : hitbox.size.y * 0.5f;
         tileInset = visual != null && visual.sprite != null ? 8f / visual.sprite.pixelsPerUnit : 0.25f;
@@ -37,6 +41,8 @@ public sealed class LatcherEnemy : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        if (releasingSpike) return;
 
         if (tile != null)
         {
@@ -57,17 +63,10 @@ public sealed class LatcherEnemy : MonoBehaviour
                 }
                 if (latchElapsed >= latchDuration)
                 {
-                    if (spikePrefab != null)
-                    {
-                        Instantiate(spikePrefab, new Vector3(body.position.x, tile.bounds.max.y + 0.3f, transform.position.z), Quaternion.identity);
-                        GameAudio.Instance?.Play(SoundCue.LatcherSpike);
-                    }
-                    hitbox.enabled = false;
-                    tile = null;
-                    enabled = false;
-                    SpriteFrameAnimation animationPlayer = GetComponent<SpriteFrameAnimation>();
+                    releasingSpike = true;
+                    launchPosition = new Vector3(body.position.x, tile.bounds.max.y + 0.3f, transform.position.z);
                     animationPlayer.Play(deathFrames);
-                    Destroy(gameObject, animationPlayer.Duration);
+                    GameAudio.Instance?.Play(SoundCue.LatcherSpike, animationPlayer.Duration);
                 }
                 return;
             }
@@ -89,6 +88,16 @@ public sealed class LatcherEnemy : MonoBehaviour
             body.MovePosition(body.position + Vector2.down * step);
             if (EnemyGroundProbe.IsBelowScreen(body.position, view)) Destroy(gameObject);
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!releasingSpike || animationPlayer.IsPlaying) return;
+
+        hitbox.enabled = false;
+        if (spikePrefab != null && (GameManager.Instance == null || !GameManager.Instance.IsGameOver))
+            Instantiate(spikePrefab, launchPosition, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other) => TryHit(other);

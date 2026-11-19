@@ -290,57 +290,12 @@ public sealed class BrickRowManager : MonoBehaviour
                 specialPool.Add(latcherBrickPrefab);
         }
 
-        int specialsRemaining = specialPool.Count;
-
-        int livesRemaining =
-            specialsRemaining < bricksPerRow &&
-            CanSpawnLifeBrick()
-                ? 1
-                : 0;
+        Brick[] layout = PlanRow(specialPool);
 
         for (int column = 0; column < bricksPerRow; column++)
         {
-            Vector3 position =
-                leftPosition +
-                Vector3.right * columnSpacing * column;
-
-            bool special =
-                specialsRemaining > 0 &&
-                Random.Range(0, bricksPerRow - column) < specialsRemaining;
-
-            Brick selectedPrefab;
-
-            if (special)
-            {
-                int randomIndex =
-                    Random.Range(0, specialPool.Count);
-
-                selectedPrefab = specialPool[randomIndex];
-
-                specialPool.RemoveAt(randomIndex);
-
-                specialsRemaining--;
-            }
-            else
-            {
-                bool life =
-                    !special &&
-                    livesRemaining > 0 &&
-                    Random.Range(
-                        0,
-                        bricksPerRow - column - specialsRemaining)
-                    < livesRemaining;
-
-                if (life)
-                {
-                    selectedPrefab = lifeBrickPrefab;
-                    livesRemaining--;
-                }
-                else
-                {
-                    selectedPrefab = brickPrefab;
-                }
-            }
+            Vector3 position = leftPosition + Vector3.right * columnSpacing * column;
+            Brick selectedPrefab = layout[column] ?? brickPrefab;
 
             Brick brick =
                 Instantiate(
@@ -366,6 +321,61 @@ public sealed class BrickRowManager : MonoBehaviour
         }
 
         return row;
+    }
+
+    private Brick[] PlanRow(List<Brick> specials)
+    {
+        Brick[] layout = new Brick[bricksPerRow];
+        List<int> available = new List<int>(bricksPerRow);
+        for (int column = 0; column < bricksPerRow; column++)
+            available.Add(column);
+
+        bool needsBoth = specials.Contains(bombBrickPrefab) && specials.Contains(latcherBrickPrefab);
+        // Place the column-restricted bricks before other specials can take their slots.
+        foreach (Brick prefab in specials)
+        {
+            if (prefab != bombBrickPrefab && prefab != latcherBrickPrefab) continue;
+            Brick opposite = prefab == bombBrickPrefab ? latcherBrickPrefab : bombBrickPrefab;
+            List<int> eligible = available.FindAll(column => !ColumnContains(column, opposite));
+            if (eligible.Count == 0) continue;
+
+            // Leave unrestricted columns for the other type when both are due in this row.
+            if (needsBoth)
+            {
+                List<int> dedicated = eligible.FindAll(column => ColumnContains(column, prefab));
+                if (dedicated.Count > 0) eligible = dedicated;
+            }
+            int columnIndex = eligible[Random.Range(0, eligible.Count)];
+            layout[columnIndex] = prefab;
+            available.Remove(columnIndex);
+        }
+
+        foreach (Brick prefab in specials)
+        {
+            if (prefab != bombBrickPrefab && prefab != latcherBrickPrefab && available.Count > 0)
+                PlaceRandom(layout, available, prefab);
+        }
+        if (available.Count > 0 && CanSpawnLifeBrick())
+            PlaceRandom(layout, available, lifeBrickPrefab);
+        return layout;
+    }
+
+    private bool ColumnContains(int column, Brick prefab)
+    {
+        if (prefab == null) return false;
+        foreach (SpawnedBrick[] row in rows)
+        {
+            Brick existing = row[column].brick;
+            if (existing != null && existing.EnemyPrefab == prefab.EnemyPrefab) return true;
+        }
+        return false;
+    }
+
+    private static void PlaceRandom(Brick[] layout, List<int> available, Brick prefab)
+    {
+        int index = Random.Range(0, available.Count);
+        layout[available[index]] = prefab;
+        available.RemoveAt(index);
     }
 
     private void ApplyStageAppearance(Brick brick)

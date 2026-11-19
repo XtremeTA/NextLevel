@@ -255,11 +255,13 @@ animated `Latcher_enemy.png` creature. It falls to a surviving floor tile,
 sinks eight sprite pixels into its top, and latches there for five seconds.
 Touching it costs one heart and gives a visible sideways knockback. It can hit
 again after the player's normal invulnerability expires if they return to it.
-If its tile breaks, it falls again and
-restarts the latch timer on its next tile. At the end it fires one small upward
-spike that breaks the first intact brick in its column, then disappears. The spike loops the four frames from `latcher spike.png` during flight. The Latcher plays `latcher_death.png` once as it releases the spike and stops dealing contact damage.
-It plays a landing snap, a charge in the final 0.7 seconds, and a spike-launch
-sound. The WAV files are in `Assets/Audio/Latchers` and can be regenerated with
+If its tile breaks during the latch timer, it falls and restarts the timer on its next tile.
+It plays a snap on landing and a charge in the final 0.7 seconds of the timer.
+Then it plays the 12-frame death animation, stretching the spike sound across all 1.2 seconds.
+Contact still deals damage throughout the animation. When the last frame finishes,
+the Latcher stops dealing damage, fires one spike upward, and disappears.
+The spike loops the four frames from `latcher spike.png` and breaks the first intact
+brick in its column. The WAV files are in `Assets/Audio/Latchers` and can be regenerated with
 `Tools/Audio/GenerateLatcherAudio.cs`.
 Latcher appears in Stage Tester runs without selecting a featured enemy.
 

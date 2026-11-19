@@ -79,8 +79,6 @@ public sealed class GameplayHud : MonoBehaviour
         Control(right, "UP", "JUMP", 320);
         Control(right, "BLUE", "PARRY", 506);
         Control(right, "ORANGE", "DASH", 692);
-        Label(right, "BLUE", 0, 884, 240, 52, 24, Paper);
-        Label(right, "Confirm in menus\nJoystick to select", 0, 940, 240, 60, 19, Muted);
 
         LayoutColumn(left);
         LayoutColumn(right);

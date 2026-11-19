@@ -113,7 +113,7 @@ public sealed class GameAudio : MonoBehaviour
         return source;
     }
 
-    public void Play(SoundCue cue)
+    public void Play(SoundCue cue, float duration = 0f)
     {
         SoundEffect effect = GetEffect(cue);
         double now = AudioSettings.dspTime;
@@ -140,7 +140,7 @@ public sealed class GameAudio : MonoBehaviour
 
         AudioSource source = effectSources[voiceIndex];
         source.clip = clip;
-        source.pitch = 1f + Variation(effect.pitchVariation);
+        source.pitch = duration > 0f ? clip.length / duration : 1f + Variation(effect.pitchVariation);
         source.volume = Mathf.Clamp01(effectsVolume * effect.volume * (1f + Variation(effect.volumeVariation)));
         source.Play();
         effect.nextPlayTime = now + effect.minimumInterval;
