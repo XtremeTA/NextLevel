@@ -6,6 +6,7 @@ public sealed class LatcherEnemy : MonoBehaviour
     [SerializeField, Min(0.1f)] private float fallSpeed = 7f;
     [SerializeField, Min(0.1f)] private float latchDuration = 5f;
     [SerializeField] private LatcherSpike spikePrefab;
+    [SerializeField] private Sprite[] deathFrames;
 
     private readonly RaycastHit2D[] floorHits = new RaycastHit2D[16];
     private Rigidbody2D body;
@@ -61,7 +62,12 @@ public sealed class LatcherEnemy : MonoBehaviour
                         Instantiate(spikePrefab, new Vector3(body.position.x, tile.bounds.max.y + 0.3f, transform.position.z), Quaternion.identity);
                         GameAudio.Instance?.Play(SoundCue.LatcherSpike);
                     }
-                    Destroy(gameObject);
+                    hitbox.enabled = false;
+                    tile = null;
+                    enabled = false;
+                    SpriteFrameAnimation animationPlayer = GetComponent<SpriteFrameAnimation>();
+                    animationPlayer.Play(deathFrames);
+                    Destroy(gameObject, animationPlayer.Duration);
                 }
                 return;
             }

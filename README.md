@@ -2,11 +2,11 @@
 Next Level Arcade Project
 
 Open with Unity **6000.6.3f1** and play `Assets/Scenes/TitleScreen.unity`.
-Click the painted Start button or press Enter/Space to enter the game. Builds
+Press the blue button to start. Builds
 start at the title screen; opening SampleScene directly still supports gameplay
 testing.
-Move with A/D or the arrow keys; press W to jump and Space to parry.
-Press either Shift key to dash in the direction the player faces.
+Move the joystick left or right to move and up to jump. Blue parries and orange dashes in the facing direction.
+The cabinet encoder uses the existing keyboard bindings (A/D, W, Space, and Shift).
 Jumping requires a supporting ground contact. Adjust **Jump Height** on the
 Player to change the jump's height (default: 2.5 world units).
 
@@ -19,8 +19,7 @@ right wall. The layout adapts to the window without stretching the art or
 resizing the camera or arena.
 The HUD is assembled by **GameplayHud** on SampleScene's Canvas when play starts.
 Runs that place in the local top ten ask for three initials before saving with
-PlayerPrefs. A/D selects a letter or Save; W/S cycles A–Z. Space advances or
-confirms Save. Arrow keys and Enter work as alternatives. Initials appear beside
+PlayerPrefs. Move left or right to select a letter or Save, and up to cycle letters. Blue advances or confirms Save. Initials appear beside
 each score; older records retain their scores and show `---` for their initials.
 Zero scores and runs that do not qualify go straight to the final screen.
 Ties keep the older record first; tying tenth place does not qualify.
@@ -60,7 +59,7 @@ and aimed parries predictable. Speed and perfect-parry boosts are preserved.
 Adjust the Ball's **Prevent Repeating Paths** settings to tune the minimum angle,
 repeat threshold, position tolerance, and escape nudge.
 
-Catch the ball within the first 0.06 seconds of pressing Space for a perfect
+Catch the ball within the first 0.06 seconds of pressing blue for a perfect
 parry: it gets a 35% speed boost for 0.85 seconds, easing back to normal over the
 final 0.25 seconds. Its glow and trail brighten during the boost. Regular parries
 use normal speed; boosts refresh rather than stack. Adjust **Perfect Parry Window**
@@ -194,7 +193,7 @@ floor tile, it plays the supplied explosion/split animation and releases two
 smaller enemies running in opposite directions 40% through the animation
 (0.3 seconds with the default frames and frame rate). The explosion finishes
 behind them. **Split Animation Progress** on **FallingEnemy** controls the release
-point. Jump over them with W. Small
+point. Move the joystick up to jump over them. Small
 enemies that reach a side wall turn upward and break the first intact brick they reach,
 awarding its configured point value and disappearing. Special bricks keep their normal
 enemy or heart release behavior when broken this way. Enemies fall through broken floor
@@ -248,7 +247,7 @@ contents. The enemy cleans itself up above the screen or when the run ends.
 sway. Separate wisp, warning, and rising dragon audio cues play
 through GameAudio. Their WAV files live in `Assets/Audio/Dragons` and can be
 regenerated with `Tools/Audio/GenerateDragonAudio.cs`.
-Assign **Wisp Sprite** to replace the generated wisp later.
+The **Wisp Prefab** on DragonLaneEnemy plays the four frames from `dragon_whisp.png` during the descent.
 
 The **LatcherBrick** can appear in Stages 1, 3, and 5. Its animated brick uses
 `Latcher_Brick.png` and `Latcher_brick_break.png`; breaking it releases the
@@ -258,8 +257,7 @@ Touching it costs one heart and gives a visible sideways knockback. It can hit
 again after the player's normal invulnerability expires if they return to it.
 If its tile breaks, it falls again and
 restarts the latch timer on its next tile. At the end it fires one small upward
-spike that breaks the first intact brick in its column, then disappears. The
-spike artwork is generated in code until a dedicated sheet is supplied.
+spike that breaks the first intact brick in its column, then disappears. The spike loops the four frames from `latcher spike.png` during flight. The Latcher plays `latcher_death.png` once as it releases the spike and stops dealing contact damage.
 It plays a landing snap, a charge in the final 0.7 seconds, and a spike-launch
 sound. The WAV files are in `Assets/Audio/Latchers` and can be regenerated with
 `Tools/Audio/GenerateLatcherAudio.cs`.
@@ -311,9 +309,7 @@ an empty heart per lost one. Set the heart images and full/empty sprites on
 **GameManager**.
 The third hit lets the full stun finish, then pauses gameplay for initials entry
 if the run qualifies. Saving opens the final screen with the supplied Game Over
-background, logo, and Retry artwork. Click **Retry** or press Space/Enter for a
-fresh board and three lives. Holding confirm while a screen opens cannot skip
-it; R no longer restarts. **Starting Lives** on **GameManager** changes the initial
+background, logo, and Retry artwork. Press blue to retry on a fresh board or orange to return to the title screen. Holding confirm while a screen opens cannot skip it. **Starting Lives** on **GameManager** changes the initial
 life count. Final scores freeze when the last life is lost.
 
 The score shows on the pixel-art **Scoreboard** in the top-left corner as three

@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster))]
 public sealed class GameOverScreen : MonoBehaviour
@@ -28,6 +29,7 @@ public sealed class GameOverScreen : MonoBehaviour
     private int score;
     private int rank;
     private bool confirmReady;
+    private int stateEnteredFrame;
     private float nextLetterRepeat;
 
     private static readonly Color Paper = new Color32(242, 230, 192, 255);
@@ -78,8 +80,8 @@ public sealed class GameOverScreen : MonoBehaviour
         RectTransform save = Element("Save initials", entry, 0, 510, 340, 64);
         SelectionButton(save, 3).onClick.AddListener(SaveInitials);
         Label(save, "SAVE INITIALS", 0, 0, 340, 64, 25, Paper);
-        Label(entry, "A / D  SELECT     W / S  CHANGE LETTER     (OR ARROWS)", 0, 626, 1100, 32, 20, Muted);
-        Label(entry, "SPACE / ENTER  NEXT / SAVE", 0, 668, 1000, 32, 20, Paper);
+        Label(entry, "LEFT / RIGHT  SELECT     UP  CHANGE LETTER", 0, 626, 1100, 32, 20, Muted);
+        Label(entry, "BLUE  NEXT / SAVE", 0, 668, 1000, 32, 20, Paper);
 
         RectTransform final = Element("Final screen", root, 0, 0, 1366, 768);
         final.anchorMin = final.anchorMax = final.pivot = new Vector2(0.5f, 0.5f);
@@ -87,14 +89,21 @@ public sealed class GameOverScreen : MonoBehaviour
         Art(final, "Game over logo", gameOverArtwork, 0, 35, 740, 380);
         finalScore = Label(final, "", 0, 420, 900, 48, 30, Paper);
         savedRecord = Label(final, "", 0, 478, 1000, 36, 20, Muted);
-        Image retry = Art(final, "Retry", retryArtwork, 0, 455, 600, 240);
+        Image retry = Art(final, "Retry", retryArtwork, -250, 505, 430, 160);
         retry.transform.SetAsFirstSibling();
         retry.raycastTarget = true;
         Button retryButton = retry.gameObject.AddComponent<Button>();
         retryButton.targetGraphic = retry;
         retryButton.navigation = new Navigation { mode = Navigation.Mode.None };
         retryButton.onClick.AddListener(Retry);
-        Label(final, "SPACE / ENTER TO RETRY", 0, 704, 800, 32, 20, Paper);
+        Label(final, "BLUE", -250, 666, 400, 36, 24, new Color32(140, 202, 255, 255));
+        TMP_Text title = Label(final, "MAIN TITLE", 250, 505, 430, 160, 40, Paper);
+        title.raycastTarget = true;
+        Button titleButton = title.gameObject.AddComponent<Button>();
+        titleButton.targetGraphic = title;
+        titleButton.navigation = new Navigation { mode = Navigation.Mode.None };
+        titleButton.onClick.AddListener(ReturnToTitle);
+        Label(final, "ORANGE", 250, 666, 400, 36, 24, new Color32(255, 177, 100, 255));
         surface.SetActive(false);
     }
 
@@ -155,7 +164,9 @@ public sealed class GameOverScreen : MonoBehaviour
     {
         if (state == ScreenState.Final)
         {
+            if (Time.frameCount == stateEnteredFrame) return;
             if (confirm) Retry();
+            else if (ArcadeInput.DashPressed) ReturnToTitle();
             return;
         }
         if (!IsEnteringInitials)
@@ -195,6 +206,7 @@ public sealed class GameOverScreen : MonoBehaviour
     private void SetState(ScreenState next)
     {
         state = next;
+        stateEnteredFrame = Time.frameCount;
         confirmReady = false;
         initialsGroup.SetActive(IsEnteringInitials);
         finalGroup.SetActive(CanRetry);
@@ -204,6 +216,13 @@ public sealed class GameOverScreen : MonoBehaviour
     {
         if (CanRetry)
             GameManager.Instance?.RestartGame();
+    }
+
+    private void ReturnToTitle()
+    {
+        if (!CanRetry) return;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("TitleScreen");
     }
 
     private void RefreshSelection()

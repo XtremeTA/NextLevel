@@ -1,12 +1,9 @@
 using UnityEngine;
 
-// Small generated placeholders; DragonLaneEnemy accepts replacement sprites in the Inspector.
 internal static class DragonPrototypeArt
 {
-    private static Sprite wisp;
     private static Sprite beam;
     private static Sprite dragon;
-    public static Sprite Wisp => wisp != null ? wisp : wisp = EffectSprites.CreateSoftDot();
     public static Sprite Beam => beam != null ? beam : beam = CreateBeam();
     public static Sprite Dragon => dragon != null ? dragon : dragon = CreateDragon();
 

@@ -50,6 +50,6 @@ MonoBehaviour:
   wispSwayDistance: 0.12
   wispSwaySpeed: 4
   dragonPrefab: {fileID: 3975339559648467739, guid: fa303ed0ecb9d0c4b94d1f11b7f9f7c9, type: 3}
-  wispSprite: {fileID: 6611813401932464650, guid: 72d5cdce11204844785e09ffef0aec18, type: 3}
+  wispPrefab: {fileID: 3990448043960213025, guid: 1669123c11a825f41990ab996a9ac412, type: 3}
   visualMaterial: {fileID: 2100000, guid: fed0b40c41dd44ec9f6802cdce43c421, type: 2}
   warningColor: {r: 0.68, g: 0.81, b: 0.65, a: 0.2}

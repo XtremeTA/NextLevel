@@ -13,7 +13,7 @@ public sealed class DragonLaneEnemy : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject dragonPrefab;
-    [SerializeField] private Sprite wispSprite;
+    [SerializeField] private SpriteRenderer wispPrefab;
     [SerializeField] private Material visualMaterial;
 
     [Header("Warning")]
@@ -58,8 +58,9 @@ public sealed class DragonLaneEnemy : MonoBehaviour
 
         laneX = transform.position.x;
 
-        visual = CreateRenderer("Wisp", 4);
-        visual.sprite = wispSprite != null ? wispSprite : DragonPrototypeArt.Wisp;
+        visual = Instantiate(wispPrefab, transform);
+        visual.transform.localPosition = Vector3.zero;
+        visual.sortingOrder = 4;
 
         FitVisual(0.45f, 0.7f);
 
@@ -174,7 +175,6 @@ public sealed class DragonLaneEnemy : MonoBehaviour
         {
             visual.transform.localPosition = new Vector3(
                 Mathf.Sin(age * wispSwaySpeed) * wispSwayDistance, 0f, 0f);
-            visual.color = new Color(0.74f, 0.86f, 0.7f, 0.55f);
         }
 
         if (phase != Phase.Warning)

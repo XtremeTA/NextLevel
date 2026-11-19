@@ -206,3 +206,16 @@ MonoBehaviour:
   fallSpeed: 7
   latchDuration: 5
   spikePrefab: {fileID: 1002, guid: 134bbfad0e8a4c61a103740f147c026c, type: 3}
+  deathFrames:
+  - {fileID: -6031040478674822960, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: 4450970575449365480, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: 2950613619697204961, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -1720342922, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: 1315268362, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -2129708519, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: 2013899618, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -1858939768, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -1795320201, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -531198086, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -706995268, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}
+  - {fileID: -2035406819, guid: 99b2def8f26946142951f7ca94ca7e3f, type: 3}

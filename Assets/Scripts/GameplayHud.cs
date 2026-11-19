@@ -75,12 +75,12 @@ public sealed class GameplayHud : MonoBehaviour
 
         Label(right, "CONTROLS", 0, 0, 240, 48, 30, Paper);
         Rule(right, 70);
-        Control(right, "A / D", "MOVE (OR ARROWS)", 134);
-        Control(right, "W", "JUMP", 320);
-        Control(right, "SPACE", "PARRY", 506);
-        Control(right, "SHIFT", "DASH", 692);
-        Label(right, "SPACE / ENTER", 0, 884, 240, 52, 24, Paper);
-        Label(right, "Confirm in menus\nWASD / arrows select", 0, 940, 240, 60, 19, Muted);
+        Control(right, "LEFT / RIGHT", "MOVE", 134);
+        Control(right, "UP", "JUMP", 320);
+        Control(right, "BLUE", "PARRY", 506);
+        Control(right, "ORANGE", "DASH", 692);
+        Label(right, "BLUE", 0, 884, 240, 52, 24, Paper);
+        Label(right, "Confirm in menus\nJoystick to select", 0, 940, 240, 60, 19, Muted);
 
         LayoutColumn(left);
         LayoutColumn(right);

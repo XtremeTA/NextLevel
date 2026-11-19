@@ -5,7 +5,6 @@ public sealed class LatcherSpike : MonoBehaviour
 {
     [SerializeField, Min(0.1f)] private float riseSpeed = 15f;
     [SerializeField, Min(0.1f)] private float width = 0.5f;
-    private static Sprite sprite;
     private readonly List<Collider2D> hits = new List<Collider2D>(16);
     private readonly ContactFilter2D filter = new ContactFilter2D { useTriggers = false };
     private Camera view;
@@ -14,9 +13,6 @@ public sealed class LatcherSpike : MonoBehaviour
     private void Start()
     {
         view = Camera.main;
-        SpriteRenderer renderer = gameObject.AddComponent<SpriteRenderer>();
-        renderer.sprite = sprite != null ? sprite : sprite = CreateSprite();
-        renderer.sortingOrder = 5;
     }
 
     private void FixedUpdate()
@@ -39,22 +35,5 @@ public sealed class LatcherSpike : MonoBehaviour
         age += Time.fixedDeltaTime;
         if (age > 5f || (view != null && transform.position.y > view.transform.position.y + view.orthographicSize + 0.5f))
             Destroy(gameObject);
-    }
-
-    private static Sprite CreateSprite()
-    {
-        const int w = 20, h = 36;
-        var texture = new Texture2D(w, h, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
-        var pixels = new Color[w * h];
-        for (int y = 0; y < h; y++)
-        {
-            int half = Mathf.Max(0, (h - y) / 5);
-            for (int x = 0; x < w; x++)
-                if (Mathf.Abs(x - 9.5f) <= half)
-                    pixels[y * w + x] = x == 9 || x == 10 ? new Color(0.7f, 0.88f, 0.56f) : new Color(0.23f, 0.52f, 0.31f);
-        }
-        texture.SetPixels(pixels);
-        texture.Apply(false, true);
-        return Sprite.Create(texture, new Rect(0, 0, w, h), Vector2.one * 0.5f, 32f);
     }
 }
