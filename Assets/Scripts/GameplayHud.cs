@@ -51,23 +51,21 @@ public sealed class GameplayHud : MonoBehaviour
         Label(left, "LIVES", 0, 0, 240, 44, 24, Muted);
         for (int i = 0; i < hearts.Length; i++)
         {
-            Place(hearts[i], left, i * 84, 54, 72, 64);
-            Track(hearts[i]);
+            Place(hearts[i], left, 0, 54, 72, 64);
             hearts[i].GetComponent<Image>().preserveAspect = true;
         }
 
-        Rule(left, 142);
-        Label(left, "CURRENT SCORE", 0, 170, 240, 40, 24, Muted);
-        // Resize the original board as a group to preserve the art and digit positions.
-        Place(scoreboard, left, 0, 218, 128, 64);
-        Rule(left, 378);
-        Label(left, "SCORES", 0, 405, 240, 44, 28, Paper);
-        Label(left, "LOCAL TOP 10", 0, 452, 240, 32, 18, Muted);
+        // Resize the board and its digit images together within the score area.
+        Place(scoreboard, left, 0, 120, 240, 176);
+        Rule(left, 440);
+        Label(left, "SCORES", 0, 458, 240, 44, 28, Paper);
+        Label(left, "LOCAL TOP 10", 0, 506, 240, 32, 18, Muted);
         for (int i = 0; i < scoreRows.Length; i++)
         {
-            Label(left, (i + 1).ToString("00"), 0, 506 + i * 47.5f, 38, 44, 22, Muted);
-            initialsRows[i] = Label(left, "---", 48, 506 + i * 47.5f, 72, 44, 23, Paper);
-            scoreRows[i] = Label(left, "—", 126, 506 + i * 47.5f, 114, 44, 28, Paper);
+            float rowY = 546f + i * 43.5f;
+            Label(left, (i + 1).ToString("00"), 0, rowY, 38, 44, 22, Muted);
+            initialsRows[i] = Label(left, "---", 48, rowY, 72, 44, 23, Paper);
+            scoreRows[i] = Label(left, "-", 126, rowY, 114, 44, 28, Paper);
             scoreRows[i].enableAutoSizing = true;
             scoreRows[i].fontSizeMin = 8f;
             scoreRows[i].alignment = TextAlignmentOptions.MidlineRight;
@@ -122,7 +120,9 @@ public sealed class GameplayHud : MonoBehaviour
         float left = Mathf.Clamp(pixels.x + (wall.bounds.min.x - worldLeft) / worldWidth * pixels.width, pixels.xMin, pixels.xMax);
         float right = Mathf.Clamp(pixels.x + (wall.bounds.max.x - worldLeft) / worldWidth * pixels.width, pixels.xMin, pixels.xMax);
         float wallWidth = right - left;
-        float horizontalPadding = Mathf.Min(wallWidth * 0.06f, pixels.height * 0.022f);
+        float horizontalPadding = column == leftColumn
+            ? Mathf.Min(wallWidth * 0.02f, pixels.height * 0.01f)
+            : Mathf.Min(wallWidth * 0.06f, pixels.height * 0.022f);
         float verticalPadding = pixels.height * 0.035f;
 
         // Convert viewport pixels into the canvas, including render textures and window resizes.
@@ -170,10 +170,23 @@ public sealed class GameplayHud : MonoBehaviour
 
         if (column == leftColumn)
         {
-            float boardScale = Mathf.Min(column.rect.width / 128f, 140f / 64f);
+            const float heartWidth = 72f;
+            const float heartGap = 24f;
+            float heartGroupWidth = hearts.Length * heartWidth + (hearts.Length - 1) * heartGap;
+            float heartScale = Mathf.Min(1f, column.rect.width / heartGroupWidth);
+            float heartStart = (column.rect.width - heartGroupWidth * heartScale) * 0.5f;
+            for (int i = 0; i < hearts.Length; i++)
+            {
+                hearts[i].anchoredPosition = new Vector2(heartStart + i * (heartWidth + heartGap) * heartScale, -54f);
+                hearts[i].sizeDelta = new Vector2(heartWidth * heartScale, 64f * heartScale);
+            }
+
+            const float boardAreaTop = 120f;
+            const float boardAreaHeight = 312f;
+            float boardScale = Mathf.Min(column.rect.width / 240f, boardAreaHeight / 176f);
             scoreboard.localScale = Vector3.one * boardScale;
-            scoreboard.anchoredPosition = new Vector2((column.rect.width - 128f * boardScale) * 0.5f,
-                -(218f + (140f - 64f * boardScale) * 0.5f));
+            scoreboard.anchoredPosition = new Vector2((column.rect.width - 240f * boardScale) * 0.5f,
+                -(boardAreaTop + (boardAreaHeight - 176f * boardScale) * 0.5f));
         }
     }
 
@@ -183,7 +196,7 @@ public sealed class GameplayHud : MonoBehaviour
         for (int i = 0; i < scoreRows.Length; i++)
             if (scoreRows[i] != null)
             {
-                scoreRows[i].text = scores[i].Score > 0 ? scores[i].Score.ToString("D3") : "—";
+                scoreRows[i].text = scores[i].Score > 0 ? scores[i].Score.ToString("D3") : "-";
                 initialsRows[i].text = scores[i].Score > 0 ? scores[i].Initials : "---";
             }
     }
@@ -207,7 +220,7 @@ public sealed class GameplayHud : MonoBehaviour
 
     private void Control(Transform parent, string keys, string action, float y)
     {
-        Label(parent, keys, 0, y, 240, 60, 38, Paper);
+        Label(parent, keys, 0, y, 240, 60, 30, Paper);
         Label(parent, action, 0, y + 64, 240, 42, 20, Muted);
     }
 

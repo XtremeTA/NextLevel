@@ -7,6 +7,8 @@ public sealed class CameraBackground : MonoBehaviour
 {
     [SerializeField] private Camera targetCamera;
     [SerializeField, Min(0.1f)] private float distanceFromCamera = 20f;
+    [Tooltip("Requested shift as a fraction of the camera width. Negative moves the art left; the shift is limited to prevent empty edges.")]
+    [SerializeField, Range(-0.5f, 0.5f)] private float horizontalOffset = -0.25f;
     [Header("Stages")]
     [SerializeField] private Color stageTwoTint = new Color(0.62f, 0.66f, 0.74f, 1f);
     [SerializeField, Min(0.01f)] private float stageTintDuration = 0.8f;
@@ -51,11 +53,18 @@ public sealed class CameraBackground : MonoBehaviour
 
         float viewHeight = targetCamera.orthographicSize * 2f;
         float viewWidth = viewHeight * targetCamera.aspect;
-        // Fill the view without stretching the artwork; crop the excess at the edges.
+        // Use the smallest uniform scale that covers the camera, then pan only
+        // within the remaining width so neither side can reveal empty space.
         float scale = Mathf.Max(viewWidth / spriteBounds.size.x, viewHeight / spriteBounds.size.y);
+        float excessWidth = spriteBounds.size.x * scale - viewWidth;
+        float horizontalShift = Mathf.Clamp(viewWidth * horizontalOffset,
+            -excessWidth * 0.5f, excessWidth * 0.5f);
+        float excessHeight = spriteBounds.size.y * scale - viewHeight;
         transform.localScale = new Vector3(scale, scale, 1f);
         transform.SetPositionAndRotation(
-            targetCamera.transform.position + targetCamera.transform.forward * distanceFromCamera,
+            targetCamera.transform.position + targetCamera.transform.forward * distanceFromCamera
+            + targetCamera.transform.right * horizontalShift
+            - targetCamera.transform.up * (excessHeight * 0.5f),
             targetCamera.transform.rotation);
         transform.position -= transform.TransformVector(spriteBounds.center);
     }

@@ -18,6 +18,8 @@ its wall with larger text and artwork, and controls use the full height of the
 right wall. The layout adapts to the window without stretching the art or
 resizing the camera or arena.
 The HUD is assembled by **GameplayHud** on SampleScene's Canvas when play starts.
+Its left and right wall labels use the point-filtered Silkscreen pixel font.
+The source font and its SIL Open Font License are in `Assets/Fonts`.
 Runs that place in the local top ten ask for three initials before saving with
 PlayerPrefs. Move left or right to select a letter or Save, and up to cycle letters. Blue advances or confirms Save. Initials appear beside
 each score; older records retain their scores and show `---` for their initials.
@@ -74,6 +76,19 @@ The **Ball Glow** scene object uses `Assets/Settings/BallGlowProfile.asset`;
 adjust its Bloom intensity to change the glow strength. The trail clears on reset.
 
 ## Scene atmosphere
+
+The gameplay background uses 42 frames from `Assets/PixelArt/Background-Sheet.png`
+at 10 fps. It fits the camera without empty edges and shifts left as far as the
+remaining image width allows. The original horizontal sheet is kept at
+`Tools/Art/Background-Sheet-Horizontal.png`; run
+`Tools/Art/RepackBackgroundSheet.ps1` after replacing that source to repack it
+into Unity's importable grid.
+
+Before building the executable, use **NextLevel > Build > Animated Background**.
+A checkmark means the built game loops the animation; no checkmark means it
+displays frame one throughout gameplay. The choice is saved in this Unity
+Editor's preferences and does not add a player-facing setting. Editor Play mode
+continues to show the animation.
 
 SampleScene's **Scene Atmosphere** adds slowly drifting haze and 24 small warm
 motes behind the player, ball, and bricks. The effect fits the camera when the

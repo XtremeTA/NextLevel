@@ -1,0 +1,17 @@
+Q1: What is the best part of our project?
+A1: I think the best part is how every enemy causes a domino effect of more bricks being broken, which ends up
+spawning more enemies and the cycle continues. This element feels very "arcade-y" and we are really happy with
+how it turned out!
+
+Q2: Is there anything in the game that doesn't feel done? 
+A2: We would have loved to polish our art even further, adding more detailed enemy sprites and animations. 
+However, we think, given the allotted time, we are really happy with the outcome overall.
+
+Q3: What small tweaks can you make that will have the biggest overall impact on polish and game feel?
+A3: After playtesting we plan on balancing our game heavily depending on feedback. We found it difficult to
+properly balance our game. At first it was too easy, then much too difficult; we feel we have reached the sweet
+spot but plan on pushing that even further once feedback is given.
+
+Q4: Does anything need to be removed from the game?
+A4: Currently we don't think anything needs to be removed from the game. However, this is very dependent on player
+feedback that we will receive tomorrow.
